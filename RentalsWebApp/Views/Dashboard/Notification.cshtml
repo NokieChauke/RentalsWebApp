@@ -1,0 +1,112 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Notification</h1>
+<div class="container-xl px-4 mt-4">
+    <!-- Account page navigation-->
+    <nav class="nav nav-borders">
+        <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Billing" target="__self">Billing</a>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+        {
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+        }
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+    </nav>
+
+    @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+    {
+        <hr class="mt-0 mb-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Email notifications preferences card-->
+                <div class="card card-header-actions mb-4">
+                    <div class="card-header">
+                        Email Notifications
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" id="flexSwitchCheckChecked" type="checkbox" checked="">
+                            <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                        </div>
+                        Push Notifications
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" id="smsToggleSwitch" type="checkbox" checked="">
+                            <label class="form-check-label" for="smsToggleSwitch"></label>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <!-- Form Group (default email)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="inputNotificationEmail">Default notification email</label>
+                                <input class="form-control col-md-2" id="inputNotificationEmail" type="email" value="name@example.com" disabled="">
+                            </div>
+                            <!-- Form Group (default SMS number)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="inputNotificationSms">Default SMS number</label>
+                                <input class="form-control col-md-2" id="inputNotificationSms" type="tel" value="123-456-7890" disabled="">
+                            </div>
+                            <!-- Form Group (email updates checkboxes)-->
+                            <div class="mb-0">
+                                <label class="small mb-2">Choose which types of email updates you receive</label>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" id="checkAccountChanges" type="checkbox" checked="">
+                                    <label class="form-check-label" for="checkAccountChanges">Changes made to your account</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" id="checkAccountGroups" type="checkbox" checked="">
+                                    <label class="form-check-label" for="checkAccountGroups">Water and Electricity Bill statement upload </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" id="checkProductNew" type="checkbox" checked="">
+                                    <label class="form-check-label" for="checkProductNew">Information on new Apartments</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" id="checkPromotional" type="checkbox">
+                                    <label class="form-check-label" for="checkPromotional">Changes in Terms and Conditions</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" id="checkSecurity" type="checkbox" checked="" disabled="">
+                                    <label class="form-check-label" for="checkSecurity">Rent Increase</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" id="checkSecurity" type="checkbox" checked="" disabled="">
+                                    <label class="form-check-label" for="checkSecurity">Security alerts</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+    else if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+    {
+        <div class="col-lg-4">
+            <!-- Notifications preferences card-->
+            <div class="card">
+                <div class="card-header">Notification Preferences</div>
+                <div class="card-body">
+                    <form>
+                        <!-- Form Group (notification preference checkboxes)-->
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkAutoGroup" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkAutoGroup">Automatically subscribe to group notifications</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" id="checkAutoProduct" type="checkbox">
+                            <label class="form-check-label" for="checkAutoProduct">Automatically subscribe to new product notifications</label>
+                        </div>
+                        <!-- Submit button-->
+                        <button class="btn btn-danger-soft text-danger">Unsubscribe from all notifications</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+    }
+ 
+</div>

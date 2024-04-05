@@ -1,0 +1,60 @@
+﻿@using RentalsWebApp.ViewModels
+@model DashboardViewModel
+
+<h1>Upload Documents</h1>
+<!-- Account page navigation-->
+<nav class="nav nav-borders">
+    <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+    <a class="nav-link" asp-controller="Dashboard" asp-action="Billing" target="__self">Billing</a>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+    {
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+    }
+    <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+</nav>
+<label class="small mb-1" for="inputNotificationEmail">Complete you profile to rent</label>
+<div class="col-xl-8">
+    <!-- Account details card-->
+    <div class="card mb-4">
+        <div class="card-header">Documents Upload</div>
+        <div class="card-body">
+            <form>
+
+                <input type="hidden" id="Id" name="Id" asp-for="Id" />
+                <div class="mb-3">
+                    <label asp-for="Documents.IdCard">ID copy or Passport</label>
+                    <input asp-for="Documents.IdCard" class="form-control" type="file"  placeholder="Id copy">
+                    <span asp-validation-for="Documents.IdCard" class="text-danger"></span>
+                </div>
+                <!-- Form Row-->
+                <div class="row gx-3 mb-3">
+
+                    <div class="col-md-6">
+                        <label asp-for="Documents.Contract">Signed Contract</label>
+                        <input asp-for="Documents.Contract" class="form-control" type="file" placeholder="Signed Contract">
+                        <span asp-validation-for="Documents.Contract" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Documents.PaySlip">Pay slip</label>
+                        <input asp-for="Documents.PaySlip" class="form-control" type="file" placeholder="Name">
+                        <span asp-validation-for="Documents.PaySlip" class="text-danger"></span>
+                    </div>
+                </div>
+                @if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                {
+                    <button class="btn btn-primary" type="button">Save changes</button>
+                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-outline-primary">Cancel</a>
+                   
+                }
+                else if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+                {
+                    <a asp-controller="Dashboard" asp-action="EditUserProfile" class="btn btn-sm btn-outline-secondary">Back</a>
+                    <a asp-controller="Dashboard" asp-action="Billing" class="btn btn-sm btn-outline-primary">Next</a>
+                    <a asp-controller="Dashboard" asp-action="UserProfile" class="btn btn-sm btn-outline-primary">Cancel</a>
+                }
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Apartments>
+
+@{
+    ViewData["Title"] = "Apartments";
+}
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">XMat Rentals</h1>
+        <p class="lead text-muted">More than just a home. Ha mi amukela e kaya ra nwina.</p>
+        @if(!User.Identity.IsAuthenticated)
+        {
+            <p>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-sm btn-outline-secondary">Login to Rent </a>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-sm btn-outline-secondary">Register to rent</a>
+            </p>
+
+        }
+       
+    </div>
+</section>
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            @foreach(var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" src="@item.Picture" width="100%" hight="225" alt="@item.ApartmentCategory">
+                        <div class="card-body">
+                            <p class="card-text">@item.Description</p>
+                            <div class="address-group">
+                                <div class="Adress">@item.Address.Address_Line1, @item.Address.Address_Line2</div>
+                                <div class="City&State">@item.Address.City, @item.Address.State</div>
+                                <div class="postal-code">@item.Address.Zip</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center"> 
+                                <div class="btn-group">
+                                    <a asp-controller="Apartments" asp-action="Details" asp-route-id="@item.Id"
+                                    class="btn btn-sm btn-outline-secondary">View</a>
+                                    
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                                    {
+                                        <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <a asp-controller="Apartments" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Delete</a>
+                                    }                                
+                                    else if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+                                    {                                        
+                                            <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-secondary">Click to Rent</a>
+                                    }
+                                    else if (!User.Identity.IsAuthenticated)
+                                    {                                        
+                                            <a asp-controller="Account" asp-action="Rent" asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-secondary">Click to Rent</a>                                            
+                                    }
+
+                                </div>
+                                <div> <small class="text-muted">Available for just @item.Price</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+           
+        </div>
+    </div>
+</div>
