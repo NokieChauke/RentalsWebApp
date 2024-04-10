@@ -515,17 +515,17 @@ body {
     -webkit-transition: all 0.3s ease 0s;
     -o-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
-    background: #7564e5;
+    background: #bcbcbc;
     font-family: 'poppins', sans-serif;
     cursor: pointer;
     width: 100%;
 }
 
-.btn-contact-bg:hover,
-.btn-contact-bg:focus {
-    background: #232434;
-    color: #fff;
-}
+    .btn-contact-bg:hover,
+    .btn-contact-bg:focus {
+        background: #fff;
+        color: #bcbcbc;
+    }
 
 /*START ADDRESS*/
 
@@ -543,7 +543,7 @@ body {
 
 .single_address i {
     background: #f6f6f6;
-    color: #7564e5;
+    color: #bcbcbc;
     border-radius: 30px;
     width: 60px;
     height: 60px;

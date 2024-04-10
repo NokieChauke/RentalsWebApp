@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentalsWebApp.Data;
 
@@ -11,9 +12,11 @@ using RentalsWebApp.Data;
 namespace RentalsWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240407091508_UserProfile")]
+    partial class UserProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,9 +231,15 @@ namespace RentalsWebApp.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BankAccountId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DocomentsId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -289,6 +298,10 @@ namespace RentalsWebApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BankAccountId");
+
+                    b.HasIndex("DocomentsId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -312,10 +325,6 @@ namespace RentalsWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("BankName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -328,58 +337,13 @@ namespace RentalsWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CardDescreption")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CardNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ExpiryDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("BankAccounts");
-                });
-
-            modelBuilder.Entity("RentalsWebApp.Models.Billing", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ElectricityAmount")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Month")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Statement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("WaterAmount")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Billings");
+                    b.ToTable("BankAccount");
                 });
 
             modelBuilder.Entity("RentalsWebApp.Models.Documents", b =>
@@ -389,10 +353,6 @@ namespace RentalsWebApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Contract")
                         .IsRequired()
@@ -407,8 +367,6 @@ namespace RentalsWebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("Documents");
                 });
@@ -475,37 +433,19 @@ namespace RentalsWebApp.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("RentalsWebApp.Models.BankAccount", b =>
+            modelBuilder.Entity("RentalsWebApp.Models.AppUser", b =>
                 {
-                    b.HasOne("RentalsWebApp.Models.AppUser", "AppUser")
+                    b.HasOne("RentalsWebApp.Models.BankAccount", "BankAccount")
                         .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BankAccountId");
 
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("RentalsWebApp.Models.Billing", b =>
-                {
-                    b.HasOne("RentalsWebApp.Models.AppUser", "AppUser")
+                    b.HasOne("RentalsWebApp.Models.Documents", "Documents")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DocomentsId");
 
-                    b.Navigation("AppUser");
-                });
+                    b.Navigation("BankAccount");
 
-            modelBuilder.Entity("RentalsWebApp.Models.Documents", b =>
-                {
-                    b.HasOne("RentalsWebApp.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
+                    b.Navigation("Documents");
                 });
 #pragma warning restore 612, 618
         }

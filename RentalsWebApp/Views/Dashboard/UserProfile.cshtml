@@ -1,5 +1,5 @@
 ﻿    @using RentalsWebApp.ViewModels
-    @model DashboardViewModel
+    @model UserProfileViewModel
    
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -9,7 +9,7 @@
                 <div class="text-center card-box">
                     <div class="member-card">
                         <div class="thumb-xl member-thumb m-b-10 center-block">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-circle img-thumbnail" alt="profile-image">
+                            <img src="@Model.ProfileImageUrl" class="img-circle img-thumbnail" alt="profile-image">
                         </div>
                     <form>
                         <input type="hidden" id="Id" name="Id" asp-for="Id" />

@@ -13,6 +13,9 @@ namespace RentalsWebApp.Data
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Apartments> Apartments { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<Billing> Billings { get; set; }
+        public DbSet<Documents> Documents { get; set; }
 
     }
 }

@@ -1,4 +1,4 @@
-﻿@using RentalsWebApp.ViewModels 
+﻿@using RentalsWebApp.ViewModels
 @model EditUserProfileViewModel
 
 <h1>
@@ -28,12 +28,12 @@
                         <!-- Profile picture help block-->
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                         <!-- Profile picture upload button-->
-                    
+
                         <label asp-for="ProfileImageUrl" class="control-label"></label>
                         <input asp-for="ProfileImageUrl" type="file" class="form-control" placeholder="Upload Profile Pic">
-                        <span asp-validation-for="ProfileImageUrl" class="text-danger"></span></button>
-                    
-                    
+                        <span asp-validation-for="ProfileImageUrl   " class="text-danger"></span></button>
+
+
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                 <div class="card mb-4">
                     <div class="card-header">Account Details</div>
                     <div class="card-body">
-                  
+
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" id="Id" name="Id" asp-for="Id" />
                         <div class="mb-3">
@@ -52,13 +52,13 @@
                         </div>
                         <!-- Form Row-->
                         <div class="row gx-3 mb-3">
-                            
+
                             <div class="col-md-6">
                                 <label asp-for="Surname" class="control-label"></label>
                                 <input asp-for="Surname" class="form-control" placeholder="Surname">
                                 <span asp-validation-for="Surname" class="text-danger"></span>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <label asp-for="Email" class="control-label"></label>
                                 <input asp-for="Email" class="form-control" placeholder="email@gmail.com">
@@ -80,19 +80,19 @@
                                 <span asp-validation-for="IdentityNo" class="text-danger"></span>
                             </div>
                         </div>
-                        @if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                         {
                             <button class="btn btn-primary" type="button">Save changes</button>
                             <a asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-outline-primary">Cancel</a>
                         }
-                        else if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+                        else if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
                         {
                             <button type="submit" class="btn btn-sm btn-outline-primary">Save and Continue</button>
                             <a asp-controller="Dashboard" asp-action="UserProfile" class="btn btn-sm btn-outline-primary">Cancel</a>
-                            
+
                         }
-                        
-  
+
+
                     </div>
                 </div>
             </div>

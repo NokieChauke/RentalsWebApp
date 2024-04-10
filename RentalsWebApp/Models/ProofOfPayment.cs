@@ -2,17 +2,13 @@
 
 namespace RentalsWebApp.Models
 {
-    public class Documents
+    public class ProofOfPayment
     {
         public int Id { get; set; }
-        public string IdCard { get; set; }
-        public string PaySlip { get; set; }
-        public string Contract { get; set; }
-
+        public string Month { get; set; }
+        public string Proof { get; set; }
         [ForeignKey("AppUser")]
-        public string AppUserId { get; set; }
+        public string UserId { get; set; }
         public AppUser AppUser { get; set; }
-
-
     }
 }

@@ -58,7 +58,6 @@ namespace RentalsWebApp.Controllers
                 _apartmentsRepository.Add(apartments);
                 return RedirectToAction("Index");
             }
-
             else
             {
                 ModelState.AddModelError("", "Photo upload failed");
@@ -122,9 +121,6 @@ namespace RentalsWebApp.Controllers
                 return RedirectToAction("Index");
             }
             else
-            {
-
-            }
             {
                 return View(apartmentVM);
             }

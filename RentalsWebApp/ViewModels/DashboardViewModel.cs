@@ -9,7 +9,7 @@ namespace RentalsWebApp.ViewModels
         public string Surname { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string? ProfileImage { get; set; }
+        public string? ProfileImageUrl { get; set; }
         public string IdentityNo { get; set; }
         public string OldPassword { get; set; }
         public string NewPassword { get; set; }

@@ -1,5 +1,5 @@
 ﻿@using RentalsWebApp.ViewModels
-@model List<DashboardViewModel>
+@model List<TenantsListViewModel>
 
 <h1 class="display-6 fw-normal">User Dashbord</h1>
 <a type="button" class="btn btn-primary" asp-area="" asp-controller="Apartments" asp-action="Create">Add Apartment</a>
@@ -25,6 +25,7 @@
                     <th scope="col">Contact</th>
                     <th scope="col">Edit Tenent </th>
                     <th scope="col">Tenent Details</th>
+                    <th scope="col">Upload Statement</th>
                 </tr>
             </thead>
         @{
@@ -38,12 +39,16 @@
                         <td>@item.Surname</td>
                         <td>@item.PhoneNumber</td>
                         <td>
-                            <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@item.Id"
+                            <a asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@item.Id"
                                 class="btn btn-sm btn-outline-secondary">Edit</a>
                             <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
                         </td>
                         <td>
                                 <a asp-controller="Dashboard" asp-action="UserProfile" asp-route-id="@item.Id"
+                                class="btn btn-sm btn-outline-secondary">Detail</a>
+                        </td>
+                        <td>
+                                <a asp-controller="Billing" asp-action="UploadStatement" asp-route-id="@item.Id"
                                 class="btn btn-sm btn-outline-secondary">Detail</a>
                         </td>
                     </tr>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RentalsWebApp.Data;
 using RentalsWebApp.Interfaces;
 using RentalsWebApp.Models;
@@ -34,21 +35,18 @@ namespace RentalsWebApp.Repository
             return await _userManager.GetUsersInRoleAsync("tenant");
         }
 
-        public async Task<AppUser> GetUserById(string id)
-        {
-            return await _context.Users.FindAsync(id);
-        }
-
         public async Task<AppUser> GetCurrentUserById(string id)
         {
             return await _context.Users.FindAsync(id);
         }
-        //public async Task<AppUser> GetTenantsByRole(string role = "tenant")
-        //{
-        //    var rol = _httpContextAccessor.HttpContext?.User.GetUserRole();
-        //    var tenants = _context.Users.IsInRole(rol);
-        //    return tenants.ToList();
-        //}
+        public async Task<AppUser> GetUserById(string id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+        public async Task<AppUser> GetUserByIdNoTracking(string id)
+        {
+            return await _context.Users.Where(u => u.Id == id).AsNoTracking().FirstOrDefaultAsync();
+        }
 
         public bool Save()
         {

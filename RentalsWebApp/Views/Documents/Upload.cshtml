@@ -1,5 +1,5 @@
 ﻿@using RentalsWebApp.ViewModels
-@model DashboardViewModel
+@model DocumentsViewModel
 
 <h1>Upload Documents</h1>
 <!-- Account page navigation-->
@@ -18,27 +18,27 @@
     <div class="card mb-4">
         <div class="card-header">Documents Upload</div>
         <div class="card-body">
-            <form>
-
-                <input type="hidden" id="Id" name="Id" asp-for="Id" />
+            <form method="post" asp-action="Upload" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId" />
                 <div class="mb-3">
-                    <label asp-for="Documents.IdCard">ID copy or Passport</label>
-                    <input asp-for="Documents.IdCard" class="form-control" type="file"  placeholder="Id copy">
-                    <span asp-validation-for="Documents.IdCard" class="text-danger"></span>
+                    <label asp-for="IdCard" class="control-label"></label>
+                    <input asp-for="IdCard" class="form-control" type="file"  placeholder="Id copy">
+                    <span asp-validation-for="IdCard" class="text-danger"></span>
                 </div>
                 <!-- Form Row-->
                 <div class="row gx-3 mb-3">
 
                     <div class="col-md-6">
-                        <label asp-for="Documents.Contract">Signed Contract</label>
-                        <input asp-for="Documents.Contract" class="form-control" type="file" placeholder="Signed Contract">
-                        <span asp-validation-for="Documents.Contract" class="text-danger"></span>
+                        <label asp-for="Contract" class="control-label"></label>
+                        <input asp-for="Contract" class="form-control" type="file" placeholder="Signed Contract">
+                        <span asp-validation-for="Contract" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
-                        <label asp-for="Documents.PaySlip">Pay slip</label>
-                        <input asp-for="Documents.PaySlip" class="form-control" type="file" placeholder="Name">
-                        <span asp-validation-for="Documents.PaySlip" class="text-danger"></span>
+                        <label asp-for="PaySlip" class="control-label"></label>
+                        <input asp-for="PaySlip" class="form-control" type="file" placeholder="Name">
+                        <span asp-validation-for="PaySlip" class="text-danger"></span>
                     </div>
                 </div>
                 @if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
@@ -50,7 +50,7 @@
                 else if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
                 {
                     <a asp-controller="Dashboard" asp-action="EditUserProfile" class="btn btn-sm btn-outline-secondary">Back</a>
-                    <a asp-controller="Dashboard" asp-action="Billing" class="btn btn-sm btn-outline-primary">Next</a>
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Save and Continue</button>
                     <a asp-controller="Dashboard" asp-action="UserProfile" class="btn btn-sm btn-outline-primary">Cancel</a>
                 }
 

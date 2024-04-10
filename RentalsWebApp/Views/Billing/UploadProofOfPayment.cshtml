@@ -1,0 +1,37 @@
+﻿@using RentalsWebApp.ViewModels
+@model UploadStatementViewModel
+
+<h1>Statement Upload</h1>
+<!-- Account page navigation-->
+<nav class="nav nav-borders">
+    <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+    <a class="nav-link" asp-controller="Dashboard" asp-action="Billing" target="__self">Billing</a>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+    {
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+    }
+    <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+</nav>
+<label class="small mb-1" for="inputNotificationEmail">Water and Electriciy bill</label>
+<div class="col-xl-8">
+    <!-- Account details card-->
+    <div class="card mb-4">
+        <div class="card-header">Documents Upload</div>
+        <div class="card-body">
+            <form method="post" asp-action="Upload" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="Id" name="Id" asp-for="Id" />
+                <div class="mb-3">
+                    <label asp-for="Statement" class="control-label"></label>
+                    <input asp-for="Statement" class="form-control" type="file" placeholder="Electricity and Water bill">
+                    <span asp-validation-for="Statement" class="text-danger"></span>
+                </div>
+                <!-- Form Row-->
+                <div>
+                    <button class="btn btn-primary" type="button">Upload</button>
+                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-outline-primary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
