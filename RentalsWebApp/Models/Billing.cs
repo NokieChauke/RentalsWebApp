@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using RentalsWebApp.Data.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RentalsWebApp.Models
 {
     public class Billing
     {
         public int Id { get; set; }
-        public string Month { get; set; }
+        public Months Month { get; set; }
         public string WaterAmount { get; set; }
         public string ElectricityAmount { get; set; }
         public string Statement { get; set; }

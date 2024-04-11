@@ -21,8 +21,20 @@ namespace RentalsWebApp.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            Billing billing = await _billingRepository.GetMonthlyStatemets(currentUserId, ((DateTime.Now.Month - 1).ToString()));
-            return View(billing);
+            var month = _httpContextAccessor.HttpContext.User.GetMonth();
+
+            Billing billing = await _billingRepository.GetMonthlyStatemets(currentUserId, month);
+            IEnumerable<BankAccount> accounts = await _billingRepository.GetAll(currentUserId);
+
+            var billingVM = new BillingViewModel()
+            {
+                Month = billing.Month,
+                WaterAmount = billing.WaterAmount,
+                ElectricityAmount = billing.ElectricityAmount,
+                BankAccount = (List<BankAccount>)accounts
+
+            };
+            return View(billingVM);
 
         }
         public IActionResult BankingDetails()

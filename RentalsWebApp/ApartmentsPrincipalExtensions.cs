@@ -12,6 +12,10 @@ namespace RentalsWebApp
         {
             return user.FindFirst(ClaimTypes.Role).Value;
         }
+        public static string GetMonth(this ClaimsPrincipal user)
+        {
+            return user.FindFirst(DateTime.Now.Month.ToString()).Value;
+        }
 
     }
 }

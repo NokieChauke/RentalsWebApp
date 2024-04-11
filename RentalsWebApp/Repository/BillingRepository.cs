@@ -40,20 +40,11 @@ namespace RentalsWebApp.Repository
             return await _context.Billings.Where(x => x.UserId == userId).FirstOrDefaultAsync();
         }
 
-        public Task<List<BankAccount>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Billing> GetMonthlyStatemets(string userId, string month)
         {
-            return await _context.Billings.Where(x => x.Month == month && x.UserId == userId).FirstOrDefaultAsync();
+            return await _context.Billings.Where(x => x.Month.ToString() == month && x.UserId == userId).FirstOrDefaultAsync();
         }
 
-        public Task<Billing> GetStatementByMonth()
-        {
-            throw new NotImplementedException();
-        }
 
         public bool Save()
         {
@@ -80,9 +71,9 @@ namespace RentalsWebApp.Repository
             return await _context.Users.FindAsync(id);
         }
 
-        Task<List<Billing>> IBillingRepository.GetAll()
+        public async Task<IEnumerable<BankAccount>> GetAll(string id)
         {
-            throw new NotImplementedException();
+            return await _context.BankAccounts.Where(b => b.AppUserId == id).ToListAsync();
         }
     }
 }
