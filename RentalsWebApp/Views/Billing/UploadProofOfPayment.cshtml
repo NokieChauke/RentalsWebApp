@@ -1,5 +1,5 @@
 ﻿@using RentalsWebApp.ViewModels
-@model UploadStatementViewModel
+@model ProofOfPaymentViewModel
 
 <h1>Statement Upload</h1>
 <!-- Account page navigation-->
@@ -20,11 +20,11 @@
         <div class="card-body">
             <form method="post" asp-action="Upload" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" id="Id" name="Id" asp-for="Id" />
+                <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
                 <div class="mb-3">
-                    <label asp-for="Statement" class="control-label"></label>
-                    <input asp-for="Statement" class="form-control" type="file" placeholder="Electricity and Water bill">
-                    <span asp-validation-for="Statement" class="text-danger"></span>
+                    <label asp-for="Proof" class="control-label"></label>
+                    <input asp-for="Proof" class="form-control" type="file" placeholder="Electricity and Water bill">
+                    <span asp-validation-for="Proof" class="text-danger"></span>
                 </div>
                 <!-- Form Row-->
                 <div>

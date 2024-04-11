@@ -1,5 +1,5 @@
 ﻿@using RentalsWebApp.ViewModels
-@model UploadStatementViewModel
+@model Billing
 
 <h1>Billing</h1>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
@@ -21,10 +21,10 @@
             <!-- Billing card 1-->
             <div class="card h-100 border-start-lg border-start-primary">
                 <div class="card-body">
-                    <div class="small text-muted">Water and Electricity Bill for March@* @Model.Billing.Month *@</div>
-                    <div class="h3">Water: R200 @* @Model.Billing.WaterAmount *@</div>
-                    <div class="h3">Electricity: R460 @* @Model.Billing.ElectricityAmount *@</div>
-                    <a class="text-arrow-icon small" href="#!">
+                    <div class="small text-muted">Water and Electricity for the month: @Model.Month</div>
+                    <div class="h3">Water Bill: R @Model.WaterAmount</div>
+                    <div class="h3">Electricity Bill: R @Model.ElectricityAmount</div>                   
+                    <a class="text-arrow-icon small" asp-controller="Billing" asp-action="DownloadStatement" target="__self">
                         Click to Download the statement for confirmation
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>
@@ -37,9 +37,9 @@
                 <div class="card-body">
                     <div class="small text-muted">Total amount due</div>
                     <div class="h3 d-flex align-items-center">Rent: R2500</div>
-                    <div class="h3 d-flex align-items-center">Water and Electricity: R660</div>
-                    <div class="h3 d-flex align-items-center">Total: R3300</div>
-                    <a class="text-arrow-icon small text-success" href="#!">
+                    <div class="h3 d-flex align-items-center">Water and Electricity: R@(@Convert.ToDouble(@Model.WaterAmount)+@Convert.ToDouble(@Model.ElectricityAmount))</div>
+                    <div class="h3 d-flex align-items-center">Total: R@(2500 + @Convert.ToDouble(@Model.WaterAmount) + @Convert.ToDouble(@Model.ElectricityAmount))</div>
+                    <a class="text-arrow-icon small" asp-controller="Billing" asp-action="BankingDetails" target="__self">
                         Click here to View the Banking Details
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>
@@ -65,7 +65,7 @@
     <div class="card card-header-actions mb-4">
         <div class="card-header">
             Payment Methods
-            <button class="btn btn-sm btn-primary" type="button">Switch to Manual Payment Method</button>
+            <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="AddBankAccount" target="__self">Add new card</a>
         </div>
         <div class="card-body px-0">
             <!-- Payment method 1-->

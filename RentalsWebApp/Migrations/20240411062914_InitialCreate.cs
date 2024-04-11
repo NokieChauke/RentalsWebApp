@@ -127,8 +127,8 @@ namespace RentalsWebApp.Migrations
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdentityNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BankAccountId = table.Column<int>(type: "int", nullable: false),
-                    DocomentsId = table.Column<int>(type: "int", nullable: false),
+                    BankAccountId = table.Column<int>(type: "int", nullable: true),
+                    DocomentsId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -151,14 +151,12 @@ namespace RentalsWebApp.Migrations
                         name: "FK_AspNetUsers_BankAccount_BankAccountId",
                         column: x => x.BankAccountId,
                         principalTable: "BankAccount",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Documents_DocomentsId",
                         column: x => x.DocomentsId,
                         principalTable: "Documents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

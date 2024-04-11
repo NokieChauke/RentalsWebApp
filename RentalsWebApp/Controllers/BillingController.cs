@@ -9,40 +9,57 @@ namespace RentalsWebApp.Controllers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IBillingRepository _billingRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public BillingController(IHttpContextAccessor httpContextAccessor, IBillingRepository billingRepository)
+        public BillingController(IHttpContextAccessor httpContextAccessor, IBillingRepository billingRepository,
+            IWebHostEnvironment webHostEnvironment)
         {
             _httpContextAccessor = httpContextAccessor;
             _billingRepository = billingRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-        public async Task<IActionResult> StatementUpload()
-        {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            Billing billing = await _billingRepository.GetMonthlyStatemets(currentUserId, ((DateTime.Now.Month - 1).ToString()));
+            return View(billing);
 
+        }
+        public IActionResult BankingDetails()
+        {
             return View();
+
         }
 
         [HttpGet]
-        public IActionResult UploadStatement()
+        public async Task<IActionResult> UploadStatement(string id)
         {
-            return View();
+            var user = await _billingRepository.GetUserById(id);
+            var uploadStatement = new UploadStatementViewModel { UserId = user.Id };
+            return View(uploadStatement);
         }
         [HttpPost]
-        public async Task<IActionResult> UploadStatement(UploadStatementViewModel uploadStatementVM)
+        public async Task<IActionResult> UploadStatement(string id, UploadStatementViewModel uploadStatementVM)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
             if (ModelState.IsValid)
             {
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(uploadStatementVM.Statement.FileName);
+                string extention = Path.GetExtension(uploadStatementVM.Statement.FileName);
+                string statementName = fileName + DateTime.Now.ToString("yymmddhhmm") + extention;
+                string statementUrl = Path.Combine(webRootPath + "/documents/statements/", statementName);
+
+                using (var fileStream = new FileStream(statementUrl, FileMode.Create))
+                {
+                    await uploadStatementVM.Statement.CopyToAsync(fileStream);
+                }
                 var billing = new Billing()
                 {
-                    UserId = currentUserId,
+                    UserId = uploadStatementVM.UserId,
                     Month = uploadStatementVM.Month,
                     WaterAmount = uploadStatementVM.WaterAmount,
                     ElectricityAmount = uploadStatementVM.ElectricityAmount,
-                    Statement = uploadStatementVM.StatementUrl,
+                    Statement = statementUrl
 
                 };
                 _billingRepository.UploadStatement(billing);
@@ -56,16 +73,37 @@ namespace RentalsWebApp.Controllers
             return View(uploadStatementVM);
 
         }
+        public async Task<IActionResult> DownloadStatement()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var statement = _billingRepository.DownloadStatement(currentUserId);
+
+            string path = statement.Result.Statement;
+
+            if (System.IO.File.Exists(path))
+            {
+                return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
+            }
+            return NotFound();
+
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> AddBankAccount()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var addBankAccountVM = new BankingAccountViewModel { AppUserId = currentUserId };
+            return View(addBankAccountVM);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddBankAccount(BankingAccountViewModel bankingAccountVM)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
             if (ModelState.IsValid)
             {
                 var bankingAccount = new BankAccount()
                 {
-                    AppUserId = currentUserId,
+                    AppUserId = bankingAccountVM.AppUserId,
                     CardDescreption = bankingAccountVM.CardDescreption,
                     BankName = bankingAccountVM.BankName,
                     AccountHolder = bankingAccountVM.AccountHolder,
@@ -75,7 +113,7 @@ namespace RentalsWebApp.Controllers
                     CSV = bankingAccountVM.CSV
                 };
                 _billingRepository.Add(bankingAccount);
-                return RedirectToAction("Billing");
+                return RedirectToAction("Index");
             }
             else
             {

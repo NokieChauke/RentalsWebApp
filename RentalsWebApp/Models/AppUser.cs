@@ -6,7 +6,7 @@ namespace RentalsWebApp.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string? ProfileImageUrl { get; set; }
+        public string? ProfileImage { get; set; }
         public string IdentityNo { get; set; }
     }
 }

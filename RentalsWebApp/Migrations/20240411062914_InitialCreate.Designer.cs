@@ -12,8 +12,8 @@ using RentalsWebApp.Data;
 namespace RentalsWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240317160108_Identity_two")]
-    partial class Identity_two
+    [Migration("20240411062914_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

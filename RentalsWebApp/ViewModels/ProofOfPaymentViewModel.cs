@@ -4,7 +4,7 @@ namespace RentalsWebApp.ViewModels
 {
     public class ProofOfPaymentViewModel
     {
-        public int Id { get; set; }
+
 
         [Display(Name = "Month")]
         [Required(ErrorMessage = "Month is Required")]

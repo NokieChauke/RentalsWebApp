@@ -5,18 +5,24 @@
 namespace RentalsWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Identity : Migration
+    public partial class Documentkey : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.RenameColumn(
+                name: "ProfileImageUrl",
+                table: "AspNetUsers",
+                newName: "ProfileImage");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.RenameColumn(
+                name: "ProfileImage",
+                table: "AspNetUsers",
+                newName: "ProfileImageUrl");
         }
     }
 }

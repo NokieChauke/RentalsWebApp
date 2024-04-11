@@ -5,10 +5,15 @@
 
 <h1>Add new Payment Card</h1>
 <form method="post" asp-action="AddBankAccount" enctype="multipart/form-data">
-    
+   
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId" />
     <div class="form-group col-md-4">
         <label asp-for="CardDescreption"></label>
-        <input asp-for="CardDescreption" class="form-control" placeholder="1234 Main St">
+        <select asp-for="CardDescreption" class="form-control" asp-items="@Html.GetEnumSelectList<AccounCategory>()">
+            <option selected>Select...</option>
+            <option>...</option>
+        </select>
         <span asp-validation-for="CardDescreption" class="text-danger"></span>
     </div>
     <div class="form-group col-md-4">
@@ -23,7 +28,7 @@
     </div>
     <div class="form-group col-md-4">
         <label asp-for="CardNumber"></label>
-        <textarea asp-for="CardNumber" class="form-control" rows="3" placeholder="One room with a shawer"></textarea>
+        <input asp-for="CardNumber" class="form-control"  placeholder="One room with a shawer"></input>
         <span asp-validation-for="CardNumber" class="text-danger"></span>
 
     </div>
@@ -34,8 +39,8 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="ExpiryDate">U</label>
-        <input asp-for="ExpiryDate" type="file" class="form-control" placeholder="">
+        <label asp-for="ExpiryDate"></label>
+        <input asp-for="ExpiryDate"  class="form-control" placeholder="">
         <span asp-validation-for="ExpiryDate" class="text-danger"></span>
     </div>
     <div class="form-group col-md-2">

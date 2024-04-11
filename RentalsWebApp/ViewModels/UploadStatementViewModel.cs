@@ -4,7 +4,7 @@ namespace RentalsWebApp.ViewModels
 {
     public class UploadStatementViewModel
     {
-        public int Id { get; set; }
+        public string UserId { get; set; }
 
         [Display(Name = "Month")]
         [Required(ErrorMessage = "Month is Required")]
@@ -23,7 +23,7 @@ namespace RentalsWebApp.ViewModels
         public IFormFile Statement { get; set; }
         public string? StatementUrl { get; set; }
 
-        public string TenantId { get; set; }
+
 
 
     }

@@ -31,7 +31,7 @@ namespace RentalsWebApp.Controllers
             user.Email = editUserVM.Email;
             user.PhoneNumber = editUserVM.PhoneNumber;
             user.IdentityNo = editUserVM.IdentityNo;
-            user.ProfileImageUrl = photoResult.Url.ToString();
+            user.ProfileImage = photoResult.Url.ToString();
         }
         public async Task<IActionResult> Index()
         {
@@ -65,7 +65,7 @@ namespace RentalsWebApp.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IdentityNo = user.IdentityNo,
-                URL = user.ProfileImageUrl
+                URL = user.ProfileImage
             };
             return View(ediUserVM);
         }
@@ -81,7 +81,7 @@ namespace RentalsWebApp.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IdentityNo = user.IdentityNo,
-                URL = user.ProfileImageUrl
+                URL = user.ProfileImage
 
             };
             return View(userViewModel);
@@ -99,11 +99,11 @@ namespace RentalsWebApp.Controllers
 
             if (user != null)
             {
-                if (user.ProfileImageUrl != null)
+                if (user.ProfileImage != null)
                 {
                     try
                     {
-                        await _photoService.DeletePhotonsAsync(user.ProfileImageUrl);
+                        await _photoService.DeletePhotonsAsync(user.ProfileImage);
                     }
                     catch (Exception ex)
                     {
@@ -116,12 +116,31 @@ namespace RentalsWebApp.Controllers
                 MapUserEdit(user, ediUserVM, photoResult);
 
                 _dashboardRepository.UpdateUser(user);
-                return RedirectToAction("Index", "Documents");
+                return RedirectToAction("Upload", "Documents");
             }
             else
             {
                 return View(ediUserVM);
             }
+
+        }
+        public async Task<IActionResult> UserDetails(string id)
+        {
+
+            IEnumerable<Apartments> apartments = await _apartmentsRepository.GetAll();
+            var user = await _dashboardRepository.GetUserById(id);
+            if (user == null) return View("Error");
+            var userViewModel = new UserProfileViewModel()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Surname = user.Surname,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                ProfileImageUrl = user.ProfileImage,
+                Apartments = (List<Apartments>)apartments
+            };
+            return View(userViewModel);
 
         }
 
@@ -138,7 +157,7 @@ namespace RentalsWebApp.Controllers
                 Surname = user.Surname,
                 PhoneNumber = user.PhoneNumber,
                 Email = user.Email,
-                ProfileImageUrl = user.ProfileImageUrl,
+                ProfileImageUrl = user.ProfileImage,
                 Apartments = (List<Apartments>)apartments
             };
             return View(userViewModel);

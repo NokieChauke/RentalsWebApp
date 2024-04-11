@@ -1,4 +1,5 @@
-﻿using RentalsWebApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RentalsWebApp.Data;
 using RentalsWebApp.Interfaces;
 using RentalsWebApp.Models;
 
@@ -34,9 +35,9 @@ namespace RentalsWebApp.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Billing> DownloadStatement(int Id)
+        public async Task<Billing> DownloadStatement(string userId)
         {
-            throw new NotImplementedException();
+            return await _context.Billings.Where(x => x.UserId == userId).FirstOrDefaultAsync();
         }
 
         public Task<List<BankAccount>> GetAll()
@@ -44,9 +45,9 @@ namespace RentalsWebApp.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<Billing>> GetMonthlyStatemets()
+        public async Task<Billing> GetMonthlyStatemets(string userId, string month)
         {
-            throw new NotImplementedException();
+            return await _context.Billings.Where(x => x.Month == month && x.UserId == userId).FirstOrDefaultAsync();
         }
 
         public Task<Billing> GetStatementByMonth()
@@ -56,7 +57,8 @@ namespace RentalsWebApp.Repository
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
 
         public bool Update(Billing biling)
@@ -79,11 +81,6 @@ namespace RentalsWebApp.Repository
         }
 
         Task<List<Billing>> IBillingRepository.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Billing> IBillingRepository.GetUserById(string Id)
         {
             throw new NotImplementedException();
         }

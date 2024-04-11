@@ -80,7 +80,7 @@ namespace RentalsWebApp.Controllers
                 };
 
                 _documentsRepository.Add(newDocuments);
-                return RedirectToAction("Billing", "Dashboard");
+                return RedirectToAction("Index", "Billing");
 
             }
             else

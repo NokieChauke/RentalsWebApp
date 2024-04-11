@@ -19,9 +19,9 @@
     <div class="card mb-4">
         <div class="card-header">Documents Upload</div>
         <div class="card-body">
-            <form method="post" asp-action="Upload" enctype="multipart/form-data">
+            <form method="post" asp-action="UploadStatement" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" id="TenantId" name="TenantId" asp-for="TenantId" />
+                <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
 
                
                 <div class="form-group col-md-4">
@@ -49,8 +49,8 @@
                 </div>
                 <!-- Form Row-->
                 <div>
-                    <button class="btn btn-primary" type="button">Save</button>
-                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-outline-primary">Cancel</a>
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-outline-secondary">Cancel</a>
                 </div>
             </form>
         </div>
