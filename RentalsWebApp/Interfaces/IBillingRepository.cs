@@ -1,4 +1,5 @@
-﻿using RentalsWebApp.Models;
+﻿using RentalsWebApp.Data.Enums;
+using RentalsWebApp.Models;
 
 namespace RentalsWebApp.Interfaces
 {
@@ -7,6 +8,7 @@ namespace RentalsWebApp.Interfaces
         bool UploadStatement(Billing billing);
         bool UploadProofOfPayment(ProofOfPayment proof);
         Task<Billing> GetMonthlyStatemets(string userId, string month);
+        Task<Months> GetMonth(DateTime dateTime);
         Task<Billing> DownloadStatement(string Id);
         Task<Billing> UpdateStatement(int Id, Billing billing);
         Task<IEnumerable<BankAccount>> GetAll(string id);
