@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalsWebApp.Data;
-using RentalsWebApp.Data.Enums;
 using RentalsWebApp.Interfaces;
 using RentalsWebApp.Models;
 
@@ -41,14 +40,14 @@ namespace RentalsWebApp.Repository
             return await _context.Billings.Where(x => x.UserId == userId).FirstOrDefaultAsync();
         }
 
-        public async Task<Months> GetMonth(DateTime dateTime)
+        public async Task<Billing> GetMonth(string userId)
         {
-            return await (Task<Months>)_context.Billings.Where(x => ((int)x.Month) == dateTime.Month - 1);
+            return await _context.Billings.Where(x => x.UserId == userId).FirstOrDefaultAsync();
         }
 
         public async Task<Billing> GetMonthlyStatemets(string userId, string month)
         {
-            return await _context.Billings.Where(x => x.Month.ToString() == month && x.UserId == userId).FirstOrDefaultAsync();
+            return await _context.Billings.Where(x => ((x.Month).ToString() == month && x.UserId == userId)).FirstOrDefaultAsync();
         }
 
 
