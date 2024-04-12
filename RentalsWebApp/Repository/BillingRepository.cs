@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalsWebApp.Data;
+using RentalsWebApp.Data.Enums;
 using RentalsWebApp.Interfaces;
 using RentalsWebApp.Models;
 
@@ -45,11 +46,19 @@ namespace RentalsWebApp.Repository
             return await _context.Billings.Where(x => x.UserId == userId).FirstOrDefaultAsync();
         }
 
-        public async Task<Billing> GetMonthlyStatemets(string userId, string month)
+        public async Task<Billing> GetMonthlyStatemets(string userId, Months month)
         {
-            return await _context.Billings.Where(x => ((x.Month).ToString() == month && x.UserId == userId)).FirstOrDefaultAsync();
+            return await _context.Billings.Where(x => ((x.Month) == month && x.UserId == userId)).FirstOrDefaultAsync();
         }
 
+        public async Task<BankAccount> GetByIdAsync(int id)
+        {
+            return await _context.BankAccounts.FirstOrDefaultAsync(i => i.Id == id);
+        }
+        public async Task<BankAccount> GetByIdAsyncNoTracking(int id)
+        {
+            return await _context.BankAccounts.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+        }
 
         public bool Save()
         {
@@ -57,10 +66,18 @@ namespace RentalsWebApp.Repository
             return saved > 0 ? true : false;
         }
 
-        public bool Update(Billing biling)
+        public bool Update(Billing billing)
         {
-            throw new NotImplementedException();
+            _context.Update(billing);
+            return Save();
         }
+
+        public bool UpdateAccount(BankAccount account)
+        {
+            _context.Update(account);
+            return Save();
+        }
+
 
         public Task<Billing> UpdateStatement(int Id, Billing billing)
         {

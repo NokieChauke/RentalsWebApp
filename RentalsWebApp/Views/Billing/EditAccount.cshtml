@@ -1,12 +1,13 @@
 ﻿@using RentalsWebApp.Data.Enums
 @using RentalsWebApp.ViewModels
 
-@model BankingAccountViewModel
+@model EditBankingAccountViewModel
 
-<h1>Add new Payment Card</h1>
-<form method="post" asp-action="AddBankAccount" enctype="multipart/form-data">
-   
+<h1>Edit Payment Card</h1>
+<form method="post" asp-action="EditAccount" enctype="multipart/form-data">
+
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @* <input type="hidden" id="Id" name="Id" asp-for="Id" /> *@
     <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId" />
     <div class="form-group col-md-4">
         <label asp-for="CardDescreption"></label>
@@ -28,7 +29,7 @@
     </div>
     <div class="form-group col-md-4">
         <label asp-for="CardNumber"></label>
-        <input asp-for="CardNumber" class="form-control"  placeholder="One room with a shawer"></input>
+        <input asp-for="CardNumber" class="form-control" placeholder="One room with a shawer"></input>
         <span asp-validation-for="CardNumber" class="text-danger"></span>
 
     </div>
@@ -40,7 +41,7 @@
 
     <div class="form-group">
         <label asp-for="ExpiryDate"></label>
-        <input asp-for="ExpiryDate"  class="form-control" placeholder="">
+        <input asp-for="ExpiryDate" class="form-control" placeholder="">
         <span asp-validation-for="ExpiryDate" class="text-danger"></span>
     </div>
     <div class="form-group col-md-2">

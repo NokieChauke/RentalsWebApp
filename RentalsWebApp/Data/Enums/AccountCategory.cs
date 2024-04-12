@@ -1,6 +1,6 @@
 ﻿namespace RentalsWebApp.Data.Enums
 {
-    public enum AccounCategory
+    public enum AccountCategory
     {
         Visa,
         MasterCard,

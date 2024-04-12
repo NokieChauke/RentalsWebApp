@@ -22,12 +22,13 @@ namespace RentalsWebApp.Controllers
         {
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
             var month = await _billingRepository.GetMonth(currentUserId);
-            var m = month.Month.ToString();
+            var m = month.Month;
             Billing billing = await _billingRepository.GetMonthlyStatemets(currentUserId, m);
             IEnumerable<BankAccount> accounts = await _billingRepository.GetAll(currentUserId);
 
             var billingVM = new BillingViewModel()
             {
+                Id = billing.Id,
                 Month = billing.Month,
                 WaterAmount = billing.WaterAmount,
                 ElectricityAmount = billing.ElectricityAmount,
@@ -135,6 +136,61 @@ namespace RentalsWebApp.Controllers
             return View(bankingAccountVM);
 
         }
+
+        public async Task<IActionResult> EditAccount(int id)
+        {
+            var account = await _billingRepository.GetByIdAsync(id);
+            if (account == null) return View("Error");
+            var editBankingAccountVM = new EditBankingAccountViewModel
+            {
+                AppUserId = account.AppUserId,
+                CardDescreption = account.CardDescreption,
+                BankName = account.BankName,
+                AccountHolder = account.AccountHolder,
+                CardNumber = account.CardNumber,
+                BranchCode = account.BranchCode,
+                ExpiryDate = account.ExpiryDate,
+                CSV = account.CSV
+
+            };
+            return View(editBankingAccountVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAccount(int id, EditBankingAccountViewModel editBankingAccountVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to Edit apartment");
+                return View("Edit", editBankingAccountVM);
+            }
+
+            var account = await _billingRepository.GetByIdAsyncNoTracking(id);
+
+            if (account != null)
+            {
+                var bankAccount = new BankAccount
+                {
+                    Id = id,
+                    AppUserId = editBankingAccountVM.AppUserId,
+                    CardDescreption = editBankingAccountVM.CardDescreption,
+                    BankName = editBankingAccountVM.BankName,
+                    AccountHolder = editBankingAccountVM.AccountHolder,
+                    CardNumber = editBankingAccountVM.CardNumber,
+                    BranchCode = editBankingAccountVM.BranchCode,
+                    ExpiryDate = editBankingAccountVM.ExpiryDate,
+                    CSV = editBankingAccountVM.CSV
+                };
+
+                _billingRepository.UpdateAccount(bankAccount);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(editBankingAccountVM);
+            }
+        }
+
         [HttpGet]
         public IActionResult UploadProofOfPayment()
         {

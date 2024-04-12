@@ -1,4 +1,5 @@
-﻿@using RentalsWebApp.ViewModels
+﻿@using RentalsWebApp.Data.Enums
+@using RentalsWebApp.ViewModels
 @model BillingViewModel
 
 <h1>Billing</h1>
@@ -74,15 +75,29 @@
                 <!-- Payment method 1-->
                 <div class="d-flex align-items-center justify-content-between px-4">
                     <div class="d-flex align-items-center">
-                        <i class="fab fa-cc-visa fa-2x cc-color-visa"></i>
+                   
+                        @if(@account.CardDescreption == AccountCategory.Visa)
+                        { 
+                            <i class="fab fa-cc-visa fa-2x cc-color-visa"></i>                           
+                        }
+                        else if (@account.CardDescreption == AccountCategory.MasterCard)
+                        {
+                            <i class="fab fa-cc-mastercard fa-2x cc-color-mastercard"></i>
+                        }
+                        else
+                        {
+                            <i class="fab fa-cc-amex fa-2x cc-color-amex"></i>
+                        }
+
                         <div class="ms-4">
-                            <div class="small">@account.CardDescreption ending in @account.CardNumber</div>
+                            <div class="small">@account.CardDescreption ending in @account.CardNumber.Substring(@account.CardNumber.Length-4)</div>
                             <div class="text-xs text-muted">Expires @account.ExpiryDate</div>
                         </div>
                     </div>
                     <div class="ms-4 small">
                         <div class="badge bg-light text-dark me-3">Default</div>
-                        <a href="#!">Edit</a>
+                        <a asp-controller="Billing" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Edit</a>
+                        <a asp-controller="Billing" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Delete</a>
                     </div>
                 </div>
             </div>

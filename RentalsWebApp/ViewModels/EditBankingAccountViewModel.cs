@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RentalsWebApp.ViewModels
 {
-    public class BankingAccountViewModel
+    public class EditBankingAccountViewModel
     {
-
+        public int Id { get; set; }
         public string AppUserId { get; set; }
 
         [Display(Name = "Card Descreption")]

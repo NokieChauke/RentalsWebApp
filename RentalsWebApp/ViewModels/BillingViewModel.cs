@@ -5,6 +5,7 @@ namespace RentalsWebApp.ViewModels
 {
     public class BillingViewModel
     {
+        public int Id { get; set; }
         public Months Month { get; set; }
         public string WaterAmount { get; set; }
         public string ElectricityAmount { get; set; }

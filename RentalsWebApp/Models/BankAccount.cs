@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using RentalsWebApp.Data.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RentalsWebApp.Models
 {
     public class BankAccount
     {
         public int Id { get; set; }
-        public string CardDescreption { get; set; }
+        public AccountCategory CardDescreption { get; set; }
         public string BankName { get; set; }
         public string AccountHolder { get; set; }
         public string CardNumber { get; set; }
@@ -15,5 +16,9 @@ namespace RentalsWebApp.Models
         [ForeignKey("AppUser")]
         public string AppUserId { get; set; }
         public AppUser AppUser { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public bool Active { get; set; }
+
     }
 }
