@@ -11,7 +11,7 @@ namespace RentalsWebApp.Interfaces
         Task<Billing> GetMonth(string userId);
         Task<BankAccount> GetByIdAsync(int id);
         Task<BankAccount> GetByIdAsyncNoTracking(int id);
-
+        Task<ProofOfPayment> DownloadProofOfPayment(string userId);
         Task<Billing> DownloadStatement(string Id);
         Task<Billing> UpdateStatement(int Id, Billing billing);
         Task<IEnumerable<BankAccount>> GetAll(string id);

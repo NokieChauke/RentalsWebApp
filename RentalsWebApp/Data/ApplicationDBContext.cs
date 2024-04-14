@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RentalsWebApp.Models;
+using RentalsWebApp.ViewModels;
 
 namespace RentalsWebApp.Data
 {
@@ -16,6 +17,8 @@ namespace RentalsWebApp.Data
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<Billing> Billings { get; set; }
         public DbSet<Documents> Documents { get; set; }
+        public DbSet<ProofOfPayment> ProofOfPayment { get; set; }
+        public DbSet<SendMailViewModel> MailData { get; set; }
 
 
 

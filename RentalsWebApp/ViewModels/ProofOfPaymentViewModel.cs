@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RentalsWebApp.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace RentalsWebApp.ViewModels
 {
@@ -8,7 +9,7 @@ namespace RentalsWebApp.ViewModels
 
         [Display(Name = "Month")]
         [Required(ErrorMessage = "Month is Required")]
-        public string Month { get; set; }
+        public Months Month { get; set; }
 
         [Display(Name = "Proof Of Payment")]
         [Required(ErrorMessage = "Proof Of Payment is Required")]

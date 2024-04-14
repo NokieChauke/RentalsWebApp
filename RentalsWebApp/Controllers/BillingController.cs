@@ -43,6 +43,11 @@ namespace RentalsWebApp.Controllers
             return View();
 
         }
+        public IActionResult PaymentHistory()
+        {
+            return View();
+
+        }
 
         [HttpGet]
         public async Task<IActionResult> UploadStatement(string id)
@@ -192,19 +197,30 @@ namespace RentalsWebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult UploadProofOfPayment()
+        public async Task<IActionResult> UploadProofOfPayment(string id)
         {
-            return View();
+            var user = await _billingRepository.GetUserById(id);
+            var uploadPOP = new ProofOfPaymentViewModel { UserId = user.Id };
+            return View(uploadPOP);
         }
         [HttpPost]
-        public async Task<IActionResult> UploadProofOfPayment(ProofOfPaymentViewModel proofOfPaymentVM)
+        public async Task<IActionResult> UploadProofOfPayment(string id, ProofOfPaymentViewModel proofOfPaymentVM)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
             if (ModelState.IsValid)
             {
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(proofOfPaymentVM.Proof.FileName);
+                string extention = Path.GetExtension(proofOfPaymentVM.Proof.FileName);
+                string proofName = fileName + DateTime.Now.ToString("yymmddhhmm") + extention;
+                string proofUrl = Path.Combine(webRootPath + "/documents/pop/", proofName);
+
+                using (var fileStream = new FileStream(proofUrl, FileMode.Create))
+                {
+                    await proofOfPaymentVM.Proof.CopyToAsync(fileStream);
+                }
                 var proofOfPayment = new ProofOfPayment()
                 {
-                    UserId = currentUserId,
+                    UserId = proofOfPaymentVM.UserId,
                     Month = proofOfPaymentVM.Month,
                     Proof = proofOfPaymentVM.ProofUrl,
 
@@ -221,5 +237,21 @@ namespace RentalsWebApp.Controllers
             return View(proofOfPaymentVM);
 
         }
+        public async Task<IActionResult> DownloadProofOfpayment()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var proof = _billingRepository.DownloadProofOfPayment(currentUserId);
+
+            string path = proof.Result.Proof;
+
+            if (System.IO.File.Exists(path))
+            {
+                return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
+            }
+            return NotFound();
+
+
+        }
     }
+
 }

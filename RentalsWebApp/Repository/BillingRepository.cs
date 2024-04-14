@@ -40,6 +40,10 @@ namespace RentalsWebApp.Repository
         {
             return await _context.Billings.Where(x => x.UserId == userId).FirstOrDefaultAsync();
         }
+        public async Task<ProofOfPayment> DownloadProofOfPayment(string userId)
+        {
+            return await _context.ProofOfPayment.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+        }
 
         public async Task<Billing> GetMonth(string userId)
         {

@@ -1,4 +1,5 @@
-﻿@using RentalsWebApp.ViewModels
+﻿@using RentalsWebApp.Data.Enums
+@using RentalsWebApp.ViewModels
 @model ProofOfPaymentViewModel
 
 <h1>Statement Upload</h1>
@@ -21,6 +22,14 @@
             <form method="post" asp-action="Upload" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
+                <div class="form-group col-md-4">
+                    <label asp-for="Month"></label>
+                    <select asp-for="Month" class="form-control" asp-items="@Html.GetEnumSelectList<Months>()">
+                        <option selected>Select...</option>
+                        <option>...</option>
+                    </select>
+                    <span asp-validation-for="Month" class="text-danger"></span>
+                </div>
                 <div class="mb-3">
                     <label asp-for="Proof" class="control-label"></label>
                     <input asp-for="Proof" class="form-control" type="file" placeholder="Electricity and Water bill">

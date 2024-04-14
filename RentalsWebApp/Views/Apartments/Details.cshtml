@@ -65,23 +65,11 @@
 						<p class="product-description">@Model.Address.Zip </p>
 						<h4 class="price">current price: <span>@Model.Price</span></h4>
 
-						@if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
-						{
-							<div class="action">
-								<a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.Id"
-								   class="btn btn-sm btn-outline-secondary">Click to Rent</a>
-								<button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
-							</div>
-
-						}
-						else if(!User.Identity.IsAuthenticated)
-						{
-							<div class="action">
-								<a asp-controller="Account" asp-action="Rent" asp-route-id="@Model.Id"
-								   class="btn btn-sm btn-outline-secondary">Click to Rent</a>
-								<button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
-							</div>
-						}
+						<div class="action">
+							<a asp-controller="AboutUs" asp-action="ContactUs" asp-route-id="@Model.Id"
+								class="btn btn-sm btn-outline-secondary">Contact the Agent</a>
+							<button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
+						</div>
 
 					</div>
 				</div>

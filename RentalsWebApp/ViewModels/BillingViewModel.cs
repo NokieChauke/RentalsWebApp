@@ -13,5 +13,6 @@ namespace RentalsWebApp.ViewModels
 
         public string UserId { get; set; }
         public List<BankAccount> BankAccount { get; set; }
+        public Billing Billing { get; set; }
     }
 }
