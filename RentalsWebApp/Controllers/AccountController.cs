@@ -13,12 +13,14 @@ namespace RentalsWebApp.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ApplicationDBContext _context;
         private readonly IApartmentsRepository _apartmentsRepository;
+        private readonly ISendMail _sendMail;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            ApplicationDBContext context, IApartmentsRepository apartmentsRepository)
+            ApplicationDBContext context, IApartmentsRepository apartmentsRepository, ISendMail sendMail)
         {
             _context = context;
             _apartmentsRepository = apartmentsRepository;
+            _sendMail = sendMail;
             _signInManager = signInManager;
             _userManager = userManager;
 
@@ -159,7 +161,12 @@ namespace RentalsWebApp.Controllers
             var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
 
             if (newUserResponse.Succeeded)
+            {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.Tenant);
+                await _sendMail.NewUserEmail(registerVM);
+            }
+
+
 
             return View("Login");
         }

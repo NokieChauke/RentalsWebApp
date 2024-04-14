@@ -25,9 +25,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="AboutUs" asp-action="Index">About Us</a>
                         </li>
-                        <li class="nav-item">
+                       @*  <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="AboutUs" asp-action="ContactUs">Contact Us</a>
-                        </li>
+                        </li> *@
 
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -54,9 +54,9 @@
                         else
                         {
                             
-                            <li class="nav-item">
+                           @*  <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
+                            </li> *@
                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                             </li>

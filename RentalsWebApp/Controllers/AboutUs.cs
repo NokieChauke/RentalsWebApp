@@ -28,7 +28,7 @@ namespace RentalsWebApp.Controllers
 
             await _sendMail.SendMailAsync(sendmailVM);
             TempData["SuccessMessage"] = "Thank you for your message. Our Agent will be in touch soon!";
-            return View();
+            return RedirectToAction("Index", "Apartments");
         }
     }
 }
