@@ -163,7 +163,14 @@ namespace RentalsWebApp.Controllers
             return View(userViewModel);
 
         }
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var userDetails = await _dashboardRepository.GetUserById(id);
+            if (userDetails == null) return View("Error");
 
+            _dashboardRepository.DeleteUser(userDetails);
+            return RedirectToAction("Index");
+        }
 
         public async Task<IActionResult> Security()
         {

@@ -165,10 +165,7 @@ namespace RentalsWebApp.Controllers
                 await _userManager.AddToRoleAsync(newUser, UserRoles.Tenant);
                 await _sendMail.NewUserEmail(registerVM);
             }
-
-
-
-            return View("Login");
+            return RedirectToAction("Index", "Dashboard");
         }
 
         [HttpPost]

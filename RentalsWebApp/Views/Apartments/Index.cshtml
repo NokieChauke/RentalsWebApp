@@ -11,8 +11,7 @@
         @if(!User.Identity.IsAuthenticated)
         {
             <p>
-                <a asp-controller="Account" asp-action="Login" class="btn btn-sm btn-outline-secondary">Login to Rent </a>
-                <a asp-controller="Account" asp-action="Register" class="btn btn-sm btn-outline-secondary">Register to rent</a>
+                <a asp-controller="AboutUs" asp-action="ContactUs" class="btn btn-sm btn-outline-secondary">Ask Our Agent </a>
             </p>
 
         }
@@ -43,13 +42,12 @@
                                     @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                                     {
                                         <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                        <a asp-controller="Apartments" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Delete</a>
+                                        <a asp-controller="Apartments" asp-action="DeleteApartment" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Delete</a>
                                     }                                
 
-                                </div>
-                                
-                                <div> <h4 class="text-muted">Available Immediatly</h4></div>
+                                </div>                                                             
                             </div>
+                            <div> <h4 class="text-muted">Available Immediatly</h4></div>
                         </div>
                     </div>
                 </div>

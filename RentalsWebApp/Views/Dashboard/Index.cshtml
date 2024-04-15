@@ -41,7 +41,8 @@
                         <td>
                             <a asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@item.Id"
                                 class="btn btn-sm btn-outline-secondary">Edit</a>
-                            <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
+                            <a asp-controller="Dashboard" asp-action="DeleteUser" asp-route-id="@item.Id"
+                                class="btn btn-sm btn-danger fas fa-trash-alt">Delete</a>
                         </td>
                         <td>
                                 <a asp-controller="Dashboard" asp-action="UserDetails" asp-route-id="@item.Id"

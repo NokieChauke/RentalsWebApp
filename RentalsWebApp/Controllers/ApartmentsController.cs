@@ -126,6 +126,14 @@ namespace RentalsWebApp.Controllers
             }
 
         }
+        public async Task<IActionResult> DeleteApartment(int id)
+        {
+            var apartmentDetails = await _apartmentsRepository.GetByIdAsync(id);
+            if (apartmentDetails == null) return View("Error");
+
+            _apartmentsRepository.DeleteApartment(apartmentDetails);
+            return RedirectToAction("Index");
+        }
     }
 }
 

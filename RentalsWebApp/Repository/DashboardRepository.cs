@@ -27,7 +27,8 @@ namespace RentalsWebApp.Repository
 
         public bool DeleteUser(AppUser user)
         {
-            throw new NotImplementedException();
+            _context.Remove(user);
+            return Save();
         }
 
         public async Task<IEnumerable<AppUser>> GetAllTenants(AppUser user)

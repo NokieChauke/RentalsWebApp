@@ -24,7 +24,14 @@
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
                         <!-- Profile picture image-->
-                        <img class="img-account-profile rounded-circle mb-2" src="@Model.URL" alt="">
+                        @if(Model.URL == null || Model.URL == "")
+                        {
+                            <img class="img-account-profile rounded-circle mb-2" src="C:\Users\NokieChauke\source\repos\RentalsWebApp\RentalsWebApp\wwwroot\pictures\Propic.png" alt="">
+                        }
+                        else
+                        {
+                            <img class="img-account-profile rounded-circle mb-2" src="@Model.URL" alt="">
+                        }                        
                         <!-- Profile picture help block-->
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                         <!-- Profile picture upload button-->
@@ -82,7 +89,7 @@
                         </div>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                         {
-                            <button type="submit" class="btn btn-sm btn-outline-primary">ave changes</button>
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Save changes</button>
                             <a asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-outline-primary">Cancel</a>
                         }
                         else if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))

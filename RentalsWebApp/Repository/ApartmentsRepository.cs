@@ -19,7 +19,7 @@ namespace RentalsWebApp.Repository
             return Save();
         }
 
-        public bool Delete(Apartments apartment)
+        public bool DeleteApartment(Apartments apartment)
         {
             _context.Remove(apartment);
             return Save();
