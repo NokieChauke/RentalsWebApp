@@ -11,7 +11,8 @@ namespace RentalsWebApp.ViewModels
         public string Description { get; set; }
         public ApartmentCategory ApartmentCategory { get; set; }
         public string Price { get; set; }
-        public IFormFile Picture { get; set; }
-        public string? URL { get; set; }
+        public IFormFileCollection Pictures { get; set; }
+        public int PicturesId { get; set; }
+        public ApartmentPictures ApartmentPictures { get; set; }
     }
 }

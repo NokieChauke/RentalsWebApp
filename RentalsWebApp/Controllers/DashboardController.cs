@@ -112,7 +112,7 @@ namespace RentalsWebApp.Controllers
                     }
                 }
 
-                var photoResult = await _photoService.AddPhotoAsync(ediUserVM.ProfileImageUrl);
+                var photoResult = await _photoService.AddProfilePhoto(ediUserVM.ProfileImageUrl);
                 MapUserEdit(user, ediUserVM, photoResult);
 
                 _dashboardRepository.UpdateUser(user);

@@ -187,6 +187,43 @@ namespace RentalsWebApp.Migrations
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("RentalsWebApp.Models.ApartmentPictures", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Pic1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Pic2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Pic3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Pic4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Pic5")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Pic6")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApartmentPictures");
+                });
+
             modelBuilder.Entity("RentalsWebApp.Models.Apartments", b =>
                 {
                     b.Property<int>("Id")
@@ -201,11 +238,10 @@ namespace RentalsWebApp.Migrations
                     b.Property<int>("ApartmentCategory")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ApartmentPictureId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Picture")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -216,6 +252,8 @@ namespace RentalsWebApp.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("ApartmentPictureId");
 
                     b.ToTable("Apartments");
                 });
@@ -414,6 +452,61 @@ namespace RentalsWebApp.Migrations
                     b.ToTable("Documents");
                 });
 
+            modelBuilder.Entity("RentalsWebApp.Models.ProofOfPayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Proof")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProofOfPayment");
+                });
+
+            modelBuilder.Entity("RentalsWebApp.ViewModels.SendMailViewModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmailBody")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailSubject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailToId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailToName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MailData");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -473,7 +566,15 @@ namespace RentalsWebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RentalsWebApp.Models.ApartmentPictures", "ApartmentPictures")
+                        .WithMany()
+                        .HasForeignKey("ApartmentPictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("ApartmentPictures");
                 });
 
             modelBuilder.Entity("RentalsWebApp.Models.BankAccount", b =>
@@ -503,6 +604,17 @@ namespace RentalsWebApp.Migrations
                     b.HasOne("RentalsWebApp.Models.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("RentalsWebApp.Models.ProofOfPayment", b =>
+                {
+                    b.HasOne("RentalsWebApp.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

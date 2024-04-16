@@ -20,7 +20,17 @@ namespace RentalsWebApp.Data
                         {
                            Description = "3 Bedroom house with one bath and a car port",
                            ApartmentCategory = ApartmentCategory.Three_Bedroom,
-                           Picture = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                           ApartmentPictures = new ApartmentPictures()
+                           {
+                               Pic1 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic2 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic3 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic4 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic5 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic6 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg"
+
+                           },
+
                            Address = new Address()
                            {
                                Address_Line1 = "92 John Drive",
@@ -36,7 +46,16 @@ namespace RentalsWebApp.Data
                         {
                            Description = "3 Bedroom house with one bath and a garage",
                            ApartmentCategory = ApartmentCategory.Three_Bedroom,
-                           Picture = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                           ApartmentPictures = new ApartmentPictures()
+                           {
+                               Pic1 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic2 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic3 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic4 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic5 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic6 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg"
+
+                           },
                            Address = new Address()
                            {
                                Address_Line1 = "70 Bela Drive",
@@ -51,7 +70,16 @@ namespace RentalsWebApp.Data
                         {
                            Description = "2 Bedroom house with one bath and a car port",
                            ApartmentCategory = ApartmentCategory.Two_Bedroom,
-                           Picture = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                           ApartmentPictures = new ApartmentPictures()
+                           {
+                               Pic1 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic2 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic3 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic4 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic5 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic6 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg"
+
+                           },
                            Address = new Address()
                            {
                                Address_Line1 = "88 Wind Drive",
@@ -67,7 +95,16 @@ namespace RentalsWebApp.Data
                         {
                            Description = "A single room with one bath",
                            ApartmentCategory = ApartmentCategory.Single,
-                           Picture = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                          ApartmentPictures = new ApartmentPictures()
+                           {
+                               Pic1 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic2 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic3 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic4 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic5 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg",
+                               Pic6 = "https://www.forbes.com/advisor/wp-content/uploads/2022/06/Image_-_Copyright_.jpeg.jpg"
+
+                           },
                            Address = new Address()
                            {
                                Address_Line1 = "5 Regen Drive",

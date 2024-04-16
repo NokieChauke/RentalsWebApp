@@ -36,14 +36,30 @@ namespace RentalsWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _photoService.AddPhotoAsync(apartmentsVM.Picture);
+                var result = await _photoService.AddPhotoAsync(apartmentsVM.Pictures);
+                var urls = new List<string>();
+
+                foreach (var obj in result)
+                {
+                    var url = obj.Url.ToString();
+                    urls.Add(url);
+                }
                 var apartments = new Apartments
                 {
 
                     Description = apartmentsVM.Description,
                     ApartmentCategory = apartmentsVM.ApartmentCategory,
                     Price = apartmentsVM.Price,
-                    Picture = result.Url.ToString(),
+                    ApartmentPictures = new ApartmentPictures
+                    {
+                        Pic1 = urls[0],
+                        Pic2 = urls[1],
+                        Pic3 = urls[2],
+                        Pic4 = urls[3],
+                        Pic5 = urls[4],
+                        Pic6 = urls[5]
+
+                    },
                     Address = new Address
                     {
                         Address_Line1 = apartmentsVM.Address.Address_Line1,
@@ -78,7 +94,7 @@ namespace RentalsWebApp.Controllers
                 Price = apartment.Price,
                 AddressId = apartment.AddressId,
                 Address = apartment.Address,
-                URL = apartment.Picture,
+                ApartmentPictures = apartment.ApartmentPictures
 
             };
             return View(apartmentVM);
@@ -99,20 +115,33 @@ namespace RentalsWebApp.Controllers
             {
                 try
                 {
-                    await _photoService.DeletePhotonsAsync(userApartment.Picture);
+                    await _photoService.DeletePhotonsAsync(userApartment.ApartmentPictures.Pic1);
+                    await _photoService.DeletePhotonsAsync(userApartment.ApartmentPictures.Pic2);
+                    await _photoService.DeletePhotonsAsync(userApartment.ApartmentPictures.Pic3);
+                    await _photoService.DeletePhotonsAsync(userApartment.ApartmentPictures.Pic4);
+                    await _photoService.DeletePhotonsAsync(userApartment.ApartmentPictures.Pic5);
+                    await _photoService.DeletePhotonsAsync(userApartment.ApartmentPictures.Pic6);
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", "Could not delete photo");
                     return View(apartmentVM);
                 }
-                var photoResult = await _photoService.AddPhotoAsync(apartmentVM.Picture);
+                var result = await _photoService.AddPhotoAsync(apartmentVM.Pictures);
+                var urls = new List<string>();
+
+                foreach (var obj in result)
+                {
+                    var url = obj.Url.ToString();
+                    urls.Add(url);
+                }
                 var apartment = new Apartments
                 {
                     Id = id,
                     Description = apartmentVM.Description,
                     Price = apartmentVM.Price,
-                    Picture = photoResult.Url.ToString(),
+                    ApartmentPictureId = apartmentVM.PicturesId,
+                    ApartmentPictures = apartmentVM.ApartmentPictures,
                     AddressId = apartmentVM.AddressId,
                     Address = apartmentVM.Address,
                 };

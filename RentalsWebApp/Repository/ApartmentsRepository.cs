@@ -27,27 +27,27 @@ namespace RentalsWebApp.Repository
 
         public async Task<IEnumerable<Apartments>> GetAll()
         {
-            return await _context.Apartments.Include(a => a.Address).ToListAsync();
+            return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).ToListAsync();
         }
 
         public async Task<Apartments> GetByIdAsync(int id)
         {
-            return await _context.Apartments.Include(a => a.Address).FirstOrDefaultAsync(i => i.Id == id);
+            return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<Apartments> GetByIdAsyncNoTracking(int id)
         {
-            return await _context.Apartments.Include(a => a.Address).AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+            return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<IEnumerable<Apartments>> GetByCategory(string catecory)
         {
-            return await _context.Apartments.Include(a => a.Address).Where(p => p.ApartmentCategory.ToString() == catecory).ToListAsync();
+            return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).Where(p => p.ApartmentCategory.ToString() == catecory).ToListAsync();
         }
 
         public async Task<IEnumerable<Apartments>> GetByPrice(string price)
         {
-            return await _context.Apartments.Include(a => a.Address).Where(p => p.Price == price).ToListAsync();
+            return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).Where(p => p.Price == price).ToListAsync();
         }
 
         public bool Save()

@@ -2,9 +2,10 @@
 
 namespace RentalsWebApp.Interfaces
 {
-	public interface IPhotoService
-	{
-		Task<ImageUploadResult> AddPhotoAsync(IFormFile file);
-		Task<DeletionResult> DeletePhotonsAsync(string publicId);
-	}
+    public interface IPhotoService
+    {
+        Task<IEnumerable<ImageUploadResult>> AddPhotoAsync(IFormFileCollection files);
+        Task<ImageUploadResult> AddProfilePhoto(IFormFile files);
+        Task<DeletionResult> DeletePhotonsAsync(string publicId);
+    }
 }
