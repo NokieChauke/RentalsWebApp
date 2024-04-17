@@ -11,20 +11,21 @@ namespace RentalsWebApp.Controllers
         private readonly IBillingRepository _billingRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+
         public BillingController(IHttpContextAccessor httpContextAccessor, IBillingRepository billingRepository,
             IWebHostEnvironment webHostEnvironment)
         {
             _httpContextAccessor = httpContextAccessor;
             _billingRepository = billingRepository;
             _webHostEnvironment = webHostEnvironment;
+
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var month = await _billingRepository.GetMonth(currentUserId);
+            var month = await _billingRepository.GetMonth(id);
             var m = month.Month;
-            Billing billing = await _billingRepository.GetMonthlyStatemets(currentUserId, m);
-            IEnumerable<BankAccount> accounts = await _billingRepository.GetAll(currentUserId);
+            Billing billing = await _billingRepository.GetMonthlyStatemets(id, m);
+            IEnumerable<BankAccount> accounts = await _billingRepository.GetAll(id);
 
             var billingVM = new BillingViewModel()
             {
@@ -32,7 +33,8 @@ namespace RentalsWebApp.Controllers
                 Month = billing.Month,
                 WaterAmount = billing.WaterAmount,
                 ElectricityAmount = billing.ElectricityAmount,
-                BankAccount = (List<BankAccount>)accounts
+                BankAccount = (List<BankAccount>)accounts,
+                UserId = billing.UserId,
 
             };
             return View(billingVM);
@@ -116,6 +118,42 @@ namespace RentalsWebApp.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddBankAccount(BankingAccountViewModel bankingAccountVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var bankingAccount = new BankAccount()
+                {
+                    AppUserId = bankingAccountVM.AppUserId,
+                    CardDescreption = bankingAccountVM.CardDescreption,
+                    BankName = bankingAccountVM.BankName,
+                    AccountHolder = bankingAccountVM.AccountHolder,
+                    CardNumber = bankingAccountVM.CardNumber,
+                    BranchCode = bankingAccountVM.BranchCode,
+                    ExpiryDate = bankingAccountVM.ExpiryDate,
+                    CSV = bankingAccountVM.CSV
+                };
+                _billingRepository.Add(bankingAccount);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Something went wrong");
+
+            }
+            return View(bankingAccountVM);
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> AddBankAccountByAdmin(string id)
+        {
+            var user = await _billingRepository.GetUserById(id);
+
+            var addBankAccountVM = new BankingAccountViewModel { AppUserId = user.Id };
+            return View(addBankAccountVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBankAccountByAdmin(BankingAccountViewModel bankingAccountVM)
         {
             if (ModelState.IsValid)
             {

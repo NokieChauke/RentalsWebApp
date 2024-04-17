@@ -6,15 +6,19 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
 
 <div class="container-xl px-4 mt-4">
+    <form>
+        <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
+    </form>
+
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
-        <a class="nav-link" asp-controller="Dashboard" asp-action="Billing" target="__self">Billing</a>
+        <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
-            <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Security" asp-route-id="@Model.UserId" target="__self">Security</a>
         }
-        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
     </nav>
     <hr class="mt-0 mb-4">
     <div class="row">

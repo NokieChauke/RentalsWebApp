@@ -177,10 +177,16 @@ namespace RentalsWebApp.Controllers
 
             return View();
         }
-        public async Task<IActionResult> Notification()
+        public async Task<IActionResult> Notification(string id)
         {
+            var user = await _dashboardRepository.GetUserById(id);
+            if (user == null) return View("Error");
+            var userViewModel = new UserProfileViewModel()
+            {
+                Id = user.Id,
+            };
 
-            return View();
+            return View(userViewModel);
         }
     }
 }
