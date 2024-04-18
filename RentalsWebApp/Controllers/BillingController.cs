@@ -45,9 +45,12 @@ namespace RentalsWebApp.Controllers
             return View();
 
         }
-        public IActionResult PaymentHistory()
+        public async Task<IActionResult> PaymentHistory(string id)
         {
-            return View();
+            var user = await _billingRepository.GetUserById(id);
+            var billind = new BillingViewModel { UserId = user.Id };
+            return View(billind);
+
 
         }
 

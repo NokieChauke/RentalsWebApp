@@ -17,5 +17,6 @@ namespace RentalsWebApp.ViewModels
         [Display(Name = "Pay Slip")]
         [Required(ErrorMessage = "Pay Slip is required")]
         public IFormFile PaySlip { get; set; }
+
     }
 }

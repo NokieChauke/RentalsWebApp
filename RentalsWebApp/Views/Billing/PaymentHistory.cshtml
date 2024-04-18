@@ -1,4 +1,7 @@
-﻿<!-- Billing history card-->
+﻿@using RentalsWebApp.ViewModels
+@model BillingViewModel
+
+<!-- Billing history card-->
 <div class="card mb-4">
     <div class="card-header">Billing History</div>
     <div class="card-body p-0">
@@ -55,9 +58,7 @@
         }
         else if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
-            <a asp-controller="Dashboard" asp-action="Documents" class="btn btn-sm btn-outline-secondary">Back</a>
-            <a asp-controller="Dashboard" asp-action="Notification" class="btn btn-sm btn-outline-primary">Next</a>
-            <a asp-controller="Dashboard" asp-action="UserProfile" class="btn btn-sm btn-outline-primary">Cancel</a>
+            <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId">Back</a>
         }
     </div>
 </div>
