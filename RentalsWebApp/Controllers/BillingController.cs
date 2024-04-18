@@ -133,7 +133,7 @@ namespace RentalsWebApp.Controllers
                     CSV = bankingAccountVM.CSV
                 };
                 _billingRepository.Add(bankingAccount);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = bankingAccount.AppUserId });
             }
             else
             {
@@ -169,7 +169,7 @@ namespace RentalsWebApp.Controllers
                     CSV = bankingAccountVM.CSV
                 };
                 _billingRepository.Add(bankingAccount);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = bankingAccount.AppUserId });
             }
             else
             {
@@ -198,6 +198,14 @@ namespace RentalsWebApp.Controllers
             };
             return View(editBankingAccountVM);
         }
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            var account = await _billingRepository.GetByIdAsync(id);
+
+            _billingRepository.DeleteAccount(account);
+            return RedirectToAction("Index", new { id = account.AppUserId });
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> EditAccount(int id, EditBankingAccountViewModel editBankingAccountVM)
@@ -226,7 +234,7 @@ namespace RentalsWebApp.Controllers
                 };
 
                 _billingRepository.UpdateAccount(bankAccount);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = editBankingAccountVM.AppUserId });
             }
             else
             {
@@ -260,12 +268,12 @@ namespace RentalsWebApp.Controllers
                 {
                     UserId = proofOfPaymentVM.UserId,
                     Month = proofOfPaymentVM.Month,
-                    Proof = proofOfPaymentVM.ProofUrl,
+                    Proof = proofUrl,
 
 
                 };
                 _billingRepository.UploadProofOfPayment(proofOfPayment);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = proofOfPaymentVM.UserId });
             }
             else
             {

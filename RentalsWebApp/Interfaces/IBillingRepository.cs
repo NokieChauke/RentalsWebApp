@@ -9,6 +9,7 @@ namespace RentalsWebApp.Interfaces
         bool UploadProofOfPayment(ProofOfPayment proof);
         Task<Billing> GetMonthlyStatemets(string userId, Months month);
         Task<Billing> GetMonth(string userId);
+        Task<BankAccount> GetBankAccount(string userId);
         Task<BankAccount> GetByIdAsync(int id);
         Task<BankAccount> GetByIdAsyncNoTracking(int id);
         Task<ProofOfPayment> DownloadProofOfPayment(string userId);
@@ -20,7 +21,7 @@ namespace RentalsWebApp.Interfaces
         bool Add(BankAccount account);
         bool Update(Billing biling);
         bool UpdateAccount(BankAccount account);
-        bool Delete(Billing biling);
+        bool DeleteAccount(BankAccount account);
         bool Save();
     }
 }

@@ -31,9 +31,10 @@ namespace RentalsWebApp.Repository
             return Save();
         }
 
-        public bool Delete(Billing biling)
+        public bool DeleteAccount(BankAccount account)
         {
-            throw new NotImplementedException();
+            _context.Remove(account);
+            return Save();
         }
 
         public async Task<Billing> DownloadStatement(string userId)
@@ -53,6 +54,11 @@ namespace RentalsWebApp.Repository
         public async Task<Billing> GetMonthlyStatemets(string userId, Months month)
         {
             return await _context.Billings.Where(x => ((x.Month) == month && x.UserId == userId)).FirstOrDefaultAsync();
+        }
+
+        public async Task<BankAccount> GetBankAccount(string userId)
+        {
+            return await _context.BankAccounts.FirstOrDefaultAsync(x => x.AppUserId == userId);
         }
 
         public async Task<BankAccount> GetByIdAsync(int id)

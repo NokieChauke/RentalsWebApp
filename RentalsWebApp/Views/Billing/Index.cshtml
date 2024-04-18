@@ -70,8 +70,8 @@
         <div class="card-header">
             Payment Methods
             <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="AddBankAccount" target="__self">Add new card</a>
-            <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="ManualPayment">Pay now</a>
-            <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="UploadProofOfPayment">Upload POP</a>
+            @* <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="ManualPayment" asp-route-id="@Model.UserId">Pay now</a> *@
+            <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="UploadProofOfPayment" asp-route-id="@Model.UserId">Upload POP</a>
         </div>
 
         @foreach(var account in Model.BankAccount)
@@ -102,7 +102,7 @@
                     <div class="ms-4 small">
                         <div class="badge bg-light text-dark me-3">Default</div>
                         <a a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Edit</a>
-                        <a a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Delete</a>
+                        <a a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="DeleteAccount" asp-route-id="@account.Id" target=" __self">Delete</a>
                     </div>
                 </div>
             </div>

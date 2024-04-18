@@ -172,10 +172,17 @@ namespace RentalsWebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Security()
+        public async Task<IActionResult> Security(string id)
         {
+            var user = await _dashboardRepository.GetUserById(id);
+            if (user == null) return View("Error");
+            var userViewModel = new UserProfileViewModel()
+            {
+                Id = user.Id,
+            };
 
-            return View();
+            return View(userViewModel);
+
         }
         public async Task<IActionResult> Notification(string id)
         {
