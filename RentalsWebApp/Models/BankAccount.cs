@@ -18,7 +18,7 @@ namespace RentalsWebApp.Models
         public AppUser AppUser { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
 
     }
 }

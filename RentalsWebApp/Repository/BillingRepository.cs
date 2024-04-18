@@ -56,9 +56,9 @@ namespace RentalsWebApp.Repository
             return await _context.Billings.Where(x => ((x.Month) == month && x.UserId == userId)).FirstOrDefaultAsync();
         }
 
-        public async Task<BankAccount> GetBankAccount(string userId)
+        public async Task<IEnumerable<BankAccount>> GetAllBankAccounts()
         {
-            return await _context.BankAccounts.FirstOrDefaultAsync(x => x.AppUserId == userId);
+            return await _context.BankAccounts.ToListAsync();
         }
 
         public async Task<BankAccount> GetByIdAsync(int id)

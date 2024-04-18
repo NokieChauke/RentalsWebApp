@@ -119,6 +119,13 @@ namespace RentalsWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBankAccount(BankingAccountViewModel bankingAccountVM)
         {
+            var accounts = await _billingRepository.GetAllBankAccounts();
+
+            foreach (var account in accounts)
+            {
+                account.Active = false;
+                _billingRepository.UpdateAccount(account);
+            }
             if (ModelState.IsValid)
             {
                 var bankingAccount = new BankAccount()
@@ -197,6 +204,22 @@ namespace RentalsWebApp.Controllers
 
             };
             return View(editBankingAccountVM);
+        }
+
+        public async Task<IActionResult> SetAccountAsDefault(int id)
+        {
+            var accounts = await _billingRepository.GetAllBankAccounts();
+
+            foreach (var account in accounts)
+            {
+                account.Active = false;
+                _billingRepository.UpdateAccount(account);
+            }
+
+            var acc = await _billingRepository.GetByIdAsync(id);
+            acc.Active = true;
+            _billingRepository.UpdateAccount(acc);
+            return RedirectToAction("Index", new { id = acc.AppUserId });
         }
         public async Task<IActionResult> DeleteAccount(int id)
         {

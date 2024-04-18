@@ -100,9 +100,19 @@
                         </div>
                     </div>
                     <div class="ms-4 small">
-                        <div class="badge bg-light text-dark me-3">Default</div>
-                        <a a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Edit</a>
-                        <a a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="DeleteAccount" asp-route-id="@account.Id" target=" __self">Delete</a>
+                      
+                        @if (account.Active == true)
+                        {
+                            <div class="badge bg-light text-dark me-3">Default</div>
+                        }
+                        else if (account.Active == false)
+                        {
+                            <a asp-area="" asp-controller="Billing" asp-action="SetAccountAsDefault" asp-route-id="@account.Id">Set as default</a>
+                        }
+                         @*  *@
+                        @* <div class="badge bg-light text-dark me-3">Default</div> *@
+                        <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Edit</a>
+                        <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="DeleteAccount" asp-route-id="@account.Id" target=" __self">Delete</a>
                     </div>
                 </div>
             </div>

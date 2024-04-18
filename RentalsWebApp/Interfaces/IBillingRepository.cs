@@ -9,7 +9,7 @@ namespace RentalsWebApp.Interfaces
         bool UploadProofOfPayment(ProofOfPayment proof);
         Task<Billing> GetMonthlyStatemets(string userId, Months month);
         Task<Billing> GetMonth(string userId);
-        Task<BankAccount> GetBankAccount(string userId);
+        Task<IEnumerable<BankAccount>> GetAllBankAccounts();
         Task<BankAccount> GetByIdAsync(int id);
         Task<BankAccount> GetByIdAsyncNoTracking(int id);
         Task<ProofOfPayment> DownloadProofOfPayment(string userId);
