@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RentalsWebApp.Data;
 using RentalsWebApp.Interfaces;
 using RentalsWebApp.Models;
@@ -8,10 +9,12 @@ namespace RentalsWebApp.Repository
     public class ApartmentsRepository : IApartmentsRepository
     {
         private readonly ApplicationDBContext _context;
-        public ApartmentsRepository(ApplicationDBContext context)
+        private readonly UserManager<AppUser> _userManager;
+
+        public ApartmentsRepository(ApplicationDBContext context, UserManager<AppUser> userManager)
         {
             _context = context;
-
+            _userManager = userManager;
         }
         public bool Add(Apartments apartment)
         {
@@ -24,12 +27,20 @@ namespace RentalsWebApp.Repository
             _context.Remove(apartment);
             return Save();
         }
-
+        public async Task<AppUser> GetUserByName(string name)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Name == name);
+        }
         public async Task<IEnumerable<Apartments>> GetAll()
         {
             return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).ToListAsync();
         }
+        public async Task<IEnumerable<AppUser>> GetAllTenants()
+        {
 
+            return await _userManager.GetUsersInRoleAsync("tenant");
+
+        }
         public async Task<Apartments> GetByIdAsync(int id)
         {
             return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).FirstOrDefaultAsync(i => i.Id == id);

@@ -46,6 +46,7 @@
                                     @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                                     {
                                         <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <a asp-controller="Apartments" asp-action="AllocateTenant" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Allocate a tenant</a>
                                         <a asp-controller="Apartments" asp-action="DeleteApartment" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Delete</a>
                                     }                                
 

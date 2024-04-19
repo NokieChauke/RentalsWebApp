@@ -5,6 +5,8 @@ namespace RentalsWebApp.Interfaces
     public interface IApartmentsRepository
     {
         Task<IEnumerable<Apartments>> GetAll();
+        Task<IEnumerable<AppUser>> GetAllTenants();
+        Task<AppUser> GetUserByName(string name);
         Task<Apartments> GetByIdAsync(int id);
         Task<Apartments> GetByIdAsyncNoTracking(int id);
         Task<IEnumerable<Apartments>> GetByCategory(string category);

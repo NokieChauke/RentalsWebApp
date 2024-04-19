@@ -1,0 +1,37 @@
+﻿@using RentalsWebApp.Data.Enums
+@using RentalsWebApp.ViewModels
+@model AllocateTenantViewModel
+
+<h1>Allocate tenent</h1>
+<form method="post" asp-action="AllocateTenant" enctype="multipart/form-data">
+    <input type="hidden" value="UserId" id="UserId" />
+    <input type="hidden" value="Id" id="id"/>
+    @{
+        var names = new List<string>();
+        @foreach (var tenant in Model.AppUsers)
+        {
+            names.Add(tenant.Name);
+        } 
+
+        <div class="form-group col-md-4">     
+            <label asp-for="@Model.UserName">State</label>
+            <select asp-for="@Model.UserName" class="form-control" asp-items="@(new SelectList(names))">
+                <option selected>Select...</option>
+                <option>...</option>
+            </select>            
+            <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+        </div>
+    }
+@* 
+    <div class="mb-3">
+        <select name="[0].CompanyGuid">
+            <<<<<<<<<<<<<<<
+            <option value="">Pick a company ...</option>
+            @foreach (var company in Model)
+            {
+                <option value="@company.UserId">@company.UserName</option>
+            }
+        </select>
+    </div> *@
+    <button type="submit" class="btn btn-primary">Allocate</button>
+</form>

@@ -82,6 +82,28 @@ namespace RentalsWebApp.Controllers
             return View(apartmentsVM);
 
         }
+        public async Task<IActionResult> AllocateTenant(int id)
+        {
+
+            IEnumerable<AppUser> tenants = await _apartmentsRepository.GetAllTenants();
+
+            var allocateUserVM = new AllocateTenantViewModel
+            {
+                ApartmetId = id,
+                AppUsers = (List<AppUser>)tenants,
+            };
+            return View(allocateUserVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AllocateTenant(int id, AllocateTenantViewModel allocateUserVM)
+        {
+            var user = await _apartmentsRepository.GetUserByName(allocateUserVM.UserName);
+            var apartment = await _apartmentsRepository.GetByIdAsync(id);
+            apartment.UserId = user.Id;
+
+            _apartmentsRepository.Update(apartment);
+            return RedirectToAction("Index");
+        }
 
         public async Task<IActionResult> Edit(int id)
         {

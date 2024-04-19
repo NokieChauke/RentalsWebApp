@@ -44,6 +44,7 @@ namespace RentalsWebApp.Repository
         {
             return await _context.Users.FindAsync(id);
         }
+
         public async Task<AppUser> GetUserByIdNoTracking(string id)
         {
             return await _context.Users.Where(u => u.Id == id).AsNoTracking().FirstOrDefaultAsync();
