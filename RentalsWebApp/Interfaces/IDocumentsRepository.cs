@@ -4,7 +4,7 @@ namespace RentalsWebApp.Interfaces
 {
     public interface IDocumentsRepository
     {
-        Task<List<Documents>> GetUploadedDocuments();
+        Task<Documents> GetUploadedDocuments(string id);
         bool Add(Documents document);
         bool Update(Documents document);
         bool Delete(Documents document);

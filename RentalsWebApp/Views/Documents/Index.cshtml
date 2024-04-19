@@ -1,19 +1,21 @@
 ﻿@using RentalsWebApp.ViewModels
-@model DocumentsViewModel
+@model DocumentsDisplayViewModel
 
-<nav class="nav nav-borders">
-    <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.AppUserId" target="__self">Account Details</a>
-    <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.AppUserId" target=" __self">Billing</a>
-    @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
-    {
-        <a class="nav-link" asp-controller="Dashboard" asp-action="Security" asp-route-id="@Model.AppUserId" target="__self">Security</a>
-    }
-    <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.AppUserId" target="__self">Notifications</a>
-</nav>
 <h1 class="display-6 fw-normal">Uploaded Doduments</h1>
 <a type="button" class="btn btn-primary" asp-area="" asp-controller="Documents" asp-action="Upload">Upload Documents</a>
 
 <div class="container my-5">
+  
+
+    <nav class="nav nav-borders">
+        <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Billing" asp-action="Index" target=" __self">Billing</a>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+        {
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+        }
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+    </nav>
     <div class="card">
         @* <a id="add__new__list" position-absolute" data-toggle="modal" data-target=".bd-example-modal-lg" asp-area="" asp-controller="Account" asp-action="Register">Add Tenetnt</a> *@
 
@@ -26,23 +28,26 @@
                     <th scope="col">Manage </th>
                    
                 </tr>
-            </thead>            
-            <tbody>
-                <tr>
-                    <th scope="row"></th>
-                    <td>@Model.IdCard.FileName</td>
-                    <td>@Model.Contract.FileName</td>
-                    <td>@Model.PaySlip.FileName</td>
-                    <td>
-                    <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.AppUserId"
-                            class="btn btn-sm btn-outline-secondary">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
-                    </td>
-                    <td>
-                    <a asp-controller="Dashboard" asp-action="UserProfile" asp-route-id="@Model.AppUserId" class="btn btn-sm btn-outline-secondary">Detail</a>
-                    </td>
-                </tr>
-            </tbody>
+            </thead> 
+            @{
+                <tbody>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>@Model.IdCopy</td>
+                        <td>@Model.Contract</td>
+                        <td>@Model.PaySlip</td>
+                        <td>
+                            <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
+                               class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Dashboard" asp-action="UserProfile" asp-route-id="@Model.UserId" class="btn btn-sm btn-outline-secondary">Detail</a>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+         
         </table>
     </div>
 </div>

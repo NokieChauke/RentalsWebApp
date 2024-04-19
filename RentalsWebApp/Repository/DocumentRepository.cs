@@ -1,4 +1,5 @@
-﻿using RentalsWebApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RentalsWebApp.Data;
 using RentalsWebApp.Interfaces;
 using RentalsWebApp.Models;
 
@@ -26,13 +27,9 @@ namespace RentalsWebApp.Repository
             return Save();
         }
 
-        public async Task<List<Documents>> GetUploadedDocuments()
+        public async Task<Documents> GetUploadedDocuments(string id)
         {
-            var currentUser = _httpContextAccessor.HttpContext.User.GetUserId();
-            var documents = _context.Documents.Where(d => d.AppUser.Id == currentUser);
-
-            return documents.ToList();
-
+            return await _context.Documents.FirstOrDefaultAsync(d => d.AppUser.Id == id);
         }
 
         public bool Save()

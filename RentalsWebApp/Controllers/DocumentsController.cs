@@ -22,11 +22,22 @@ namespace RentalsWebApp.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string id)
         {
-            //var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            //var documentsViewModel = new DocumentsViewModel { AppUserId = currentUserId };
+            var docs = await _documentsRepository.GetUploadedDocuments(id);
+            if (docs != null)
+            {
+                var documentVM = new DocumentsDisplayViewModel()
+                {
+                    IdCopy = docs.IdCard,
+                    Contract = docs.Contract,
+                    PaySlip = docs.Contract
+                };
+                return View(documentVM);
+
+            }
             return View();
+
         }
         [HttpGet]
         public IActionResult Upload()
