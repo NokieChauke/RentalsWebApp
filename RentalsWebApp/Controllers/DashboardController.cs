@@ -127,7 +127,7 @@ namespace RentalsWebApp.Controllers
         public async Task<IActionResult> UserDetails(string id)
         {
 
-            IEnumerable<Apartments> apartments = await _apartmentsRepository.GetAll();
+            var apartment = await _dashboardRepository.GetApartmentByUserId(id);
             var user = await _dashboardRepository.GetUserById(id);
             if (user == null) return View("Error");
             var userViewModel = new UserProfileViewModel()
@@ -138,16 +138,16 @@ namespace RentalsWebApp.Controllers
                 PhoneNumber = user.PhoneNumber,
                 Email = user.Email,
                 ProfileImageUrl = user.ProfileImage,
-                Apartments = (List<Apartments>)apartments
+                Apartments = apartment
             };
             return View(userViewModel);
 
         }
 
-        public async Task<IActionResult> UserProfile(string id)
+        public async Task<IActionResult> UserProfile()
         {
-            IEnumerable<Apartments> apartments = await _apartmentsRepository.GetAll();
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var apartment = await _dashboardRepository.GetApartmentByUserId(currentUserId);
             var user = await _dashboardRepository.GetCurrentUserById(currentUserId);
             if (user == null) return View("Error");
             var userViewModel = new UserProfileViewModel()
@@ -158,7 +158,7 @@ namespace RentalsWebApp.Controllers
                 PhoneNumber = user.PhoneNumber,
                 Email = user.Email,
                 ProfileImageUrl = user.ProfileImage,
-                Apartments = (List<Apartments>)apartments
+                Apartments = apartment
             };
             return View(userViewModel);
 

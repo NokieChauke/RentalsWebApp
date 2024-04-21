@@ -6,7 +6,7 @@ namespace RentalsWebApp.Interfaces
     {
         Task<IEnumerable<AppUser>> GetAllTenants(AppUser user);
         Task<AppUser> GetUserById(string id);
-
+        Task<Apartments> GetApartmentByUserId(string id);
         Task<AppUser> GetCurrentUserById(string id);
         Task<AppUser> GetUserByIdNoTracking(string id);
         bool AddUser(AppUser user);

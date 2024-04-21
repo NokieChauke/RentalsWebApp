@@ -46,13 +46,30 @@
                                     @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                                     {
                                         <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                        <a asp-controller="Apartments" asp-action="AllocateTenant" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Allocate a tenant</a>
+                                        @if (item.UserId == null)
+                                        {
+                                            <a asp-controller="Apartments" asp-action="AllocateTenant" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Allocate a tenant</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="Apartments" asp-action="AllocateTenant" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Vacate apartment</a>
+                                        }
+                                        
+                                       
                                         <a asp-controller="Apartments" asp-action="DeleteApartment" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Delete</a>
                                     }                                
 
                                 </div>                                                             
                             </div>
-                            <div> <h4 class="text-muted">Available Immediatly</h4></div>
+                            @if(item.UserId == null)
+                            {
+                                <div> <h4 class="text-muted">Available Immediatly</h4></div>
+                            }
+                            else
+                            {
+                                <div> <h4 class="text-muted">Occupied</h4></div>
+                            }
+                            
                         </div>
                     </div>
                 </div>

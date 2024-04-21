@@ -44,6 +44,10 @@ namespace RentalsWebApp.Repository
         {
             return await _context.Users.FindAsync(id);
         }
+        public async Task<Apartments> GetApartmentByUserId(string id)
+        {
+            return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).FirstOrDefaultAsync(a => a.UserId == id);
+        }
 
         public async Task<AppUser> GetUserByIdNoTracking(string id)
         {

@@ -10,6 +10,6 @@ namespace RentalsWebApp.ViewModels
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string ProfileImageUrl { get; set; }
-        public List<Apartments>? Apartments { get; set; }
+        public Apartments? Apartments { get; set; }
     }
 }

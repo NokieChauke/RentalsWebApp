@@ -1,0 +1,42 @@
+﻿@using RentalsWebApp.ViewModels
+@model SendMailViewModel
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div id="contact" class="contact-area section-padding">
+	<div class="container">
+		<div class="section-title text-center">
+			<h1>Get in Touch</h1>
+			<p>Minga ti hlanganisa na hina hi tindlela to hambana hambana. Minga rhumenla marungula hi Email, hi Whatsapp kumbe hi SMS. Mi nga thlela mi hi fonela eka nomboro leyinga tsaliwa kwala. </p>
+		</div>
+		<div class="row">
+			<div class="col-lg-7">
+				<div class="contact">
+					<form method="post" asp-controller="AboutUs" asp-action="ReportIncident" enctype="multipart/form-data" onsubmit="return validation();">
+						<div class="row">
+							<div class="form-group col-md-6">
+								<input asp-for="EmailToName" class="form-control" placeholder="Name" required="required">
+								<span asp-validation-for="EmailToName" class="text-danger"></span>
+							</div>
+							<div class="form-group col-md-6">
+								<input asp-for="EmailToId" class="form-control" placeholder="Email" required="required">
+								<span asp-validation-for="EmailToId" class="text-danger"></span>
+							</div>
+							<div class="form-group col-md-12">
+								<input asp-for="EmailSubject" class="form-control" placeholder="Subject" required="required">
+								<span asp-validation-for="EmailSubject" class="text-danger"></span>
+							</div>
+							<div class="form-group col-md-12">
+								<textarea asp-for="EmailBody" rows="6" class="form-control" placeholder="Message" required="required"></textarea>
+								<span asp-validation-for="EmailBody" class="text-danger"></span>
+							</div>
+							<div class="col-md-12 text-center">
+								<button type="submit" value="Send message" name="submit" id="submitButton" class="btn btn-contact-bg" title="Submit Your Message!">Send Message</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div><!--- END COL -->
+		</div>
+	</div>
+</div>
