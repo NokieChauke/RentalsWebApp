@@ -8,13 +8,13 @@
   
 
     <nav class="nav nav-borders">
-        <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
-        <a class="nav-link" asp-controller="Billing" asp-action="Index" target=" __self">Billing</a>
+        <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Billing" asp-action="Index" sp-route-id="@Model.UserId" target=" __self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
-            <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Security" asp-route-id="@Model.UserId" target="__self">Security</a>
         }
-        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
     </nav>
     <div class="card">
         @* <a id="add__new__list" position-absolute" data-toggle="modal" data-target=".bd-example-modal-lg" asp-area="" asp-controller="Account" asp-action="Register">Add Tenetnt</a> *@
@@ -34,8 +34,33 @@
                     <tr>
                         <th scope="row"></th>
                         <td>@Model.IdCopy</td>
+                        <td>@DateTime.Now</td>
+                        <td>
+                            <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
+                               class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Dashboard" asp-action="UserProfile" asp-route-id="@Model.UserId" class="btn btn-sm btn-outline-secondary">Detail</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
                         <td>@Model.Contract</td>
+                        <td>@DateTime.Now</td>
+                        <td>
+                            <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
+                               class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Dashboard" asp-action="UserProfile" asp-route-id="@Model.UserId" class="btn btn-sm btn-outline-secondary">Detail</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
                         <td>@Model.PaySlip</td>
+                        <td>@DateTime.Now</td>
                         <td>
                             <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
                                class="btn btn-sm btn-outline-secondary">Edit</a>

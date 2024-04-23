@@ -6,5 +6,6 @@
         public string IdCopy { get; set; }
         public string Contract { get; set; }
         public string PaySlip { get; set; }
+
     }
 }

@@ -40,9 +40,11 @@ namespace RentalsWebApp.Controllers
             return View(billingVM);
 
         }
-        public IActionResult BankingDetails()
+        public async Task<IActionResult> BankingDetails(string id)
         {
-            return View();
+            var user = await _billingRepository.GetUserById(id);
+            var billind = new BillingViewModel { UserId = user.Id };
+            return View(billind);
 
         }
         public async Task<IActionResult> PaymentHistory(string id)
@@ -208,6 +210,41 @@ namespace RentalsWebApp.Controllers
             };
             return View(editBankingAccountVM);
         }
+        [HttpPost]
+        public async Task<IActionResult> EditAccount(int id, EditBankingAccountViewModel editBankingAccountVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to Edit apartment");
+                return View("Edit", editBankingAccountVM);
+            }
+
+            var account = await _billingRepository.GetByIdAsyncNoTracking(id);
+
+            if (account != null)
+            {
+                var bankAccount = new BankAccount
+                {
+                    Id = id,
+                    AppUserId = editBankingAccountVM.AppUserId,
+                    CardDescreption = editBankingAccountVM.CardDescreption,
+                    BankName = editBankingAccountVM.BankName,
+                    AccountHolder = editBankingAccountVM.AccountHolder,
+                    CardNumber = editBankingAccountVM.CardNumber,
+                    BranchCode = editBankingAccountVM.BranchCode,
+                    ExpiryDate = editBankingAccountVM.ExpiryDate,
+                    CSV = editBankingAccountVM.CSV,
+                    Active = account.Active
+                };
+
+                _billingRepository.UpdateAccount(bankAccount);
+                return RedirectToAction("Index", new { id = editBankingAccountVM.AppUserId });
+            }
+            else
+            {
+                return View(editBankingAccountVM);
+            }
+        }
 
         public async Task<IActionResult> SetAccountAsDefault(int id)
         {
@@ -233,40 +270,7 @@ namespace RentalsWebApp.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> EditAccount(int id, EditBankingAccountViewModel editBankingAccountVM)
-        {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError("", "Failed to Edit apartment");
-                return View("Edit", editBankingAccountVM);
-            }
 
-            var account = await _billingRepository.GetByIdAsyncNoTracking(id);
-
-            if (account != null)
-            {
-                var bankAccount = new BankAccount
-                {
-                    Id = id,
-                    AppUserId = editBankingAccountVM.AppUserId,
-                    CardDescreption = editBankingAccountVM.CardDescreption,
-                    BankName = editBankingAccountVM.BankName,
-                    AccountHolder = editBankingAccountVM.AccountHolder,
-                    CardNumber = editBankingAccountVM.CardNumber,
-                    BranchCode = editBankingAccountVM.BranchCode,
-                    ExpiryDate = editBankingAccountVM.ExpiryDate,
-                    CSV = editBankingAccountVM.CSV
-                };
-
-                _billingRepository.UpdateAccount(bankAccount);
-                return RedirectToAction("Index", new { id = editBankingAccountVM.AppUserId });
-            }
-            else
-            {
-                return View(editBankingAccountVM);
-            }
-        }
 
         [HttpGet]
         public async Task<IActionResult> UploadProofOfPayment(string id)

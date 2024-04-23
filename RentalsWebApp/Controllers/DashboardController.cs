@@ -179,6 +179,7 @@ namespace RentalsWebApp.Controllers
             var userViewModel = new UserProfileViewModel()
             {
                 Id = user.Id,
+                PhoneNumber = user.PhoneNumber
             };
 
             return View(userViewModel);
@@ -191,6 +192,8 @@ namespace RentalsWebApp.Controllers
             var userViewModel = new UserProfileViewModel()
             {
                 Id = user.Id,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
             };
 
             return View(userViewModel);

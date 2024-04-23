@@ -1,4 +1,18 @@
-﻿<div class="card card-header-actions mb-4">
+﻿@using RentalsWebApp.ViewModels
+@model BillingViewModel
+
+<nav class="nav nav-borders">
+    <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+    <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>
+    <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Billing</a>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+    {
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Security" asp-route-id="@Model.UserId" target="__self">Security</a>
+    }
+    <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
+</nav>
+
+<div class="card card-header-actions mb-4">
     <div class="card-header">
         Banking Details
     </div>
@@ -35,7 +49,9 @@
                     <div class="small">Account: 526985423</div>
                     <div class="text-xs text-muted">Branch Code: 99685</div>
                 </div>
+               
             </div>
         </div>
+        <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId">Back</a>
     </div>
 </div>

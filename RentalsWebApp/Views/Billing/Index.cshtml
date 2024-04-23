@@ -13,7 +13,7 @@
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
         <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.UserId" target="__self">Account Details</a>
-        <a class="nav-link" asp-controller="Documents" asp-action="Upload" asp-route-id="@Model.UserId" target="__self">Documents</a>
+        <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>
         <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
@@ -45,7 +45,7 @@
                     <div class="h3 d-flex align-items-center">Rent: R2500</div>
                     <div class="h3 d-flex align-items-center">Water and Electricity: R@(@Convert.ToDouble(@Model.WaterAmount)+@Convert.ToDouble(@Model.ElectricityAmount))</div>
                     <div class="h3 d-flex align-items-center">Total: R@(2500 + @Convert.ToDouble(@Model.WaterAmount) + @Convert.ToDouble(@Model.ElectricityAmount))</div>
-                    <a class="text-arrow-icon small" asp-controller="Billing" asp-action="BankingDetails" target="__self">
+                    <a class="text-arrow-icon small" asp-controller="Billing" asp-action="BankingDetails" asp-route-id="@Model.UserId" target="__self">
                         Click here to View the Banking Details
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>
@@ -69,7 +69,7 @@
     <!-- Payment methods card-->
     <div class="card card-header-actions mb-4">
         <div class="card-header">
-            Payment Methods
+            Add a Payment Account for debit order
             <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="AddBankAccount" target="__self">Add new card</a>
             @* <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="ManualPayment" asp-route-id="@Model.UserId">Pay now</a> *@
             <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="UploadProofOfPayment" asp-route-id="@Model.UserId">Upload POP</a>

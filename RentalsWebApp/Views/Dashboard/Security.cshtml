@@ -6,7 +6,7 @@
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
         <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.Id" target="__self">Account Details</a>
-        <a class="nav-link" asp-controller="Documents" asp-action="Upload" asp-route-id="@Model.Id" target="__self">Documents</a>
+        <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.Id" target="__self">Documents</a>
         <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.Id" target="__self">Billing</a>
         @if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
@@ -60,7 +60,7 @@
                             <label class="small mb-1" for="twoFactorSMS">SMS Number</label>
                             <input class="form-control" id="twoFactorSMS" type="tel" placeholder="Enter a phone number" value="@Model.PhoneNumber">
                         </div>
-                        <button class="btn btn-primary" type="button">Save changes</button>
+                        <button class="btn btn-sm btn-outline-primary" type="button">Save changes</button>
                     </form>
                 </div>
             </div>
