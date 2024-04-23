@@ -9,7 +9,7 @@
 
     <nav class="nav nav-borders">
         <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
-        <a class="nav-link" asp-controller="Billing" asp-action="Index" sp-route-id="@Model.UserId" target=" __self">Billing</a>
+        <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
             <a class="nav-link" asp-controller="Dashboard" asp-action="Security" asp-route-id="@Model.UserId" target="__self">Security</a>

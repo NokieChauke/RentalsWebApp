@@ -29,6 +29,7 @@ namespace RentalsWebApp.Controllers
             {
                 var documentVM = new DocumentsDisplayViewModel()
                 {
+                    UserId = id,
                     IdCopy = docs.IdCard,
                     Contract = docs.Contract,
                     PaySlip = docs.Contract
@@ -91,7 +92,7 @@ namespace RentalsWebApp.Controllers
                 };
 
                 _documentsRepository.Add(newDocuments);
-                return RedirectToAction("Index", "Billing");
+                return RedirectToAction("Index", "Billing", new { id = newDocuments.AppUserId });
 
             }
             else

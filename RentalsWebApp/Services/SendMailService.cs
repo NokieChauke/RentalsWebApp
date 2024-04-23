@@ -41,5 +41,21 @@ namespace RentalsWebApp.Services
                     sendMailViewModel.EmailBody));
 
         }
+        public Task ReportIncident(ReportIncidentViewModel reportIncidentVM)
+        {
+            var client = new SmtpClient("smtp.gmail.com", 587)
+            {
+
+                Credentials = new NetworkCredential("xiwitsimathebula@gmail.com", "ypgzwxfsdqtgonyv"),
+                EnableSsl = true
+            };
+            return client.SendMailAsync(
+                new MailMessage(
+                    from: "xiwitsimathebula@gmail.com",
+                    to: reportIncidentVM.EmailToId,
+                    reportIncidentVM.IncidentCategory,
+                    reportIncidentVM.MoreDetails));
+
+        }
     }
 }

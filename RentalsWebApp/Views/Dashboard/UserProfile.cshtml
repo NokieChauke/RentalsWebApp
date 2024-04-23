@@ -4,7 +4,8 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-4">
+        <div class="col-lg-3 col-md-4">
+                <h1>User Profile</h1>
                 <div class="text-center card-box">
                     <div class="member-card">
                         <div class="thumb-xl member-thumb m-b-10 center-block">
@@ -32,7 +33,7 @@
                   
                 </div> <!-- end card-box -->
 
-                <div class="card-box">
+               @*  <div class="card-box">
                     <h4 class="m-t-0 m-b-20 header-title">Profile Completion</h4>
                     <div class="p-b-10">
                         <p>Personal Details</p>
@@ -51,7 +52,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> *@
             </div> <!-- end col -->
 
 
@@ -59,14 +60,18 @@
                 <div class="">
                     <div class="">
                         <ul class="nav nav-tabs navtab-custom">
+                        
                             <li class="">
                                 <a href="#home" data-toggle="tab" aria-expanded="false">
                                     <span class="hidden-xs">Your Apartment</span>
                                 </a>
                             </li>
+                             <li class="">
+                                <a asp-controller="AboutUs" asp-action="ReportIncident" asp-route-id="@Model.Id"
+                                 class="btn btn-sm btn-outline-secondary">Log a call</a>
+                            </li>
                         </ul>
-                    <a asp-controller="AboutUs" asp-action="ReportIncident" asp-route-id="@Model.Id"
-                           class="btn btn-sm btn-outline-secondary">Log a call</a>
+                   
                     <div class="container">
                         <div class="card">
                             <div class="container-fliud">
@@ -112,7 +117,7 @@
                                         <div class="action">
                                             <a asp-controller="AboutUs" asp-action="ContactUs" asp-route-id="@Model.Apartments.Id"
                                                class="btn btn-sm btn-outline-secondary">Contact the Agent</a>
-                                            <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
+                                            @* <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> *@
                                         </div>
 
                                     </div>

@@ -7,10 +7,13 @@ namespace RentalsWebApp.Controllers
     public class AboutUsController : Controller
     {
         private readonly ISendMail _sendMail;
+        private readonly IDashboardRepository _dashboardRepository;
 
-        public AboutUsController(ISendMail sendMail)
+        public AboutUsController(ISendMail sendMail, IDashboardRepository dashboardRepository)
         {
             _sendMail = sendMail;
+            _dashboardRepository = dashboardRepository;
+
         }
         public IActionResult Index()
         {
@@ -31,17 +34,27 @@ namespace RentalsWebApp.Controllers
             return RedirectToAction("Index", "Apartments");
         }
         [HttpGet]
-        public IActionResult ReportIncident()
+        public async Task<IActionResult> ReportIncident(string id)
         {
-            return View();
+            var user = _dashboardRepository.GetUserById(id);
+            var apartment = _dashboardRepository.GetApartmentByUserId(id);
+            if (user == null) return View("Error");
+
+            var reportIncidentVM = new ReportIncidentViewModel
+            {
+                UserId = id,
+                ApartmentId = apartment.Id,
+            };
+
+            return View(reportIncidentVM);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReportIncident(SendMailViewModel sendmailVM)
+        public async Task<IActionResult> ReportIncident(ReportIncidentViewModel reportIncidentVM)
         {
             if (!ModelState.IsValid) return View("Error");
 
-            await _sendMail.SendMailAsync(sendmailVM);
+            await _sendMail.ReportIncident(reportIncidentVM);
             TempData["SuccessMessage"] = "Thank you for your message. Our Agent will be in touch soon!";
             return RedirectToAction("Index", "Apartments");
         }
