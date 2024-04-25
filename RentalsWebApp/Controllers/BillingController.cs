@@ -20,12 +20,13 @@ namespace RentalsWebApp.Controllers
             _webHostEnvironment = webHostEnvironment;
 
         }
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> Index()
         {
-            var month = await _billingRepository.GetMonth(id);
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var month = await _billingRepository.GetMonth(currentUserId);
             var m = month.Month;
-            Billing billing = await _billingRepository.GetMonthlyStatemets(id, m);
-            IEnumerable<BankAccount> accounts = await _billingRepository.GetAll(id);
+            Billing billing = await _billingRepository.GetMonthlyStatemets(currentUserId, m);
+            IEnumerable<BankAccount> accounts = await _billingRepository.GetAll(currentUserId);
 
             var billingVM = new BillingViewModel()
             {

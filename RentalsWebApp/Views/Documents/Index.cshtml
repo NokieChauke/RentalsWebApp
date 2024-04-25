@@ -12,7 +12,7 @@
   
 
     <nav class="nav nav-borders">
-        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
         <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
@@ -24,7 +24,7 @@
         @* <a id="add__new__list" position-absolute" data-toggle="modal" data-target=".bd-example-modal-lg" asp-area="" asp-controller="Account" asp-action="Register">Add Tenetnt</a> *@
         if(@Model == null){
             <h1>No documents yet!</h1>
-            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
         }
         <table class="table table-hover">
             <thead>

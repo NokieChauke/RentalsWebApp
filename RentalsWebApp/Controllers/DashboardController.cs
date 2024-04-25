@@ -172,9 +172,10 @@ namespace RentalsWebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Security(string id)
+        public async Task<IActionResult> Security()
         {
-            var user = await _dashboardRepository.GetUserById(id);
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var user = await _dashboardRepository.GetUserById(currentUserId);
             if (user == null) return View("Error");
             var userViewModel = new UserProfileViewModel()
             {
@@ -186,9 +187,10 @@ namespace RentalsWebApp.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> Notification(string id)
+        public async Task<IActionResult> Notification()
         {
-            var notification = await _dashboardRepository.GetNotificationsByUserId(id);
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var notification = await _dashboardRepository.GetNotificationsByUserId(currentUserId);
 
             if (notification == null) return View("Error");
 

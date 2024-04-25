@@ -22,14 +22,15 @@ namespace RentalsWebApp.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> Index()
         {
-            var docs = await _documentsRepository.GetUploadedDocuments(id);
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
             if (docs != null)
             {
                 var documentVM = new DocumentsDisplayViewModel()
                 {
-                    UserId = id,
+                    UserId = currentUserId,
                     IdCopy = docs.IdCard,
                     Contract = docs.Contract,
                     PaySlip = docs.Contract
