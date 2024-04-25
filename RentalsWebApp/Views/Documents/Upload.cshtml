@@ -4,7 +4,7 @@
 <h1>Upload Documents</h1>
 <!-- Account page navigation-->
 <nav class="nav nav-borders">
-    <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.AppUserId" target="__self">Account Details</a>
+    <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.AppUserId" target="__self">Account Details</a>
     <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.AppUserId" target="__self">Documents</a>
     <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.AppUserId" target="__self">Billing</a>
     @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
@@ -13,7 +13,6 @@
     }
     <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.AppUserId" target="__self">Notifications</a>
 </nav>
-<label class="small mb-1" for="inputNotificationEmail">Complete you profile to rent</label>
 <div class="col-xl-8">
     <!-- Account details card-->
     <div class="card mb-4">
@@ -51,7 +50,7 @@
                 else if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
                 {
                     <a asp-controller="Dashboard" asp-action="EditUserProfile" class="btn btn-sm btn-outline-secondary">Back</a>
-                    <button type="submit" class="btn btn-sm btn-outline-primary">Save and Continue</button>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Save and Continue</button>
                     <a asp-controller="Dashboard" asp-action="UserProfile" class="btn btn-sm btn-outline-secondary">Cancel</a>
                 }
 

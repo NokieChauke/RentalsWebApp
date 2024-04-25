@@ -12,7 +12,7 @@
 
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.UserId" target="__self">Account Details</a>
         <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>
         <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
@@ -70,9 +70,9 @@
     <div class="card card-header-actions mb-4">
         <div class="card-header">
             Add a Payment Account for debit order
-            <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="AddBankAccount" target="__self">Add new card</a>
+            <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="AddBankAccount" target="__self">Add new card</a>
             @* <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="ManualPayment" asp-route-id="@Model.UserId">Pay now</a> *@
-            <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="UploadProofOfPayment" asp-route-id="@Model.UserId">Upload POP</a>
+            <a class="btn btn-sm btn-outline-secondary" position="absolute" asp-controller="Billing" asp-action="UploadProofOfPayment" asp-route-id="@Model.UserId">Upload POP</a>
         </div>
 
         @foreach(var account in Model.BankAccount)
@@ -112,8 +112,8 @@
                         }
                          @*  *@
                         @* <div class="badge bg-light text-dark me-3">Default</div> *@
-                        <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Edit</a>
-                        <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="DeleteAccount" asp-route-id="@account.Id" target=" __self">Delete</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Edit</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="DeleteAccount" asp-route-id="@account.Id" target=" __self">Delete</a>
                     </div>
                 </div>
             </div>

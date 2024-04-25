@@ -1,11 +1,11 @@
 ﻿@using RentalsWebApp.ViewModels
-@model UserProfileViewModel
+@model NotificationsViewModel
 
 <h1>Notification</h1>
 <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.Id" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.Id" target="__self">Account Details</a>
         <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.Id" target="__self">Documents</a>
         <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.Id" target="__self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
@@ -14,7 +14,7 @@
         }
         <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.Id" target="__self">Notifications</a>
     </nav>
-
+    <form method="post" asp-action="Notification" enctype="multipart/form-data">
     @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
     {
         <hr class="mt-0 mb-4">
@@ -23,23 +23,24 @@
                 <!-- Email notifications preferences card-->
                 <div class="card card-header-actions mb-4">
                     <div class="card-header">
+                        
                         Email Notifications
                         <div class="form-check form-switch">
-                            <input class="form-check-input" id="flexSwitchCheckChecked" type="checkbox" checked="">
+                            <input class="form-check-input" asp-for="Email" id="flexSwitchCheckChecked" type="checkbox" checked="">
                             <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                         </div>
                         Push Notifications
                         <div class="form-check form-switch">
-                            <input class="form-check-input" id="smsToggleSwitch" type="checkbox" checked="">
+                            <input class="form-check-input" asp-for="SMS" id="smsToggleSwitch" type="checkbox" checked="">
                             <label class="form-check-label" for="smsToggleSwitch"></label>
                         </div>
                     </div>
                     <div class="card-body">
-                        <form>
+                        
                             <!-- Form Group (default email)-->
                             <div class="mb-3">
                                 <label class="small mb-1" for="inputNotificationEmail">Default notification email</label>
-                                <input class="form-control col-md-2" id="inputNotificationEmail" type="email" value="@Model.Email" disabled="">
+                                <input class="form-control col-md-2" id="inputNotificationEmail" type="email" value="@Model.EmailAddress" disabled="">
                             </div>
                             <!-- Form Group (default SMS number)-->
                             <div class="mb-3">
@@ -50,31 +51,34 @@
                             <div class="mb-0">
                                 <label class="small mb-2">Choose which types of email updates you receive</label>
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" id="checkAccountChanges" type="checkbox" checked="">
+                                    <input class="form-check-input" asp-for="AccountChanges" id="checkAccountChanges" type="checkbox" checked="">
                                     <label class="form-check-label" for="checkAccountChanges">Changes made to your account</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" id="checkAccountGroups" type="checkbox" checked="">
+                                    <input class="form-check-input" asp-for="StatementUpload" id="checkAccountGroups" type="checkbox" checked="">
                                     <label class="form-check-label" for="checkAccountGroups">Water and Electricity Bill statement upload </label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" id="checkProductNew" type="checkbox" checked="">
+                                    <input class="form-check-input" asp-for="NewApartment" id="checkProductNew" type="checkbox" checked="">
                                     <label class="form-check-label" for="checkProductNew">Information on new Apartments</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" id="checkPromotional" type="checkbox">
+                                    <input class="form-check-input" asp-for="TermsNConditions" id="checkPromotional" type="checkbox">
                                     <label class="form-check-label" for="checkPromotional">Changes in Terms and Conditions</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" id="checkSecurity" type="checkbox" checked="" disabled="">
+                                    <input class="form-check-input" asp-for="RentIncrease" id="checkSecurity" type="checkbox" checked="" disabled="">
                                     <label class="form-check-label" for="checkSecurity">Rent Increase</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" id="checkSecurity" type="checkbox" checked="" disabled="">
+                                    <input class="form-check-input" asp-for="Security" id="checkSecurity" type="checkbox" checked="" disabled="">
                                     <label class="form-check-label" for="checkSecurity">Security alerts</label>
                                 </div>
+                                <!-- Submit button-->
+                                <div>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Save Changes</button>
+                                </div>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -89,7 +93,7 @@
             <div class="card">
                 <div class="card-header">Notification Preferences</div>
                 <div class="card-body">
-                    <form>
+                   
                         <!-- Form Group (notification preference checkboxes)-->
                         <div class="form-check mb-2">
                             <input class="form-check-input" id="checkAutoGroup" type="checkbox" checked="">
@@ -99,13 +103,14 @@
                             <input class="form-check-input" id="checkAutoProduct" type="checkbox">
                             <label class="form-check-label" for="checkAutoProduct">Automatically subscribe to new product notifications</label>
                         </div>
-                        <!-- Submit button-->
-                        <button class="btn btn-danger-soft text-danger">Unsubscribe from all notifications</button>
-                    </form>
+                                           
+                    
                 </div>
+                
             </div>
-        </div>
-        
+        </div>                   
     }
+        
+    </form>
  
 </div>

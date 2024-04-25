@@ -20,9 +20,10 @@ namespace RentalsWebApp.Repository
             _userManager = userManager;
         }
 
-        public bool AddUser(AppUser user)
+        public bool AddUserNotifications(Notifications notifications)
         {
-            throw new NotImplementedException();
+            _context.Add(notifications);
+            return Save();
         }
 
         public bool DeleteUser(AppUser user)
@@ -49,6 +50,10 @@ namespace RentalsWebApp.Repository
             return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).FirstOrDefaultAsync(a => a.UserId == id);
         }
 
+        public async Task<Notifications> GetNotificationsByUserId(string id)
+        {
+            return await _context.Notifications.Include(a => a.AppUser).FirstOrDefaultAsync(a => a.UserId == id);
+        }
         public async Task<AppUser> GetUserByIdNoTracking(string id)
         {
             return await _context.Users.Where(u => u.Id == id).AsNoTracking().FirstOrDefaultAsync();

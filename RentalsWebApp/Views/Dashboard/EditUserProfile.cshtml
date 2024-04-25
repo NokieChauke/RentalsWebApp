@@ -1,13 +1,11 @@
 ﻿@using RentalsWebApp.ViewModels 
 @model EditUserProfileViewModel
 
-<h1>
-    <label class="small mb-1" for="inputNotificationEmail">Complete you profile to rent</label>
-</h1>
+<h1>Personal Details </h1>
 <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.Id" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfileByAdmin" asp-route-id="@Model.Id" target="__self">Account Details</a>
         <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.Id" target="__self">Documents</a>
         <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.Id" target="__self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
@@ -33,8 +31,6 @@
                         <label asp-for="ProfileImageUrl" class="control-label"></label>
                         <input asp-for="ProfileImageUrl" type="file" class="form-control" placeholder="Upload Profile Pic">
                         <span asp-validation-for="ProfileImageUrl" class="text-danger"></span></button>
-                    
-                    
                     </div>
                 </div>
             </div>
@@ -88,8 +84,8 @@
                         }
                         else if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
                         {
-                            <button type="submit" class="btn btn-sm btn-outline-primary">Save and Continue</button>
-                            <a asp-controller="Dashboard" asp-action="UserProfile" class="btn btn-sm btn-outline-primary">Cancel</a>
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Save and Continue</button>
+                            <a asp-controller="Dashboard" asp-action="UserProfile" class="btn btn-sm btn-outline-secondary">Cancel</a>
                             
                         }
                         

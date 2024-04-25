@@ -9,7 +9,8 @@ namespace RentalsWebApp.Interfaces
         Task<Apartments> GetApartmentByUserId(string id);
         Task<AppUser> GetCurrentUserById(string id);
         Task<AppUser> GetUserByIdNoTracking(string id);
-        bool AddUser(AppUser user);
+        Task<Notifications> GetNotificationsByUserId(string id);
+        bool AddUserNotifications(Notifications notifications);
         bool UpdateUser(AppUser user);
         bool DeleteUser(AppUser user);
         bool Save();

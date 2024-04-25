@@ -19,6 +19,7 @@ namespace RentalsWebApp.Data
         public DbSet<Documents> Documents { get; set; }
         public DbSet<ProofOfPayment> ProofOfPayment { get; set; }
         public DbSet<SendMailViewModel> MailData { get; set; }
+        public DbSet<Notifications> Notifications { get; set; }
 
 
 
