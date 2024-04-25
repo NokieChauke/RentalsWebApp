@@ -2,6 +2,10 @@
 @using RentalsWebApp.ViewModels
 @model AllocateTenantViewModel
 
+@{
+    ViewData["Title"] = "Allocate a Tenant";
+}
+
 <h1>Allocate tenent</h1>
 <form method="post" asp-action="AllocateTenant" enctype="multipart/form-data">
     <input type="hidden" value="UserId" id="UserId" />

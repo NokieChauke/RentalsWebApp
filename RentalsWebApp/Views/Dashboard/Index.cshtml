@@ -1,6 +1,10 @@
 ﻿@using RentalsWebApp.ViewModels
 @model List<TenantsListViewModel>
 
+@{
+    ViewData["Title"] = "Manage Tenants";
+}
+
 <h1 class="display-6 fw-normal">User Dashbord</h1>
 <a type="button" class="btn btn-primary" asp-area="" asp-controller="Apartments" asp-action="Create">Add Apartment</a>
 <div class="album py-5 bg-light">

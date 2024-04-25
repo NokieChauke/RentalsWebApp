@@ -1,6 +1,10 @@
 ﻿@using RentalsWebApp.ViewModels
 @model BillingViewModel
 
+@{
+    ViewData["Title"] = "Banking Details";
+}
+
 <nav class="nav nav-borders">
     <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
     <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>

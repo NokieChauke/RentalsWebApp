@@ -2,6 +2,10 @@
 @using RentalsWebApp.ViewModels
 @model EditApartmentViewModel
 
+@{
+    ViewData["Title"] = "Edit Apartment";
+}
+
 <h1>Edit Apartment</h1>
 <form method="post" asp-action="Edit" enctype="multipart/form-data">
     <input type="hidden" value="AddressId" id="AddressId"/>
