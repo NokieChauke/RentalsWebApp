@@ -149,6 +149,86 @@ namespace RentalsWebApp.Controllers
             return View(documentsVM);
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EditDocuments()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string fileName = Path.GetFileName(docs.PaySlip);
+            string path = Path.Combine(webRootPath + "/documents/payslip/" + fileName);
+
+            var file = File(System.IO.File.OpenRead(path), "image/jpeg", Path.GetFileName(path));
+
+            var editDocumentsVM = new EditDocumentsViewModel
+            {
+                AppUserId = currentUserId,
+                Contract = (IFormFile)file,
+                IdCopy = (IFormFile)file,
+                PaySlip = (IFormFile)file
+
+
+            };
+            return View(editDocumentsVM);
+        }
+        //[HttpPost]
+        //public async Task<IActionResult> EditDocuments(EditDocumentsViewModel editDocumentsVM)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        string webRootPath = _webHostEnvironment.WebRootPath;
+        //        string iFileName = Path.GetFileNameWithoutExtension(documentsVM.IdCard.FileName);
+        //        string iExtention = Path.GetExtension(documentsVM.IdCard.FileName);
+        //        string idCopyFileName = iFileName + DateTime.Now.ToString("yymmddhhmm") + iExtention;
+        //        string iPath = Path.Combine(webRootPath + "/documents/idcopy/", idCopyFileName);
+
+        //        using (var fileStream = new FileStream(iPath, FileMode.Create))
+        //        {
+        //            await documentsVM.IdCard.CopyToAsync(fileStream);
+        //        }
+
+        //        string cFileName = Path.GetFileNameWithoutExtension(documentsVM.Contract.FileName);
+        //        string cExtention = Path.GetExtension(documentsVM.Contract.FileName);
+        //        string contractFileName = cFileName + DateTime.Now.ToString("yymmddhhmm") + cExtention;
+        //        string cPath = Path.Combine(webRootPath + "/documents/contract/", contractFileName);
+
+        //        using (var fileStream = new FileStream(cPath, FileMode.Create))
+        //        {
+        //            await documentsVM.Contract.CopyToAsync(fileStream);
+        //        }
+
+        //        string pFileName = Path.GetFileNameWithoutExtension(documentsVM.PaySlip.FileName);
+        //        string pExtention = Path.GetExtension(documentsVM.PaySlip.FileName);
+        //        string payslipFileName = pFileName + DateTime.Now.ToString("yymmddhhmm") + pExtention;
+        //        string pPath = Path.Combine(webRootPath + "/documents/payslip/", payslipFileName);
+
+        //        using (var fileStream = new FileStream(cPath, FileMode.Create))
+        //        {
+        //            await documentsVM.PaySlip.CopyToAsync(fileStream);
+        //        }
+
+        //        var newDocuments = new Documents()
+        //        {
+        //            AppUserId = documentsVM.AppUserId,
+        //            IdCard = iPath,
+        //            Contract = cPath,
+        //            PaySlip = pPath
+        //        };
+
+        //        _documentsRepository.Add(newDocuments);
+        //        return RedirectToAction("Index");
+
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("", "Documents upload failed");
+
+        //    }
+        //    return View(documentsVM);
+
+        //}
     }
 
 }

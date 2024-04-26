@@ -41,7 +41,7 @@
                             <td>@Model.IdCopy</td>
                             <td>@DateTime.Now</td>
                             <td>
-                                <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
+                                <a asp-controller="Documents" asp-action="EditDocuments"
                                     class="btn btn-sm btn-outline-secondary">Edit</a>
                                 <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
                             </td>
@@ -54,8 +54,8 @@
                             <td>@Model.Contract</td>
                             <td>@DateTime.Now</td>
                             <td>
-                                <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
-                                    class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a asp-controller="Documents" asp-action="EditDocuments"
+                                   class="btn btn-sm btn-outline-secondary">Edit</a>
                                 <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
                             </td>
                             <td>
@@ -67,7 +67,7 @@
                             <td>@Model.PaySlip</td>
                             <td>@DateTime.Now</td>
                             <td>
-                                <a asp-controller="Documents" asp-action="OpenPayslip" asp-route-id="@Model.UserId"
+                                <a asp-controller="Documents" asp-action="EditDocuments"
                                     class="btn btn-sm btn-outline-secondary">Edit</a>
                                 <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
                             </td>
