@@ -31,14 +31,59 @@ namespace RentalsWebApp.Controllers
                 var documentVM = new DocumentsDisplayViewModel()
                 {
                     UserId = currentUserId,
-                    IdCopy = docs.IdCard,
-                    Contract = docs.Contract,
-                    PaySlip = docs.Contract
+                    IdCopy = Path.GetFileName(docs.IdCard),
+                    Contract = Path.GetFileName(docs.Contract),
+                    PaySlip = Path.GetFileName(docs.Contract)
                 };
                 return View(documentVM);
 
             }
+            else
+            {
+                return RedirectToAction("NoDocuments");
+            }
             return View();
+
+        }
+        public IActionResult NoDocuments()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> OpenIDCopy()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string fileName = Path.GetFileName(docs.IdCard);
+            string path = Path.Combine(webRootPath + "/documents/idcopy/" + fileName);
+
+            return new FileStreamResult(new FileStream(path, FileMode.Open), "image/jpeg");
+
+        }
+        public async Task<IActionResult> OpenContract()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string fileName = Path.GetFileName(docs.Contract);
+            string path = Path.Combine(webRootPath + "/documents/contract/" + fileName);
+
+            return new FileStreamResult(new FileStream(path, FileMode.Open), "image/jpeg");
+
+        }
+        public async Task<IActionResult> OpenPayslip()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string fileName = Path.GetFileName(docs.PaySlip);
+            string path = Path.Combine(webRootPath + "/documents/payslip/" + fileName);
+
+            return new FileStreamResult(new FileStream(path, FileMode.Open), "image/jpeg");
 
         }
         [HttpGet]
@@ -93,7 +138,7 @@ namespace RentalsWebApp.Controllers
                 };
 
                 _documentsRepository.Add(newDocuments);
-                return RedirectToAction("Index", "Billing", new { id = newDocuments.AppUserId });
+                return RedirectToAction("Index");
 
             }
             else

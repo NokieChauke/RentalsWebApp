@@ -5,81 +5,81 @@
     ViewData["Title"] = "User Documents";
 }
 
-<h1 class="display-6 fw-normal">Uploaded Doduments</h1>
-<a type="button" class="btn btn-primary" asp-area="" asp-controller="Documents" asp-action="Upload">Upload Documents</a>
-
-<div class="container my-5">
-  
-
+<h1>Uploaded Documents</h1>
+<div class="container-xl px-4 mt-4">
+    <!-- Account page navigation-->
     <nav class="nav nav-borders">
         <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
-        <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
+        <a class="nav-link" asp-controller="Documents" asp-action="Index" target="__self">Documents</a>
+        <a class="nav-link" asp-controller="Billing" asp-action="Index" target="__self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
-            <a class="nav-link" asp-controller="Dashboard" asp-action="Security" asp-route-id="@Model.UserId" target="__self">Security</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
         }
-        
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
     </nav>
+    <hr class="mt-0 mb-4">
     <div class="card">
-        @* <a id="add__new__list" position-absolute" data-toggle="modal" data-target=".bd-example-modal-lg" asp-area="" asp-controller="Account" asp-action="Register">Add Tenetnt</a> *@
-        if(@Model == null){
-            <h1>No documents yet!</h1>
-            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
-        }
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Document Type</th>
-                    <th scope="col">Date Uploaded</th>
-                    <th scope="col">Manage </th>
+        <div class="col-lg-12">
+            <!-- Email notifications preferences card-->
+            <div class="card-header">User Documents</div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Document Type</th>
+                        <th scope="col">File Name</th>
+                        <th scope="col">Date Uploaded</th>
+                        <th scope="col">Manage </th>
+                        <th scope="col">Details </th>
                    
-                </tr>
-            </thead> 
-            @{
-                <tbody>
-                    <tr>
-                        <th scope="row"></th>
-                        <td>@Model.IdCopy</td>
-                        <td>@DateTime.Now</td>
-                        <td>
-                            <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
-                               class="btn btn-sm btn-outline-secondary">Edit</a>
-                            <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
-                        </td>
-                        <td>
-                            <a asp-controller="Dashboard" asp-action="UserProfile" asp-route-id="@Model.UserId" class="btn btn-sm btn-outline-secondary">Detail</a>
-                        </td>
                     </tr>
-                    <tr>
-                        <th scope="row"></th>
-                        <td>@Model.Contract</td>
-                        <td>@DateTime.Now</td>
-                        <td>
-                            <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
-                               class="btn btn-sm btn-outline-secondary">Edit</a>
-                            <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
-                        </td>
-                        <td>
-                            <a asp-controller="Dashboard" asp-action="UserProfile" asp-route-id="@Model.UserId" class="btn btn-sm btn-outline-secondary">Detail</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"></th>
-                        <td>@Model.PaySlip</td>
-                        <td>@DateTime.Now</td>
-                        <td>
-                            <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
-                               class="btn btn-sm btn-outline-secondary">Edit</a>
-                            <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
-                        </td>
-                        <td>
-                            <a asp-controller="Dashboard" asp-action="UserProfile" asp-route-id="@Model.UserId" class="btn btn-sm btn-outline-secondary">Detail</a>
-                        </td>
-                    </tr>
-                </tbody>
-            }
+                </thead> 
+                @{
+                    <tbody>
+                        <tr>
+                            <th scope="row">ID Copy</th>
+                            <td>@Model.IdCopy</td>
+                            <td>@DateTime.Now</td>
+                            <td>
+                                <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
+                                    class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
+                            </td>
+                            <td>
+                                <a asp-controller="Documents" asp-action="OpenIdCopy" class="btn btn-sm btn-outline-secondary">View</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contract</th>
+                            <td>@Model.Contract</td>
+                            <td>@DateTime.Now</td>
+                            <td>
+                                <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId"
+                                    class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
+                            </td>
+                            <td>
+                                <a asp-controller="Documents" asp-action="OpenContract"  class="btn btn-sm btn-outline-secondary">View</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Payslip</th>
+                            <td>@Model.PaySlip</td>
+                            <td>@DateTime.Now</td>
+                            <td>
+                                <a asp-controller="Documents" asp-action="OpenPayslip" asp-route-id="@Model.UserId"
+                                    class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i> delete</a>
+                            </td>
+                            <td>
+                                <a asp-controller="Documents" asp-action="OpenPayslip" class="btn btn-sm btn-outline-secondary">View</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
          
-        </table>
+            </table>
+            
+        </div>
     </div>
 </div>

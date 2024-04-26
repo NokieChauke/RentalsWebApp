@@ -9,7 +9,7 @@
 <h1>Proof of Payment Upload</h1>
 <!-- Account page navigation-->
 <nav class="nav nav-borders">
-    <a class="nav-link active ms-0" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+    <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
     <a class="nav-link" asp-controller="Dashboard" asp-action="Billing" target="__self">Billing</a>
     @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
     {
