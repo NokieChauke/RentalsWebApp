@@ -86,6 +86,122 @@ namespace RentalsWebApp.Controllers
             return new FileStreamResult(new FileStream(path, FileMode.Open), "image/jpeg");
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EditId(int id)
+        {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+
+            var editDocumentsVM = new EditDocumentsViewModel
+            {
+                Id = id,
+                AppUserId = currentUserId,
+
+            };
+            return View(editDocumentsVM);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditId(int id, EditDocumentsViewModel editDocumentsVM)
+        {
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string iFileName = Path.GetFileNameWithoutExtension(editDocumentsVM.IdCopy.FileName);
+            string iExtention = Path.GetExtension(editDocumentsVM.IdCopy.FileName);
+            string idCopyFileName = iFileName + DateTime.Now.ToString("yymmddhhmm") + iExtention;
+            string iPath = Path.Combine(webRootPath + "/documents/idcopy/", idCopyFileName);
+
+            using (var fileStream = new FileStream(iPath, FileMode.Create))
+            {
+                await editDocumentsVM.IdCopy.CopyToAsync(fileStream);
+            }
+
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+            docs.IdCard = iPath;
+
+            _documentsRepository.Update(docs);
+            return RedirectToAction("Index");
+
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditContract(int id)
+        {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+
+            var editDocumentsVM = new EditDocumentsViewModel
+            {
+                Id = id,
+                AppUserId = currentUserId,
+
+            };
+            return View(editDocumentsVM);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditContract(int id, EditDocumentsViewModel editDocumentsVM)
+        {
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string fileName = Path.GetFileNameWithoutExtension(editDocumentsVM.Contract.FileName);
+            string extention = Path.GetExtension(editDocumentsVM.Contract.FileName);
+            string idCopyFileName = fileName + DateTime.Now.ToString("yymmddhhmm") + extention;
+            string path = Path.Combine(webRootPath + "/documents/contract/", idCopyFileName);
+
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await editDocumentsVM.Contract.CopyToAsync(fileStream);
+            }
+
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+            docs.Contract = path;
+
+            _documentsRepository.Update(docs);
+            return RedirectToAction("Index");
+
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditPayslip(int id)
+        {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+
+            var editDocumentsVM = new EditDocumentsViewModel
+            {
+                Id = id,
+                AppUserId = currentUserId,
+
+            };
+            return View(editDocumentsVM);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditPayslip(int id, EditDocumentsViewModel editDocumentsVM)
+        {
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string iFileName = Path.GetFileNameWithoutExtension(editDocumentsVM.PaySlip.FileName);
+            string iExtention = Path.GetExtension(editDocumentsVM.PaySlip.FileName);
+            string idCopyFileName = iFileName + DateTime.Now.ToString("yymmddhhmm") + iExtention;
+            string iPath = Path.Combine(webRootPath + "/documents/payslip/", idCopyFileName);
+
+            using (var fileStream = new FileStream(iPath, FileMode.Create))
+            {
+                await editDocumentsVM.PaySlip.CopyToAsync(fileStream);
+            }
+
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+            docs.PaySlip = iPath;
+
+            _documentsRepository.Update(docs);
+            return RedirectToAction("Index");
+
+
+        }
+
         [HttpGet]
         public IActionResult Upload()
         {
@@ -157,7 +273,7 @@ namespace RentalsWebApp.Controllers
             var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
 
             string webRootPath = _webHostEnvironment.WebRootPath;
-            string fileName = Path.GetFileName(docs.PaySlip);
+            string fileName = Path.GetFileName(docs.IdCard);
             string path = Path.Combine(webRootPath + "/documents/payslip/" + fileName);
 
             var file = File(System.IO.File.OpenRead(path), "image/jpeg", Path.GetFileName(path));

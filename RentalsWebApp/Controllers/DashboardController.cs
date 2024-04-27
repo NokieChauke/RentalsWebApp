@@ -1,4 +1,5 @@
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RentalsWebApp.Interfaces;
 using RentalsWebApp.Models;
@@ -11,15 +12,17 @@ namespace RentalsWebApp.Controllers
         private readonly IDashboardRepository _dashboardRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IPhotoService _photoService;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IApartmentsRepository _apartmentsRepository;
 
         public DashboardController(IDashboardRepository dashboardRepository,
             IHttpContextAccessor httpContextAccessor, IPhotoService photoService,
-            IApartmentsRepository apartmentsRepository)
+            UserManager<AppUser> userManager, IApartmentsRepository apartmentsRepository)
         {
             _dashboardRepository = dashboardRepository;
             _httpContextAccessor = httpContextAccessor;
             _photoService = photoService;
+            _userManager = userManager;
             _apartmentsRepository = apartmentsRepository;
 
         }
@@ -172,20 +175,40 @@ namespace RentalsWebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Security()
         {
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
             var user = await _dashboardRepository.GetUserById(currentUserId);
             if (user == null) return View("Error");
-            var userViewModel = new UserProfileViewModel()
+            var secutityVM = new SecurityViewModel()
             {
                 Id = user.Id,
                 PhoneNumber = user.PhoneNumber
             };
 
-            return View(userViewModel);
+            return View(secutityVM);
 
         }
+        [HttpPost]
+        public async Task<IActionResult> Security(SecurityViewModel securityVM)
+        {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var user = await _dashboardRepository.GetUserById(currentUserId);
+            if (ModelState.IsValid)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, securityVM.CurrentPassword, securityVM.NewPassword);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("UserProfile", "Dashboard");
+                }
+            }
+
+            TempData["Error"] = "Wrong credentials. Please try again";
+            return View(securityVM);
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> Notification()
         {

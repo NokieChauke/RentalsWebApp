@@ -1,5 +1,5 @@
 ﻿@using RentalsWebApp.ViewModels
-@model UserProfileViewModel
+@model SecurityViewModel
 
 @{
     ViewData["Title"] = "Securuty";
@@ -25,22 +25,30 @@
             <div class="card mb-4">
                 <div class="card-header">Change Password</div>
                 <div class="card-body">
-                    <form>
+                    <form method="post" asp-action="Security" enctype="multipart/form-data">
+                        <input type="hidden" id="Id" name="Id" asp-for="Id" />
+                        <input type="hidden" id="PhoneNumber" name="PhoneNumber" asp-for="PhoneNumber"/>
                         <!-- Form Group (current password)-->
                         <div class="mb-3">
-                            <label class="small mb-1" for="currentPassword">Current Password</label>
-                            <input class="form-control" id="currentPassword" type="password" placeholder="Enter current password">
+                            <label asp-for="CurrentPassword" class="control-label"></label>
+                            <input asp-for="CurrentPassword" class="form-control" placeholder="Current Password">
+                            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
                         </div>
                         <!-- Form Group (new password)-->
                         <div class="mb-3">
-                            <label class="small mb-1" for="newPassword">New Password</label>
-                            <input class="form-control" id="newPassword" type="password" placeholder="Enter new password">
+                            <label asp-for="NewPassword" class="control-label"></label>
+                            <input asp-for="NewPassword" class="form-control" placeholder="New Password">
+                            <span asp-validation-for="NewPassword" class="text-danger"></span>
                         </div>
                         <!-- Form Group (confirm password)-->
                         <div class="mb-3">
-                            <label class="small mb-1" for="confirmPassword">Confirm Password</label>
-                            <input class="form-control" id="confirmPassword" type="password" placeholder="Confirm new password">
+                            <label asp-for="ConfirmPassword" class="control-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
+                        <button class="btn btn-sm btn-outline-secondary" type="submit">Save changes</button>
+                        <a asp-controller="Dashboard" asp-action="UserProfile"
+                           class="btn btn-sm btn-outline-secondary">Cancel</a>
                     </form>
                 </div>
             </div>
@@ -64,7 +72,7 @@
                             <label class="small mb-1" for="twoFactorSMS">SMS Number</label>
                             <input class="form-control" id="twoFactorSMS" type="tel" placeholder="Enter a phone number" value="@Model.PhoneNumber">
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary" type="button">Save changes</button>
+                        
                     </form>
                 </div>
             </div>

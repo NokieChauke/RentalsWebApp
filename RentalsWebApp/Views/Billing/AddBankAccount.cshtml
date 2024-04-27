@@ -41,7 +41,7 @@
         <span asp-validation-for="BranchCode" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group col-md-4">
         <label asp-for="ExpiryDate"></label>
         <input asp-for="ExpiryDate"  class="form-control" placeholder="">
         <span asp-validation-for="ExpiryDate" class="text-danger"></span>
@@ -51,6 +51,7 @@
         <input asp-for="CSV" class="form-control" placeholder="1123">
         <span asp-validation-for="CSV" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
+    
+    <button type="submit" class="btn btn-sm btn-outline-secondary">Save</button>
+    <a class="btn btn-sm btn-outline-secondary"  asp-controller="Billing" asp-action="Index">Cancel</a>
 </form>
