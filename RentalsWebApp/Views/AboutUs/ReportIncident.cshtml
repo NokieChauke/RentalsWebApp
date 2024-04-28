@@ -7,42 +7,55 @@
     ViewData["Title"] = "Report Incident";
 }
 
-<div id="contact" class="contact-area section-padding">
-	<div class="container">
-		<div class="section-title text-center">
-			<h1>Report an issue</h1
-		</div>
-		<div class="row">
-			<div class="col-lg-7">
-				<div class="contact">
-					<form method="post" asp-controller="AboutUs" asp-action="ReportIncident" enctype="multipart/form-data" onsubmit="return validation();">
-						<div class="row">
-							<input asp-for="UserId" type="hidden" class="form-control">
-							<input asp-for="ApartmentId" type="hidden" class="form-control">
+<h1>Report an Issue</h1>
+<!-- Account page navigation-->
+<nav class="nav nav-borders">
+    <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+    <a class="nav-link" asp-controller="Dashboard" asp-action="Billing" target="__self">Billing</a>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+    {
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+    }
+    <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+</nav>
+<hr class="mt-0 mb-4">
+<div class="col-xl-8">
+    <!-- Account details card-->
+    <div class="card mb-12">
+        <div class="card-header">Report Incident</div>
+        <div class="card-body">
+            <div class="col-lg-12">
+                <div class="contact">
+                    <form method="post" asp-controller="AboutUs" asp-action="ReportIncident" enctype="multipart/form-data" onsubmit="return validation();">
+                        <div class="row">
+                    
+                            <input asp-for="UserId" type="hidden" class="form-control">
+                            <input asp-for="ApartmentId" type="hidden" class="form-control">
 
-							<div class="form-group col-md-6">
-								<input asp-for="EmailToId" class="form-control" placeholder="Enter your email" required="required">
-								<span asp-validation-for="EmailToId" class="text-danger"></span>
-							</div>
-							<div class="form-group col-md-6">
-								
-								<select asp-for="IncidentCategory" class="form-control" asp-items="@Html.GetEnumSelectList<IncidentCategory>()">
-									<option selected>Select incident type...</option>
-									<option>...</option>
-								</select>
-								<span asp-validation-for="IncidentCategory" class="text-danger"></span>
-							</div>
-							<div class="form-group col-md-12">
-								<textarea asp-for="MoreDetails" rows="6" class="form-control" placeholder="Incident deails" required="required"></textarea>
-								<span asp-validation-for="MoreDetails" class="text-danger"></span>
-							</div>
-							<div class="col-md-12 text-center">
-								<button type="submit" value="Send message" name="submit" id="submitButton" class="btn btn-contact-bg" title="Log Your Call!">Log call</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div><!--- END COL -->
-		</div>
-	</div>
+                            <div class="form-group col-md-6">
+                                <input asp-for="EmailToId" class="form-control" placeholder="Enter your email" required="required">
+                                <span asp-validation-for="EmailToId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                
+                                <select asp-for="IncidentCategory" class="form-control" asp-items="@Html.GetEnumSelectList<IncidentCategory>()">
+                                    <option selected>Select incident type...</option>
+                                    <option>...</option>
+                                </select>
+                                <span asp-validation-for="IncidentCategory" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <textarea asp-for="MoreDetails" rows="6" class="form-control" placeholder="Incident deails" required="required"></textarea>
+                                <span asp-validation-for="MoreDetails" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12 text-center">
+                                <button type="submit" value="Send message" name="submit" id="submitButton" class="btn btn-contact-bg" title="Log Your Call!">Log call</button>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
