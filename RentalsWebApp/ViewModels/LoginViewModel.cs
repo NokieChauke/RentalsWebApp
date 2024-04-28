@@ -4,7 +4,7 @@ namespace RentalsWebApp.ViewModels
 {
     public class LoginViewModel
     {
-        [Display(Name = "EmailAddress")]
+        [Display(Name = "Email Address")]
         [Required(ErrorMessage = "The email address is required")]
         public string EmailAddress { get; set; }
 

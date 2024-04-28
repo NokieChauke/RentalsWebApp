@@ -8,52 +8,62 @@
 
 
 <h1>Edit Payment Card</h1>
-<form method="post" asp-action="EditAccount" enctype="multipart/form-data">
+<div class="container-xl px-8 nt-8">
+    <hr class="mt-0 mb-8">
+    <div class="col-xl-8">
+        <div class="card mb-8">
+            <div class="card-header">Edit Bank Account</div>
+            <div class="card-body">
+                <form method="post" asp-action="EditAccount" enctype="multipart/form-data">
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    @* <input type="hidden" id="Id" name="Id" asp-for="Id" /> *@
-    <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId" />
-    <div class="form-group col-md-4">
-        <label asp-for="CardDescreption"></label>
-        <select asp-for="CardDescreption" class="form-control" asp-items="@Html.GetEnumSelectList<AccountCategory>()">
-            <option selected>Select...</option>
-            <option>...</option>
-        </select>
-        <span asp-validation-for="CardDescreption" class="text-danger"></span>
-    </div>
-    <div class="form-group col-md-4">
-        <label asp-for="BankName"></label>
-        <input asp-for="BankName" class="form-control" placeholder="Apartment, studio, or floor">
-        <span asp-validation-for="BankName" class="text-danger"></span>
-    </div>
-    <div class="form-group col-md-4">
-        <label asp-for="AccountHolder"></label>
-        <input asp-for="AccountHolder" class="form-control" placeholder="Johannesburg">
-        <span asp-validation-for="AccountHolder" class="text-danger"></span>
-    </div>
-    <div class="form-group col-md-4">
-        <label asp-for="CardNumber"></label>
-        <input asp-for="CardNumber" class="form-control" placeholder="One room with a shawer"></input>
-        <span asp-validation-for="CardNumber" class="text-danger"></span>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @* <input type="hidden" id="Id" name="Id" asp-for="Id" /> *@
+                    <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId" />
+                    <div class="form-group col-md-8">
+                        <label asp-for="CardDescreption"></label>
+                        <select asp-for="CardDescreption" class="form-control" asp-items="@Html.GetEnumSelectList<AccountCategory>()">
+                            <option selected>Select...</option>
+                            <option>...</option>
+                        </select>
+                        <span asp-validation-for="CardDescreption" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label asp-for="BankName"></label>
+                        <input asp-for="BankName" class="form-control" placeholder="Apartment, studio, or floor">
+                        <span asp-validation-for="BankName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label asp-for="AccountHolder"></label>
+                        <input asp-for="AccountHolder" class="form-control" placeholder="Johannesburg">
+                        <span asp-validation-for="AccountHolder" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label asp-for="CardNumber"></label>
+                        <input asp-for="CardNumber" class="form-control" placeholder="One room with a shawer"></input>
+                        <span asp-validation-for="CardNumber" class="text-danger"></span>
 
-    </div>
-    <div class="form-group col-md-4">
-        <label asp-for="BranchCode"></label>
-        <input asp-for="BranchCode" class="form-control" placeholder="2500">
-        <span asp-validation-for="BranchCode" class="text-danger"></span>
-    </div>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label asp-for="BranchCode"></label>
+                        <input asp-for="BranchCode" class="form-control" placeholder="2500">
+                        <span asp-validation-for="BranchCode" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group col-md-4">
-        <label asp-for="ExpiryDate"></label>
-        <input asp-for="ExpiryDate" class="form-control" placeholder="">
-        <span asp-validation-for="ExpiryDate" class="text-danger"></span>
-    </div>
-    <div class="form-group col-md-2">
-        <label asp-for="CSV"></label>
-        <input asp-for="CSV" class="form-control" placeholder="1123">
-        <span asp-validation-for="CSV" class="text-danger"></span>
-    </div>
+                    <div class="form-group col-md-8">
+                        <label asp-for="ExpiryDate"></label>
+                        <input asp-for="ExpiryDate" class="form-control" placeholder="">
+                        <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="CSV"></label>
+                        <input asp-for="CSV" class="form-control" placeholder="1123">
+                        <span asp-validation-for="CSV" class="text-danger"></span>
+                    </div>
 
-    <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
-    <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="index" asp-route-id="@Model.AppUserId" target=" __self">Cancel</a>
-</form>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
+                    <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="index" target=" __self">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
