@@ -215,44 +215,89 @@ namespace RentalsWebApp.Controllers
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
             var notification = await _dashboardRepository.GetNotificationsByUserId(currentUserId);
 
-            if (notification == null) return View("Error");
-
-            var notificationsVM = new NotificationsViewModel()
+            if (notification == null)
             {
-                UserId = notification.UserId,
-                PhoneNumber = notification.AppUser.PhoneNumber,
-                EmailAddress = notification.AppUser.Email,
-                SMS = notification.SMS,
-                Email = notification.Email,
-                AccountChanges = notification.AccountChanges,
-                StatementUpload = notification.StatementUpload,
-                NewApartment = notification.NewApartment,
-                TermsNConditions = notification.TermsNConditions,
-                RentIncrease = notification.RentIncrease,
-                Security = notification.Security
-            };
-
-            return View(notificationsVM);
+                var notificationsVM = new NotificationsViewModel()
+                {
+                    UserId = currentUserId,
+                    PhoneNumber = notification.AppUser.PhoneNumber,
+                    EmailAddress = notification.AppUser.Email,
+                    SMS = true,
+                    Email = true,
+                    AccountChanges = true,
+                    StatementUpload = true,
+                    NewApartment = true,
+                    TermsNConditions = true,
+                    RentIncrease = true,
+                    Security = true
+                };
+            }
+            else
+            {
+                var notificationsVM = new NotificationsViewModel()
+                {
+                    Id = notification.Id,
+                    UserId = notification.UserId,
+                    PhoneNumber = notification.AppUser.PhoneNumber,
+                    EmailAddress = notification.AppUser.Email,
+                    SMS = notification.SMS,
+                    Email = notification.Email,
+                    AccountChanges = notification.AccountChanges,
+                    StatementUpload = notification.StatementUpload,
+                    NewApartment = notification.NewApartment,
+                    TermsNConditions = notification.TermsNConditions,
+                    RentIncrease = notification.RentIncrease,
+                    Security = notification.Security
+                };
+                return View(notificationsVM);
+            }
+            return View(notification);
         }
         [HttpPost]
-        public async Task<IActionResult> Notification(string id, NotificationsViewModel notificationsVM)
+        public async Task<IActionResult> Notification(NotificationsViewModel notificationsVM)
         {
             if (ModelState == null) return View("Error");
 
-            var notifications = new Notifications
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var userNotification = _dashboardRepository.GetNotificationByUserIdNoTracking(currentUserId);
+
+
+            if (userNotification != null)
             {
-                UserId = id,
-                SMS = notificationsVM.SMS,
-                Email = notificationsVM.Email,
-                AccountChanges = notificationsVM.AccountChanges,
-                StatementUpload = notificationsVM.StatementUpload,
-                NewApartment = notificationsVM.NewApartment,
-                TermsNConditions = notificationsVM.TermsNConditions,
-                RentIncrease = notificationsVM.RentIncrease,
-                Security = notificationsVM.Security
-            };
-            _dashboardRepository.AddUserNotifications(notifications);
-            return RedirectToAction("Index");
+                var notifications = new Notifications
+                {
+                    Id = notificationsVM.Id,
+                    UserId = notificationsVM.UserId,
+                    SMS = notificationsVM.SMS,
+                    Email = notificationsVM.Email,
+                    AccountChanges = notificationsVM.AccountChanges,
+                    StatementUpload = notificationsVM.StatementUpload,
+                    NewApartment = notificationsVM.NewApartment,
+                    TermsNConditions = notificationsVM.TermsNConditions,
+                    RentIncrease = notificationsVM.RentIncrease,
+                    Security = notificationsVM.Security
+                };
+                _dashboardRepository.UpdateNotifications(notifications);
+                return RedirectToAction("EditUserProfile");
+            }
+            else
+            {
+                var notifications = new Notifications
+                {
+                    UserId = notificationsVM.UserId,
+                    SMS = notificationsVM.SMS,
+                    Email = notificationsVM.Email,
+                    AccountChanges = notificationsVM.AccountChanges,
+                    StatementUpload = notificationsVM.StatementUpload,
+                    NewApartment = notificationsVM.NewApartment,
+                    TermsNConditions = notificationsVM.TermsNConditions,
+                    RentIncrease = notificationsVM.RentIncrease,
+                    Security = notificationsVM.Security
+                };
+                _dashboardRepository.AddUserNotifications(notifications);
+                return RedirectToAction("EditUserProfile");
+            }
+
         }
     }
 }

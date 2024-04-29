@@ -24,6 +24,21 @@ namespace RentalsWebApp.Services
                     subject: "Login Credentials",
                     body: message));
         }
+        public Task ResetPassword(ForgotPasswordViewModel forgotPasswordVM)
+        {
+            var message = String.Format("Reset your password\r\nClick on the button below within the next 60 minutes to reset your password for your account {0} Click  <a href={1}>Here</a> to change.", forgotPasswordVM, "https://localhost:7076//Dashboard//Security");
+            var client = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential("xiwitsimathebula@gmail.com", "ypgzwxfsdqtgonyv"),
+                EnableSsl = true
+            };
+            return client.SendMailAsync(
+                new MailMessage(
+                    from: "xiwitsimathebula@gmail.com",
+                    to: forgotPasswordVM.EmailAddress,
+                    subject: "Reset Password",
+                    body: message));
+        }
 
         public Task SendMailAsync(SendMailViewModel sendMailViewModel)
         {

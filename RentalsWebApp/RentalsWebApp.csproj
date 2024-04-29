@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\documents\idcopy\" />
     <Folder Include="wwwroot\documents\contract\" />
+    <Folder Include="wwwroot\documents\idcopy\" />
     <Folder Include="wwwroot\documents\payslip\" />
     <Folder Include="wwwroot\documents\pop\" />
     <Folder Include="wwwroot\documents\statements\" />

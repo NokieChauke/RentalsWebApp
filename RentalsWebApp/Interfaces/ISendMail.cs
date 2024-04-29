@@ -6,6 +6,7 @@ namespace RentalsWebApp.Interfaces
     {
         Task SendMailAsync(SendMailViewModel sendMailViewModel);
         Task NewUserEmail(RegisterViewModel user);
+        Task ResetPassword(ForgotPasswordViewModel pass);
         Task ReportIncident(ReportIncidentViewModel reportIncidentViewModel);
     }
 }

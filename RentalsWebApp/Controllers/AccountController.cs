@@ -75,53 +75,30 @@ namespace RentalsWebApp.Controllers
 
         }
         [HttpGet]
-        public IActionResult Rent()
+        public IActionResult ForgotPassword()
         {
-            var response = new LoginViewModel();
+            var response = new ForgotPasswordViewModel();
             return View(response);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Rent(LoginViewModel loginVM)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordVM)
         {
-            if (!ModelState.IsValid) return View(loginVM);
+            if (!ModelState.IsValid) return View(forgotPasswordVM);
 
-            var user = await _userManager.FindByEmailAsync(loginVM.EmailAddress);
+            var user = await _userManager.FindByEmailAsync(forgotPasswordVM.EmailAddress);
 
             if (user != null)
             {
-                //User is found, check password
-                var passwordCheck = await _userManager.CheckPasswordAsync(user, loginVM.Password);
-                if (passwordCheck)
-                {
-                    //Password correct, sign in
-                    var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
-                    if (result.Succeeded)
-                    {
-                        if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
-                        {
-                            return RedirectToAction("Index", "Dashboard");
-                        }
-                        else if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
-                        {
-                            return RedirectToAction("UserProfile", "Dashboard");
-
-                        }
-
-                    }
-
-
-                }
-                //Password is incorrect
-                TempData["Error"] = "Wrong credentials. Please try again";
-                return View(loginVM);
+                await _sendMail.ResetPassword(forgotPasswordVM);
+                return RedirectToAction("Login");
             }
-            //User not found
-            TempData["Error"] = "Wrong credentials. Please try again";
-            return View(loginVM);
-
-
+            else
+            {
+                TempData["Error"] = "User does not exist";
+                return View(forgotPasswordVM);
+            }
         }
         [HttpGet]
         public IActionResult TermsAndConditions()

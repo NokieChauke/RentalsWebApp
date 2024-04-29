@@ -45,6 +45,7 @@ namespace RentalsWebApp.Repository
         {
             return await _context.Users.FindAsync(id);
         }
+
         public async Task<Apartments> GetApartmentByUserId(string id)
         {
             return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).FirstOrDefaultAsync(a => a.UserId == id);
@@ -53,6 +54,10 @@ namespace RentalsWebApp.Repository
         public async Task<Notifications> GetNotificationsByUserId(string id)
         {
             return await _context.Notifications.Include(a => a.AppUser).FirstOrDefaultAsync(a => a.UserId == id);
+        }
+        public async Task<Notifications> GetNotificationByUserIdNoTracking(string id)
+        {
+            return await _context.Notifications.Include(a => a.AppUser).AsNoTracking().FirstOrDefaultAsync(a => a.UserId == id);
         }
         public async Task<AppUser> GetUserByIdNoTracking(string id)
         {
@@ -69,6 +74,11 @@ namespace RentalsWebApp.Repository
         public bool UpdateUser(AppUser user)
         {
             _context.Update(user);
+            return Save();
+        }
+        public bool UpdateNotifications(Notifications notificaions)
+        {
+            _context.Update(notificaions);
             return Save();
         }
     }
