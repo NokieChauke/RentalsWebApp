@@ -118,6 +118,7 @@ namespace RentalsWebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(RegisterViewModel registerVM)
         {
+
             if (!ModelState.IsValid) return View(registerVM);
 
             var user = await _userManager.FindByEmailAsync(registerVM.EmailAddress);
@@ -141,8 +142,13 @@ namespace RentalsWebApp.Controllers
             {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.Tenant);
                 await _sendMail.NewUserEmail(registerVM);
+                return RedirectToAction("Index", "Dashboard");
             }
-            return RedirectToAction("Index", "Dashboard");
+
+            var message = string.Join(", ", newUserResponse.Errors.Select(x => "Code " + x.Code + " Description" + x.Description));
+            ModelState.AddModelError("", message);
+
+            return View(registerVM);
         }
 
         [HttpPost]

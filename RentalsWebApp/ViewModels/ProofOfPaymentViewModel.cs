@@ -18,5 +18,6 @@ namespace RentalsWebApp.ViewModels
 
         [Required(ErrorMessage = "Proof Of Payment is Required")]
         public string UserId { get; set; }
+        public int BillId { get; set; }
     }
 }

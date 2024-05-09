@@ -26,6 +26,7 @@
             <form method="post" asp-action="UploadProofOfPayment" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
+                <input type="hidden" id="BillId" name="BillId" asp-for="BillId" />
                 <div class="form-group col-md-8">
                     <label asp-for="Month"></label>
                     <select asp-for="Month" class="form-control" asp-items="@Html.GetEnumSelectList<Months>()">

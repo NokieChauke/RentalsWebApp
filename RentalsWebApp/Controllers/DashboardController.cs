@@ -195,16 +195,24 @@ namespace RentalsWebApp.Controllers
         {
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
             var user = await _dashboardRepository.GetUserById(currentUserId);
+            var passwordCheck = await _userManager.CheckPasswordAsync(user, securityVM.CurrentPassword);
             if (ModelState.IsValid)
             {
-                var result = await _userManager.ChangePasswordAsync(user, securityVM.CurrentPassword, securityVM.NewPassword);
-                if (result.Succeeded)
+                if (passwordCheck)
                 {
-                    return RedirectToAction("UserProfile", "Dashboard");
+                    var result = await _userManager.ChangePasswordAsync(user, securityVM.CurrentPassword, securityVM.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("UserProfile", "Dashboard");
+                    }
+                    var message = string.Join(", ", result.Errors.Select(x => "Code " + x.Code + " Description" + x.Description));
+                    ModelState.AddModelError("", message);
+                    return View(securityVM);
                 }
+
             }
 
-            TempData["Error"] = "Wrong credentials. Please try again";
+            TempData["Error"] = "Wrong password. Please try again";
             return View(securityVM);
 
         }

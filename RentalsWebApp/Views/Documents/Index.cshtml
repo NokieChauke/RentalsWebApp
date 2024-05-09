@@ -45,7 +45,7 @@
                         <tr>
                             <th scope="row">ID Copy</th>
                             <td>@Model.IdCopy</td>
-                            <td>@DateTime.Now</td>
+                            <td>@Model.DateUploaded</td>
                             <td>
                                 <a asp-controller="Documents" asp-action="EditId"
                                     class="btn btn-sm btn-outline-secondary">Edit</a>
@@ -58,7 +58,7 @@
                         <tr>
                             <th scope="row">Contract</th>
                             <td>@Model.Contract</td>
-                            <td>@DateTime.Now</td>
+                            <td>@Model.DateUploaded</td>
                             <td>
                                 <a asp-controller="Documents" asp-action="EditContract"
                                    class="btn btn-sm btn-outline-secondary">Edit</a>
@@ -71,7 +71,7 @@
                         <tr>
                             <th scope="row">Payslip</th>
                             <td>@Model.PaySlip</td>
-                            <td>@DateTime.Now</td>
+                            <td>@Model.DateUploaded</td>
                             <td>
                                 <a asp-controller="Documents" asp-action="EditPayslip"
                                     class="btn btn-sm btn-outline-secondary">Edit</a>

@@ -31,6 +31,10 @@ namespace RentalsWebApp.Repository
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Name == name);
         }
+        public async Task<Apartments> GetByUserId(string id)
+        {
+            return await _context.Apartments.FirstOrDefaultAsync(u => u.UserId == id);
+        }
         public async Task<IEnumerable<Apartments>> GetAll()
         {
             return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).ToListAsync();

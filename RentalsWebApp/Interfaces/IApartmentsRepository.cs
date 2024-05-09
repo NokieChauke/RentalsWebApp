@@ -8,6 +8,7 @@ namespace RentalsWebApp.Interfaces
         Task<IEnumerable<AppUser>> GetAllTenants();
         Task<AppUser> GetUserByName(string name);
         Task<Apartments> GetByIdAsync(int id);
+        Task<Apartments> GetByUserId(string userId);
         Task<Apartments> GetByIdAsyncNoTracking(int id);
         Task<IEnumerable<Apartments>> GetByCategory(string category);
         Task<IEnumerable<Apartments>> GetByPrice(string price);

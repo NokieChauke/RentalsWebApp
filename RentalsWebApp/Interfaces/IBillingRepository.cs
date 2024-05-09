@@ -6,22 +6,17 @@ namespace RentalsWebApp.Interfaces
     public interface IBillingRepository
     {
         bool UploadStatement(Billing billing);
-        bool UploadProofOfPayment(ProofOfPayment proof);
-        Task<Billing> GetMonthlyStatemets(string userId, Months month);
-        Task<Billing> GetMonth(string userId);
-        Task<IEnumerable<BankAccount>> GetAllBankAccounts();
-        Task<BankAccount> GetByIdAsync(int id);
-        Task<BankAccount> GetByIdAsyncNoTracking(int id);
-        Task<ProofOfPayment> DownloadProofOfPayment(string userId);
+
+        Task<Billing> GetStatementByUserId(string userId, Months month);
+        Task<Billing> GetBillByUserId(string userId);
+
+        Task<IEnumerable<Billing>> GetAllBillingsByUserId(string id);
+
+
         Task<Billing> DownloadStatement(string Id);
-        Task<Billing> UpdateStatement(int Id, Billing billing);
-        Task<IEnumerable<BankAccount>> GetAll(string id);
-        Task<Billing> ViewPaymentHistort();
-        Task<AppUser> GetUserById(string Id);
-        bool Add(BankAccount account);
         bool Update(Billing biling);
-        bool UpdateAccount(BankAccount account);
-        bool DeleteAccount(BankAccount account);
+
         bool Save();
+        bool Delete(Billing billing);
     }
 }

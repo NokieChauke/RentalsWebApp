@@ -407,7 +407,14 @@ namespace RentalsWebApp.Migrations
                     b.Property<int>("Month")
                         .HasColumnType("int");
 
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
+
                     b.Property<string>("Statement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -441,6 +448,9 @@ namespace RentalsWebApp.Migrations
                     b.Property<string>("Contract")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateUploaded")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("IdCard")
                         .IsRequired()

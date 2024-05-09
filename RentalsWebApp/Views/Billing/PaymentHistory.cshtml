@@ -1,5 +1,6 @@
-﻿@using RentalsWebApp.ViewModels
-@model BillingViewModel
+﻿@using RentalsWebApp.Data.Enums
+@using RentalsWebApp.ViewModels
+@model PaymentHistoryViewModel
 
 @{
     ViewData["Title"] = "Payment History";
@@ -15,7 +16,7 @@
                 <thead>
                     <tr>
                         <th class="border-gray-200" scope="col">Transaction ID</th>
-                        <th class="border-gray-200" scope="col">Date</th>
+                        <th class="border-gray-200" scope="col">Month</th>
                         <th class="border-gray-200" scope="col">Amount</th>
                         <th class="border-gray-200" scope="col">Status</th>
                         <th class="border-gray-200" scope="col">Download POP</th>
@@ -23,34 +24,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>#39201</td>
-                        <td>04/01/2021</td>
-                        <td>R3582.14</td>
-                        <td><span class="badge bg-light text-dark">Pending</span></td>
-                       
-                    </tr>
-                    <tr>
-                        <td>#38594</td>
-                        <td>03/01/2021</td>
-                        <td>R2729.99</td>
-                        <td><span class="badge bg-success">Paid</span></td>
-                        <td><a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="DownloadProofOfPayment" target="__self">Download POP</a></td>
-                    </tr>
-                    <tr>
-                        <td>#38223</td>
-                        <td>02/01/2021</td>
-                        <td>5869.78</td>
-                        <td><span class="badge bg-success">Paid</span></td>
-                        <td><a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="DownloadProofOfPayment" target="__self">Download POP</a></td>
-                    </tr>
-                    <tr>
-                        <td>#38125</td>
-                        <td>01/01/2021</td>
-                        <td>4229.00</td>
-                        <td><span class="badge bg-success">Paid</span></td>
-                        <td><a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="DownloadProofOfPayment" target="__self">Download POP</a></td>
-                    </tr>
+                    @{
+                        @foreach(var billing in Model.Billing)
+                        {
+                            <tr>
+                                <td>@billing.TransactionId</td>
+                                <td>@billing.Month</td>
+                                <td>R@(@Convert.ToDouble(Model.Rent) + @Convert.ToDouble(billing.WaterAmount) + @Convert.ToDouble(billing.ElectricityAmount))</td>
+                                @if(billing.PaymentStatus == PaymentStatus.pending)
+                                {
+                                    <td><span class="badge bg-light text-dark">Pending</span></td>
+                                }
+                                else if (billing.PaymentStatus == PaymentStatus.paid)
+                                {
+                                    <td><span class="badge bg-success">Paid</span></td>
+                                }
+                                @if (Model.ProofOfPayment != null)
+                                {
+                                    <td><a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="DownloadProofOfPayment" target="__self">Download POP</a></td>
+                                }
+                                else
+                                {
+                                    <td>Not Uploaded</td>
+                                }
+                            </tr>
+                        }
+                    }
                 </tbody>
             </table>
         </div>
@@ -62,7 +61,7 @@
         }
         else if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
-            <a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId">Back</a>
+            <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="Index">Return to Biling</a>
         }
     </div>
 </div>

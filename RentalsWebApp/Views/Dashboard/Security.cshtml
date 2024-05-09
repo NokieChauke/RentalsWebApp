@@ -25,6 +25,13 @@
             <div class="card mb-4">
                 <div class="card-header">Change Password</div>
                 <div class="card-body">
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="col-md-12 alert alert-danger">
+                            <span><b>Sorry!</b> - @TempData["Error"]</span>
+                        </div>
+                    }
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <form method="post" asp-action="Security" enctype="multipart/form-data">
                         <input type="hidden" id="Id" name="Id" asp-for="Id" />
                         <input type="hidden" id="PhoneNumber" name="PhoneNumber" asp-for="PhoneNumber"/>
@@ -53,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
+       @*  <div class="col-lg-4">
             <!-- Two factor authentication card-->
             <div class="card mb-4">
                 <div class="card-header">Two-Factor Authentication</div>
@@ -76,6 +83,6 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div> *@
     </div>
 </div>

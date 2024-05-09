@@ -10,29 +10,38 @@ namespace RentalsWebApp.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IBillingRepository _billingRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
+        private readonly IApartmentsRepository _apartmentsRepository;
+        private readonly IDashboardRepository _dashboardRepository;
+        private readonly IBankAccountRepository _bankAccountRepository;
+        private readonly IProofOfPaymentRepository _proofOfPaymentRepository;
 
         public BillingController(IHttpContextAccessor httpContextAccessor, IBillingRepository billingRepository,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment, IApartmentsRepository apartmentsRepository, IDashboardRepository dashboardRepository
+            , IBankAccountRepository bankAccountRepository, IProofOfPaymentRepository proofOfPaymentRepository)
         {
             _httpContextAccessor = httpContextAccessor;
             _billingRepository = billingRepository;
             _webHostEnvironment = webHostEnvironment;
-
+            _apartmentsRepository = apartmentsRepository;
+            _dashboardRepository = dashboardRepository;
+            _bankAccountRepository = bankAccountRepository;
+            _proofOfPaymentRepository = proofOfPaymentRepository;
         }
         public async Task<IActionResult> Index()
         {
             var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var month = await _billingRepository.GetMonth(currentUserId);
+            var month = await _billingRepository.GetBillByUserId(currentUserId);
             var m = month.Month;
-            Billing billing = await _billingRepository.GetMonthlyStatemets(currentUserId, m);
-            IEnumerable<BankAccount> accounts = await _billingRepository.GetAll(currentUserId);
+            var apartment = await _apartmentsRepository.GetByUserId(currentUserId);
+            Billing billing = await _billingRepository.GetStatementByUserId(currentUserId, m);
+            IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(currentUserId);
 
             var billingVM = new BillingViewModel()
             {
                 Id = billing.Id,
                 Month = billing.Month,
                 WaterAmount = billing.WaterAmount,
+                Rent = apartment.Price,
                 ElectricityAmount = billing.ElectricityAmount,
                 BankAccount = (List<BankAccount>)accounts,
                 UserId = billing.UserId,
@@ -43,25 +52,44 @@ namespace RentalsWebApp.Controllers
         }
         public async Task<IActionResult> BankingDetails(string id)
         {
-            var user = await _billingRepository.GetUserById(id);
+            var user = await _dashboardRepository.GetUserById(id);
             var billind = new BillingViewModel { UserId = user.Id };
             return View(billind);
 
         }
-        public async Task<IActionResult> PaymentHistory(string id)
+        public async Task<IActionResult> PaymentHistory()
         {
-            var user = await _billingRepository.GetUserById(id);
-            var billind = new BillingViewModel { UserId = user.Id };
-            return View(billind);
+            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var bill = await _billingRepository.GetBillByUserId(currentUserId);
+
+            ProofOfPayment pop = await _proofOfPaymentRepository.GetPOPByBillId(bill.Id);
+            Apartments apartment = await _apartmentsRepository.GetByUserId(currentUserId);
 
 
+            IEnumerable<Billing> billings = await _billingRepository.GetAllBillingsByUserId(currentUserId);
+            var billingVM = new PaymentHistoryViewModel()
+            {
+                Billing = (List<Billing>)billings,
+                ProofOfPayment = pop.Proof,
+                Rent = apartment.Price,
+
+            };
+            return View(billingVM);
         }
 
         [HttpGet]
         public async Task<IActionResult> UploadStatement(string id)
         {
-            var user = await _billingRepository.GetUserById(id);
-            var uploadStatement = new UploadStatementViewModel { UserId = user.Id };
+            var user = await _dashboardRepository.GetUserById(id);
+
+            Random generator = new Random();
+            string r = generator.Next(0, 1000000).ToString("D6");
+
+            var uploadStatement = new UploadStatementViewModel
+            {
+                UserId = user.Id,
+                TransactionId = string.Format("{0}{1}", "#", r)
+            };
             return View(uploadStatement);
         }
         [HttpPost]
@@ -85,8 +113,9 @@ namespace RentalsWebApp.Controllers
                     Month = uploadStatementVM.Month,
                     WaterAmount = uploadStatementVM.WaterAmount,
                     ElectricityAmount = uploadStatementVM.ElectricityAmount,
-                    Statement = statementUrl
-
+                    Statement = statementUrl,
+                    PaymentStatus = uploadStatementVM.Status,
+                    TransactionId = uploadStatementVM.TransactionId
                 };
                 _billingRepository.UploadStatement(billing);
                 return RedirectToAction("Index", "Dashboard");
@@ -114,221 +143,8 @@ namespace RentalsWebApp.Controllers
 
 
         }
-        [HttpGet]
-        public async Task<IActionResult> AddBankAccount()
-        {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var addBankAccountVM = new BankingAccountViewModel { AppUserId = currentUserId };
-            return View(addBankAccountVM);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddBankAccount(BankingAccountViewModel bankingAccountVM)
-        {
-            var accounts = await _billingRepository.GetAllBankAccounts();
-
-            foreach (var account in accounts)
-            {
-                account.Active = false;
-                _billingRepository.UpdateAccount(account);
-            }
-            if (ModelState.IsValid)
-            {
-                var bankingAccount = new BankAccount()
-                {
-                    AppUserId = bankingAccountVM.AppUserId,
-                    CardDescreption = bankingAccountVM.CardDescreption,
-                    BankName = bankingAccountVM.BankName,
-                    AccountHolder = bankingAccountVM.AccountHolder,
-                    CardNumber = bankingAccountVM.CardNumber,
-                    BranchCode = bankingAccountVM.BranchCode,
-                    ExpiryDate = bankingAccountVM.ExpiryDate,
-                    CSV = bankingAccountVM.CSV
-                };
-                _billingRepository.Add(bankingAccount);
-                return RedirectToAction("Index", new { id = bankingAccount.AppUserId });
-            }
-            else
-            {
-                ModelState.AddModelError("", "Something went wrong");
-
-            }
-            return View(bankingAccountVM);
-
-        }
-        [HttpGet]
-        public async Task<IActionResult> AddBankAccountByAdmin(string id)
-        {
-            var user = await _billingRepository.GetUserById(id);
-
-            var addBankAccountVM = new BankingAccountViewModel { AppUserId = user.Id };
-            return View(addBankAccountVM);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddBankAccountByAdmin(BankingAccountViewModel bankingAccountVM)
-        {
-            if (ModelState.IsValid)
-            {
-                var bankingAccount = new BankAccount()
-                {
-                    AppUserId = bankingAccountVM.AppUserId,
-                    CardDescreption = bankingAccountVM.CardDescreption,
-                    BankName = bankingAccountVM.BankName,
-                    AccountHolder = bankingAccountVM.AccountHolder,
-                    CardNumber = bankingAccountVM.CardNumber,
-                    BranchCode = bankingAccountVM.BranchCode,
-                    ExpiryDate = bankingAccountVM.ExpiryDate,
-                    CSV = bankingAccountVM.CSV
-                };
-                _billingRepository.Add(bankingAccount);
-                return RedirectToAction("Index", new { id = bankingAccount.AppUserId });
-            }
-            else
-            {
-                ModelState.AddModelError("", "Something went wrong");
-
-            }
-            return View(bankingAccountVM);
-
-        }
-
-        public async Task<IActionResult> EditAccount(int id)
-        {
-            var account = await _billingRepository.GetByIdAsync(id);
-            if (account == null) return View("Error");
-            var editBankingAccountVM = new EditBankingAccountViewModel
-            {
-                AppUserId = account.AppUserId,
-                CardDescreption = account.CardDescreption,
-                BankName = account.BankName,
-                AccountHolder = account.AccountHolder,
-                CardNumber = account.CardNumber,
-                BranchCode = account.BranchCode,
-                ExpiryDate = account.ExpiryDate,
-                CSV = account.CSV
-
-            };
-            return View(editBankingAccountVM);
-        }
-        [HttpPost]
-        public async Task<IActionResult> EditAccount(int id, EditBankingAccountViewModel editBankingAccountVM)
-        {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError("", "Failed to Edit apartment");
-                return View("Edit", editBankingAccountVM);
-            }
-
-            var account = await _billingRepository.GetByIdAsyncNoTracking(id);
-
-            if (account != null)
-            {
-                var bankAccount = new BankAccount
-                {
-                    Id = id,
-                    AppUserId = editBankingAccountVM.AppUserId,
-                    CardDescreption = editBankingAccountVM.CardDescreption,
-                    BankName = editBankingAccountVM.BankName,
-                    AccountHolder = editBankingAccountVM.AccountHolder,
-                    CardNumber = editBankingAccountVM.CardNumber,
-                    BranchCode = editBankingAccountVM.BranchCode,
-                    ExpiryDate = editBankingAccountVM.ExpiryDate,
-                    CSV = editBankingAccountVM.CSV,
-                    Active = account.Active
-                };
-
-                _billingRepository.UpdateAccount(bankAccount);
-                return RedirectToAction("Index", new { id = editBankingAccountVM.AppUserId });
-            }
-            else
-            {
-                return View(editBankingAccountVM);
-            }
-        }
-
-        public async Task<IActionResult> SetAccountAsDefault(int id)
-        {
-            var accounts = await _billingRepository.GetAllBankAccounts();
-
-            foreach (var account in accounts)
-            {
-                account.Active = false;
-                _billingRepository.UpdateAccount(account);
-            }
-
-            var acc = await _billingRepository.GetByIdAsync(id);
-            acc.Active = true;
-            _billingRepository.UpdateAccount(acc);
-            return RedirectToAction("Index", new { id = acc.AppUserId });
-        }
-        public async Task<IActionResult> DeleteAccount(int id)
-        {
-            var account = await _billingRepository.GetByIdAsync(id);
-
-            _billingRepository.DeleteAccount(account);
-            return RedirectToAction("Index", new { id = account.AppUserId });
-        }
 
 
-
-
-        [HttpGet]
-        public async Task<IActionResult> UploadProofOfPayment(string id)
-        {
-            var user = await _billingRepository.GetUserById(id);
-            var uploadPOP = new ProofOfPaymentViewModel { UserId = user.Id };
-            return View(uploadPOP);
-        }
-        [HttpPost]
-        public async Task<IActionResult> UploadProofOfPayment(string id, ProofOfPaymentViewModel proofOfPaymentVM)
-        {
-            if (ModelState.IsValid)
-            {
-                string webRootPath = _webHostEnvironment.WebRootPath;
-                string fileName = Path.GetFileNameWithoutExtension(proofOfPaymentVM.Proof.FileName);
-                string extention = Path.GetExtension(proofOfPaymentVM.Proof.FileName);
-                string proofName = fileName + DateTime.Now.ToString("yymmddhhmm") + extention;
-                string proofUrl = Path.Combine(webRootPath + "/documents/pop/", proofName);
-
-                using (var fileStream = new FileStream(proofUrl, FileMode.Create))
-                {
-                    await proofOfPaymentVM.Proof.CopyToAsync(fileStream);
-                }
-                var proofOfPayment = new ProofOfPayment()
-                {
-                    UserId = proofOfPaymentVM.UserId,
-                    Month = proofOfPaymentVM.Month,
-                    Proof = proofUrl,
-
-
-                };
-                _billingRepository.UploadProofOfPayment(proofOfPayment);
-                return RedirectToAction("Index", new { id = proofOfPaymentVM.UserId });
-            }
-            else
-            {
-                ModelState.AddModelError("", "Something went wrong");
-
-            }
-            return View(proofOfPaymentVM);
-
-        }
-        public async Task<IActionResult> DownloadProofOfpayment()
-        {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var proof = _billingRepository.DownloadProofOfPayment(currentUserId);
-
-            string path = proof.Result.Proof;
-
-            if (System.IO.File.Exists(path))
-            {
-                return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
-            }
-            return NotFound();
-
-
-        }
     }
 
 }

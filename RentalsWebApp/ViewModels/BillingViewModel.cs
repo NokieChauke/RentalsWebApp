@@ -10,9 +10,13 @@ namespace RentalsWebApp.ViewModels
         public string WaterAmount { get; set; }
         public string ElectricityAmount { get; set; }
         public string Statement { get; set; }
+        public string TransactionId { get; set; }
+        public string Rent { get; set; }
 
+        public string PaymentStatus { get; set; }
         public string UserId { get; set; }
         public List<BankAccount> BankAccount { get; set; }
         public Billing Billing { get; set; }
+
     }
 }

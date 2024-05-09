@@ -6,6 +6,7 @@ namespace RentalsWebApp.ViewModels
     public class UploadStatementViewModel
     {
         public string UserId { get; set; }
+        public string TransactionId { get; set; }
 
         [Display(Name = "Month")]
         [Required(ErrorMessage = "Month is Required")]
@@ -23,6 +24,10 @@ namespace RentalsWebApp.ViewModels
         [Required(ErrorMessage = "Statement is Required")]
         public IFormFile Statement { get; set; }
         public string? StatementUrl { get; set; }
+
+        [Display(Name = "Payment Status")]
+        [Required(ErrorMessage = "Statement is Required")]
+        public PaymentStatus Status { get; set; }
 
 
 

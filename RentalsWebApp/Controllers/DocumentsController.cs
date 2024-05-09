@@ -31,6 +31,7 @@ namespace RentalsWebApp.Controllers
                 var documentVM = new DocumentsDisplayViewModel()
                 {
                     UserId = currentUserId,
+                    DateUploaded = docs.DateUploaded,
                     IdCopy = Path.GetFileName(docs.IdCard),
                     Contract = Path.GetFileName(docs.Contract),
                     PaySlip = Path.GetFileName(docs.PaySlip)
@@ -227,8 +228,12 @@ namespace RentalsWebApp.Controllers
         public IActionResult Upload()
         {
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var documentsViewModel = new DocumentsViewModel { AppUserId = currentUserId };
-            return View(documentsViewModel);
+            var documentsVM = new DocumentsViewModel
+            {
+                AppUserId = currentUserId,
+                DateUploaded = DateTime.Now.ToString("yyyy-MM-dd")
+            };
+            return View(documentsVM);
         }
         [HttpPost]
         public async Task<IActionResult> Upload(DocumentsViewModel documentsVM)
@@ -269,6 +274,7 @@ namespace RentalsWebApp.Controllers
                 var newDocuments = new Documents()
                 {
                     AppUserId = documentsVM.AppUserId,
+                    DateUploaded = documentsVM.DateUploaded,
                     IdCard = iPath,
                     Contract = cPath,
                     PaySlip = pPath
