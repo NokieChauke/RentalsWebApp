@@ -35,41 +35,52 @@
                     <div class="card-header">Your Apartment</div>
                     <div class="card-body">
                         <div class="wrapper row">
-                            <div class="preview col-md-6">
 
-                                <div class="preview-pic tab-content">
-                                    <div class="tab-pane active" id="pic-1"><img src=@Model.Apartments.ApartmentPictures.Pic1 /></div>
-                                    <div class="tab-pane" id="pic-2"><img src=@Model.Apartments.ApartmentPictures.Pic2 /></div>
-                                    <div class="tab-pane" id="pic-3"><img src=@Model.Apartments.ApartmentPictures.Pic3 /></div>
-                                    <div class="tab-pane" id="pic-4"><img src=@Model.Apartments.ApartmentPictures.Pic4 /></div>
-                                    <div class="tab-pane" id="pic-5"><img src=@Model.Apartments.ApartmentPictures.Pic5 /></div>
+                            @if(Model.Apartments != null)
+                            {
+                                <div class="preview col-md-6">
+                               
+                                        <div class="preview-pic tab-content">
+                                        <div class="tab-pane active" id="pic-1"><img src=@Model.Apartments.ApartmentPictures.Pic1 /></div>
+                                        <div class="tab-pane" id="pic-2"><img src=@Model.Apartments.ApartmentPictures.Pic2 /></div>
+                                        <div class="tab-pane" id="pic-3"><img src=@Model.Apartments.ApartmentPictures.Pic3 /></div>
+                                        <div class="tab-pane" id="pic-4"><img src=@Model.Apartments.ApartmentPictures.Pic4 /></div>
+                                        <div class="tab-pane" id="pic-5"><img src=@Model.Apartments.ApartmentPictures.Pic5 /></div>
+                                    </div>
+                                    <ul class="preview-thumbnail nav nav-tabs">
+                                        <li class="active"><a data-target="#pic-1" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic1 /></a></li>
+                                        <li><a data-target="#pic-2" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic2 /></a></li>
+                                        <li><a data-target="#pic-3" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic3 /></a></li>
+                                        <li><a data-target="#pic-4" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic4 /></a></li>
+                                        <li><a data-target="#pic-5" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic5 /></a></li>
+                                    </ul>
+
                                 </div>
-                                <ul class="preview-thumbnail nav nav-tabs">
-                                    <li class="active"><a data-target="#pic-1" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic1 /></a></li>
-                                    <li><a data-target="#pic-2" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic2 /></a></li>
-                                    <li><a data-target="#pic-3" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic3 /></a></li>
-                                    <li><a data-target="#pic-4" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic4 /></a></li>
-                                    <li><a data-target="#pic-5" data-toggle="tab"><img src=@Model.Apartments.ApartmentPictures.Pic5 /></a></li>
-                                </ul>
+                                <div class="details col-md-6">
+                                    <h3 class="product-title">@Model.Apartments.ApartmentCategory</h3>
+                                    <p class="apartment-description">@Model.Apartments.Description </p>
+                                    <p class="apartment-address">@Model.Apartments.Address.Address_Line1 </p>
+                                    <p class="product-description">@Model.Apartments.Address.Address_Line2 </p>
+                                    <p class="product-description">@Model.Apartments.Address.City </p>
+                                    <p class="product-description">@Model.Apartments.Address.State </p>
+                                    <p class="product-description">@Model.Apartments.Address.Zip </p>
+                                    <h4 class="price">current price: <span>@Model.Apartments.Price</span></h4>
 
-                            </div>
-                            <div class="details col-md-6">
-                                <h3 class="product-title">@Model.Apartments.ApartmentCategory</h3>
-                                <p class="apartment-description">@Model.Apartments.Description </p>
-                                <p class="apartment-address">@Model.Apartments.Address.Address_Line1 </p>
-                                <p class="product-description">@Model.Apartments.Address.Address_Line2 </p>
-                                <p class="product-description">@Model.Apartments.Address.City </p>
-                                <p class="product-description">@Model.Apartments.Address.State </p>
-                                <p class="product-description">@Model.Apartments.Address.Zip </p>
-                                <h4 class="price">current price: <span>@Model.Apartments.Price</span></h4>
-
-                                <div class="action">
-                                    <a asp-controller="AboutUs" asp-action="ContactUs" asp-route-id="@Model.Apartments.Id"
-                                        class="btn btn-sm btn-outline-secondary">Contact the Agent</a>
-                                    <a asp-controller="AboutUs" asp-action="ReportIncident" asp-route-id="@Model.Id"
-                                       class="btn btn-sm btn-outline-secondary">Log a call</a>
+                                    <div class="action">
+                                        <a asp-controller="AboutUs" asp-action="ContactUs" asp-route-id="@Model.Apartments.Id"
+                                            class="btn btn-sm btn-outline-secondary">Contact the Agent</a>
+                                        <a asp-controller="AboutUs" asp-action="ReportIncident" asp-route-id="@Model.Id"
+                                           class="btn btn-sm btn-outline-secondary">Log a call</a>
+                                    </div>
                                 </div>
-                            </div>
+                            }
+                            else
+                            {
+                                <h1>You have not rented an apartment yet.</h1>
+                            }
+
+         
+                            
                         </div>
                     </div>
                 </div>

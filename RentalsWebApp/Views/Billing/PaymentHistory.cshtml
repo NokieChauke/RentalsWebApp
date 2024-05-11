@@ -24,6 +24,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <form>
+                        <input type="hidden" id="ProofOfPaymentId" name="ProofOfPaymentId" asp-for="ProofOfPaymentId"/>
+                    </form>
                     @{
                         @foreach(var billing in Model.Billing)
                         {
@@ -39,9 +42,10 @@
                                 {
                                     <td><span class="badge bg-success">Paid</span></td>
                                 }
-                                @if (Model.ProofOfPayment != null)
+             
+                                @if (billing.ProofOfPayment != null)
                                 {
-                                    <td><a class="btn btn-sm btn-outline-primary" asp-controller="Billing" asp-action="DownloadProofOfPayment" target="__self">Download POP</a></td>
+                                    <td><a class="btn btn-sm btn-outline-primary" asp-controller="ProofOfPayment" asp-action="DownloadProofOfPayment" target="__self">Download POP</a></td>
                                 }
                                 else
                                 {

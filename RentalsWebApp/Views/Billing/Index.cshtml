@@ -74,9 +74,9 @@
     <div class="card card-header-actions mb-4">
         <div class="card-header">
             Add a Payment Account for debit order
-            <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="AddBankAccount" target="__self">Add new card</a>
+            <a class="btn btn-sm btn-outline-secondary" asp-controller="BankAccount" asp-action="AddBankAccount" target="__self">Add new card</a>
             @* <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="ManualPayment" asp-route-id="@Model.UserId">Pay now</a> *@
-            <a class="btn btn-sm btn-outline-secondary" position="absolute" asp-controller="Billing" asp-action="UploadProofOfPayment" asp-route-id="@Model.UserId">Upload POP</a>
+            <a class="btn btn-sm btn-outline-secondary" position="absolute" asp-controller="ProofOfPayment" asp-action="UploadProofOfPayment" asp-route-id="@Model.UserId">Upload POP</a>
         </div>
 
         @foreach(var account in Model.BankAccount)
@@ -112,12 +112,12 @@
                         }
                         else if (account.Active == false)
                         {
-                            <a asp-area="" asp-controller="Billing" asp-action="SetAccountAsDefault" asp-route-id="@account.Id">Set as default</a>
+                            <a asp-area="" asp-controller="BankAccount" asp-action="SetAccountAsDefault" asp-route-id="@account.Id">Set as default</a>
                         }
                          @*  *@
                         @* <div class="badge bg-light text-dark me-3">Default</div> *@
-                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Edit</a>
-                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="DeleteAccount" asp-route-id="@account.Id" target=" __self">Delete</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="BankAccount" asp-action="EditAccount" asp-route-id="@account.Id" target=" __self">Edit</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="BankAccount" asp-action="DeleteAccount" asp-route-id="@account.Id" target=" __self">Delete</a>
                     </div>
                 </div>
             </div>

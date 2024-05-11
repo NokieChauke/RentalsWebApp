@@ -45,6 +45,7 @@ namespace RentalsWebApp.Repository
             return await _userManager.GetUsersInRoleAsync("tenant");
 
         }
+
         public async Task<Apartments> GetByIdAsync(int id)
         {
             return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).Include(a => a.AppUser).FirstOrDefaultAsync(i => i.Id == id);

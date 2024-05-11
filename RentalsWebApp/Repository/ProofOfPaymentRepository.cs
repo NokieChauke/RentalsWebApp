@@ -24,9 +24,9 @@ namespace RentalsWebApp.Repository
             return await _context.ProofOfPayment.Where(x => x.UserId == userId).OrderBy(x => x.Month).LastAsync();
         }
 
-        public async Task<ProofOfPayment> GetPOPByBillId(int billId)
+        public async Task<ProofOfPayment> GetPOPByBillId(string userId)
         {
-            return await _context.ProofOfPayment.FirstOrDefaultAsync(x => x.BillId == billId);
+            return await _context.ProofOfPayment.FirstOrDefaultAsync(x => x.UserId == userId);
         }
 
         public async Task<ProofOfPayment> GetPOPMonth(string userId)

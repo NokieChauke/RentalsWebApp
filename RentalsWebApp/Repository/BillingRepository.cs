@@ -26,7 +26,7 @@ namespace RentalsWebApp.Repository
         }
         public async Task<Billing> GetBillByUserId(string userId)
         {
-            return await _context.Billings.FirstOrDefaultAsync(x => x.UserId == userId);
+            return await _context.Billings.Include("ProofOfPayment").FirstOrDefaultAsync(x => x.UserId == userId);
         }
         public async Task<Billing> GetStatementByUserId(string userId, Months month)
         {
@@ -34,7 +34,7 @@ namespace RentalsWebApp.Repository
         }
         public async Task<IEnumerable<Billing>> GetAllBillingsByUserId(string id)
         {
-            return await _context.Billings.Where(b => b.UserId == id).OrderByDescending(b => b.Month).ToListAsync();
+            return await _context.Billings.Include("ProofOfPayment").Where(b => b.UserId == id).OrderByDescending(b => b.Month).ToListAsync();
         }
         public bool Save()
         {

@@ -410,6 +410,9 @@ namespace RentalsWebApp.Migrations
                     b.Property<int>("PaymentStatus")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProofOfPaymentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Statement")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -427,6 +430,8 @@ namespace RentalsWebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProofOfPaymentId");
 
                     b.HasIndex("UserId");
 
@@ -449,8 +454,9 @@ namespace RentalsWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateUploaded")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DateUploaded")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdCard")
                         .IsRequired()
@@ -654,6 +660,10 @@ namespace RentalsWebApp.Migrations
 
             modelBuilder.Entity("RentalsWebApp.Models.Billing", b =>
                 {
+                    b.HasOne("RentalsWebApp.Models.ProofOfPayment", "ProofOfPayment")
+                        .WithMany()
+                        .HasForeignKey("ProofOfPaymentId");
+
                     b.HasOne("RentalsWebApp.Models.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -661,6 +671,8 @@ namespace RentalsWebApp.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
+
+                    b.Navigation("ProofOfPayment");
                 });
 
             modelBuilder.Entity("RentalsWebApp.Models.Documents", b =>

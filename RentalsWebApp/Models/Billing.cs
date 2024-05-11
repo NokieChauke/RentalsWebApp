@@ -16,5 +16,9 @@ namespace RentalsWebApp.Models
         [ForeignKey("AppUser")]
         public string UserId { get; set; }
         public AppUser AppUser { get; set; }
+
+        [ForeignKey("ProofOfPayment")]
+        public int? ProofOfPaymentId { get; set; }
+        public ProofOfPayment ProofOfPayment { get; set; }
     }
 }

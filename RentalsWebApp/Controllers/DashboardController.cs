@@ -228,8 +228,6 @@ namespace RentalsWebApp.Controllers
                 var notificationsVM = new NotificationsViewModel()
                 {
                     UserId = currentUserId,
-                    PhoneNumber = notification.AppUser.PhoneNumber,
-                    EmailAddress = notification.AppUser.Email,
                     SMS = true,
                     Email = true,
                     AccountChanges = true,
@@ -239,6 +237,7 @@ namespace RentalsWebApp.Controllers
                     RentIncrease = true,
                     Security = true
                 };
+                return View(notificationsVM);
             }
             else
             {
@@ -259,7 +258,7 @@ namespace RentalsWebApp.Controllers
                 };
                 return View(notificationsVM);
             }
-            return View(notification);
+
         }
         [HttpPost]
         public async Task<IActionResult> Notification(NotificationsViewModel notificationsVM)

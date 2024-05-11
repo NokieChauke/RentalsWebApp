@@ -51,17 +51,28 @@ namespace RentalsWebApp.Controllers
                 }
                 var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
                 var bill = await _billingRepository.GetStatementByUserId(currentUserId, proofOfPaymentVM.Month);
-                var proofOfPayment = new ProofOfPayment()
+                if (bill != null)
                 {
-                    BillId = bill.Id,
-                    UserId = proofOfPaymentVM.UserId,
-                    Month = proofOfPaymentVM.Month,
-                    Proof = proofUrl,
+                    var proofOfPayment = new ProofOfPayment()
+                    {
+
+                        UserId = proofOfPaymentVM.UserId,
+                        Month = proofOfPaymentVM.Month,
+                        Proof = proofUrl,
 
 
-                };
-                _proofOfPaymentRepository.UploadProofOfPayment(proofOfPayment);
-                return RedirectToAction("Index", new { id = proofOfPaymentVM.UserId });
+                    };
+
+                    _proofOfPaymentRepository.UploadProofOfPayment(proofOfPayment);
+                    bill.ProofOfPaymentId = proofOfPayment.Id;
+                    _billingRepository.Update(bill);
+                    return RedirectToAction("Index", "Billing", new { id = proofOfPaymentVM.UserId });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "There's no bill for the selected month");
+                }
+
             }
             else
             {

@@ -6,7 +6,7 @@ namespace RentalsWebApp.Interfaces
     {
         bool UploadProofOfPayment(ProofOfPayment proof);
         Task<ProofOfPayment> DownloadProofOfPayment(string userId);
-        Task<ProofOfPayment> GetPOPByBillId(int billId);
+        Task<ProofOfPayment> GetPOPByBillId(string userId);
         Task<ProofOfPayment> GetPOPMonth(string userId);
         bool UpdateProofOfPayment(ProofOfPayment proof);
         bool DeleteProofOfPayment(ProofOfPayment proof);

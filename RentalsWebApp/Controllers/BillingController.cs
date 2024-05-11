@@ -31,23 +31,33 @@ namespace RentalsWebApp.Controllers
         {
             var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
             var month = await _billingRepository.GetBillByUserId(currentUserId);
-            var m = month.Month;
-            var apartment = await _apartmentsRepository.GetByUserId(currentUserId);
-            Billing billing = await _billingRepository.GetStatementByUserId(currentUserId, m);
-            IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(currentUserId);
-
-            var billingVM = new BillingViewModel()
+            if (month != null)
             {
-                Id = billing.Id,
-                Month = billing.Month,
-                WaterAmount = billing.WaterAmount,
-                Rent = apartment.Price,
-                ElectricityAmount = billing.ElectricityAmount,
-                BankAccount = (List<BankAccount>)accounts,
-                UserId = billing.UserId,
+                var m = month.Month;
+                var apartment = await _apartmentsRepository.GetByUserId(currentUserId);
+                if (apartment != null)
+                {
+                    Billing billing = await _billingRepository.GetStatementByUserId(currentUserId, m);
+                    IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(currentUserId);
 
-            };
-            return View(billingVM);
+                    var billingVM = new BillingViewModel()
+                    {
+                        Id = billing.Id,
+                        Month = billing.Month,
+                        WaterAmount = billing.WaterAmount,
+                        Rent = apartment.Price,
+                        ElectricityAmount = billing.ElectricityAmount,
+                        BankAccount = (List<BankAccount>)accounts,
+                        UserId = billing.UserId,
+
+                    };
+                    return View(billingVM);
+
+                }
+                return View("NoApartment");
+
+            }
+            return View("NoBill");
 
         }
         public async Task<IActionResult> BankingDetails(string id)
@@ -62,7 +72,7 @@ namespace RentalsWebApp.Controllers
             var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
             var bill = await _billingRepository.GetBillByUserId(currentUserId);
 
-            ProofOfPayment pop = await _proofOfPaymentRepository.GetPOPByBillId(bill.Id);
+            //ProofOfPayment pop = await _proofOfPaymentRepository.GetPOPByBillId(currentUserId);
             Apartments apartment = await _apartmentsRepository.GetByUserId(currentUserId);
 
 
@@ -70,7 +80,8 @@ namespace RentalsWebApp.Controllers
             var billingVM = new PaymentHistoryViewModel()
             {
                 Billing = (List<Billing>)billings,
-                ProofOfPayment = pop.Proof,
+                // ProofOfPaymentId = billings..Id,
+                //ProofOfPayment = pop.Proof,
                 Rent = apartment.Price,
 
             };
@@ -142,6 +153,10 @@ namespace RentalsWebApp.Controllers
             return NotFound();
 
 
+        }
+        public IActionResult NoBill()
+        {
+            return View();
         }
 
 

@@ -16,6 +16,8 @@ builder.Services.AddScoped<IApartmentsRepository, ApartmentsRepository>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IDocumentsRepository, DocumentRepository>();
 builder.Services.AddScoped<IBillingRepository, BillingRepository>();
+builder.Services.AddScoped<IProofOfPaymentRepository, ProofOfPaymentRepository>();
+builder.Services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddTransient<ISendMail, SendMailService>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
