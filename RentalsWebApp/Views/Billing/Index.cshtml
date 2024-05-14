@@ -16,14 +16,24 @@
 
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
-        <a class="nav-link" asp-controller="Documents" asp-action="Index"  target="__self">Documents</a>
-        <a class="nav-link" asp-controller="Billing" asp-action="Index" target=" __self">Billing</a>
+        
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
+            <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+            <a class="nav-link" asp-controller="Documents" asp-action="Index" target="__self">Documents</a>
+            <a class="nav-link" asp-controller="Billing" asp-action="Index" target=" __self">Billing</a>
             <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
         }
-        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+        else
+        {
+            <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+            <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>
+            <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
+            
+        }
+        
     </nav>
     <hr class="mt-0 mb-4">
     <div class="row">
@@ -61,8 +71,8 @@
             <div class="card h-100 border-start-lg border-start-secondary">
                 <div class="card-body">
                     <div class="small text-muted">Next payment due date</div>
-                    <div class="h3">May 1</div>
-                    <a class="text-arrow-icon small text-success" asp-controller="Billing" asp-action="PaymentHistory" asp-route-id="@Model.UserId" target="__self">
+                    <div class="h3">@(DateTime.Now.ToString("MMMM")) @DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)</div>
+                    <a class="text-arrow-icon small text-success" asp-controller="Billing" asp-action="PaymentHistory" target="__self">
                         View payment history
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>

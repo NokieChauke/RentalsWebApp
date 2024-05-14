@@ -27,37 +27,73 @@ namespace RentalsWebApp.Controllers
             _bankAccountRepository = bankAccountRepository;
             _proofOfPaymentRepository = proofOfPaymentRepository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userId)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var month = await _billingRepository.GetBillByUserId(currentUserId);
-            if (month != null)
+            if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
-                var m = month.Month;
-                var apartment = await _apartmentsRepository.GetByUserId(currentUserId);
-                if (apartment != null)
+                var bill = await _billingRepository.GetBillByUserId(userId);
+
+                if (bill != null)
                 {
-                    Billing billing = await _billingRepository.GetStatementByUserId(currentUserId, m);
-                    IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(currentUserId);
-
-                    var billingVM = new BillingViewModel()
+                    var billMonth = bill.Month;
+                    var apartment = await _apartmentsRepository.GetByUserId(userId);
+                    if (apartment != null)
                     {
-                        Id = billing.Id,
-                        Month = billing.Month,
-                        WaterAmount = billing.WaterAmount,
-                        Rent = apartment.Price,
-                        ElectricityAmount = billing.ElectricityAmount,
-                        BankAccount = (List<BankAccount>)accounts,
-                        UserId = billing.UserId,
+                        Billing billing = await _billingRepository.GetStatementByUserId(userId, billMonth);
+                        IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(userId);
 
-                    };
-                    return View(billingVM);
+                        var billingVM = new BillingViewModel()
+                        {
+                            Id = billing.Id,
+                            Month = billing.Month,
+                            WaterAmount = billing.WaterAmount,
+                            Rent = apartment.Price,
+                            ElectricityAmount = billing.ElectricityAmount,
+                            BankAccount = (List<BankAccount>)accounts,
+                            UserId = billing.UserId,
+
+                        };
+                        return View(billingVM);
+
+                    }
+                    return View("NoApartment");
 
                 }
-                return View("NoApartment");
-
+                return View("NoBill");
             }
-            return View("NoBill");
+            else
+            {
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                var month = await _billingRepository.GetBillByUserId(currentUserId);
+                if (month != null)
+                {
+                    var m = month.Month;
+                    var apartment = await _apartmentsRepository.GetByUserId(currentUserId);
+                    if (apartment != null)
+                    {
+                        Billing billing = await _billingRepository.GetStatementByUserId(currentUserId, m);
+                        IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(currentUserId);
+
+                        var billingVM = new BillingViewModel()
+                        {
+                            Id = billing.Id,
+                            Month = billing.Month,
+                            WaterAmount = billing.WaterAmount,
+                            Rent = apartment.Price,
+                            ElectricityAmount = billing.ElectricityAmount,
+                            BankAccount = (List<BankAccount>)accounts,
+                            UserId = billing.UserId,
+
+                        };
+                        return View(billingVM);
+
+                    }
+                    return View("NoApartment");
+
+                }
+                return View("NoBill");
+            }
+
 
         }
         public async Task<IActionResult> BankingDetails(string id)

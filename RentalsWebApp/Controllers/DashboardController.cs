@@ -55,22 +55,43 @@ namespace RentalsWebApp.Controllers
             return View(result);
         }
 
-        public async Task<IActionResult> EditUserProfile()
+        public async Task<IActionResult> EditUserProfile(string id)
         {
             var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var tenant = await _apartmentsRepository.GetUserById(id);
             var user = await _dashboardRepository.GetUserById(currentUserId);
-            if (user == null) return View("Error");
-            var ediUserVM = new EditUserProfileViewModel()
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
-                Id = currentUserId,
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                IdentityNo = user.IdentityNo,
-                URL = user.ProfileImage
-            };
-            return View(ediUserVM);
+                if (tenant == null) return View("Error");
+                var ediUserVM = new EditUserProfileViewModel()
+                {
+                    Id = tenant.Id,
+                    Name = tenant.Name,
+                    Surname = tenant.Surname,
+                    Email = tenant.Email,
+                    PhoneNumber = tenant.PhoneNumber,
+                    IdentityNo = tenant.IdentityNo,
+                    URL = tenant.ProfileImage
+                };
+                return View(ediUserVM);
+            }
+            else
+            {
+                if (user == null) return View("Error");
+                var ediUserVM = new EditUserProfileViewModel()
+                {
+                    Id = currentUserId,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    IdentityNo = user.IdentityNo,
+                    URL = user.ProfileImage
+                };
+                return View(ediUserVM);
+            }
+
         }
         public async Task<IActionResult> EditUserProfileByAdmin(string id)
         {
@@ -147,10 +168,31 @@ namespace RentalsWebApp.Controllers
 
         }
 
-        public async Task<IActionResult> UserProfile()
+        public async Task<IActionResult> UserProfile(string id)
         {
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
             var apartment = await _dashboardRepository.GetApartmentByUserId(currentUserId);
+
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+            {
+                var tenantUser = await _apartmentsRepository.GetUserById(id);
+                var tenantApartment = await _dashboardRepository.GetApartmentByUserId(tenantUser.Id);
+                var tenent = await _dashboardRepository.GetCurrentUserById(tenantUser.Id);
+                if (tenent == null) return View("Error");
+                var tenantViewModel = new UserProfileViewModel()
+                {
+                    Id = tenent.Id,
+                    Name = tenent.Name,
+                    Surname = tenent.Surname,
+                    PhoneNumber = tenent.PhoneNumber,
+                    Email = tenent.Email,
+                    ProfileImageUrl = tenent.ProfileImage,
+                    Apartments = tenantApartment
+                };
+                return View(tenantViewModel);
+            }
+
             var user = await _dashboardRepository.GetCurrentUserById(currentUserId);
             if (user == null) return View("Error");
             var userViewModel = new UserProfileViewModel()

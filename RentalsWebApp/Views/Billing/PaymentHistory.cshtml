@@ -45,7 +45,7 @@
              
                                 @if (billing.ProofOfPayment != null)
                                 {
-                                    <td><a class="btn btn-sm btn-outline-primary" asp-controller="ProofOfPayment" asp-action="DownloadProofOfPayment" target="__self">Download POP</a></td>
+                                    <td><a class="btn btn-sm btn-outline-primary" asp-controller="ProofOfPayment" asp-action="DownloadProofOfPayment" asp-route-id="@billing.ProofOfPayment.Id" target="__self">Download POP</a></td>
                                 }
                                 else
                                 {

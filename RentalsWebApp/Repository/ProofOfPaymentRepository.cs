@@ -19,9 +19,9 @@ namespace RentalsWebApp.Repository
             return Save();
         }
 
-        public async Task<ProofOfPayment> DownloadProofOfPayment(string userId)
+        public async Task<ProofOfPayment> DownloadProofOfPayment(int id)
         {
-            return await _context.ProofOfPayment.Where(x => x.UserId == userId).OrderBy(x => x.Month).LastAsync();
+            return await _context.ProofOfPayment.Where(x => x.Id == id).OrderBy(x => x.Month).LastAsync();
         }
 
         public async Task<ProofOfPayment> GetPOPByBillId(string userId)

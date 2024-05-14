@@ -82,10 +82,10 @@ namespace RentalsWebApp.Controllers
             return View(proofOfPaymentVM);
 
         }
-        public async Task<IActionResult> DownloadProofOfpayment()
+        public async Task<IActionResult> DownloadProofOfpayment(int id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var proof = _proofOfPaymentRepository.DownloadProofOfPayment(currentUserId);
+            //var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var proof = _proofOfPaymentRepository.DownloadProofOfPayment(id);
 
             string path = proof.Result.Proof;
 

@@ -6,7 +6,16 @@
 }
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<h1>Profile Summary</h1>
+
+@if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
+{
+    <h1>Tenant Profile Summary</h1>
+}
+else
+{
+    <h1>Profile Summary</h1>
+}
+
 <div class="container-xl px-4 nt-4">
     <form>
         <input type="hidden" id="Id" name="Id" asp-for="Id" />
@@ -23,8 +32,17 @@
                             <p class="text-muted font-13"><strong>Mobile :</strong> <span class="m-l-15">@Model.PhoneNumber</span></p>
                             <p class="text-muted font-13"><strong>Email :</strong> <span class="m-l-15">@Model.Email</span></p>
                             <p class="text-muted font-13">
-                                <a asp-controller="Dashboard" asp-action="EditUserProfile"
-                                        class="btn btn-sm btn-outline-secondary">Edit Profile</a>
+                                @if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                                {
+                                    <a asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.Id"
+                                    class="btn btn-sm btn-outline-secondary">Edit Profile</a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Dashboard" asp-action="EditUserProfile"
+                                       class="btn btn-sm btn-outline-secondary">Edit Profile</a>
+                                }
+
                             </p>
                         </div>     
                     </div>
@@ -32,7 +50,15 @@
             </div>
             <div class="col-xl-8">
                 <div class="card mb-4">
-                    <div class="card-header">Your Apartment</div>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                    {
+                        <div class="card-header">Tenant's Apartment</div>
+                    }
+                    else
+                    {
+                        <div class="card-header">Your Apartment</div>
+                    }
+                    
                     <div class="card-body">
                         <div class="wrapper row">
 
@@ -67,10 +93,20 @@
                                     <h4 class="price">current price: <span>@Model.Apartments.Price</span></h4>
 
                                     <div class="action">
-                                        <a asp-controller="AboutUs" asp-action="ContactUs" asp-route-id="@Model.Apartments.Id"
-                                            class="btn btn-sm btn-outline-secondary">Contact the Agent</a>
-                                        <a asp-controller="AboutUs" asp-action="ReportIncident" asp-route-id="@Model.Id"
-                                           class="btn btn-sm btn-outline-secondary">Log a call</a>
+                                        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                                        {
+                                            <a asp-controller="AboutUs" asp-action="ContactUs"
+                                               class="btn btn-sm btn-outline-secondary">Contact the tenent</a>
+                                            <a asp-controller="Apartments" asp-action="Edit" asp-route-id="@Model.Apartments.Id"
+                                               class="btn btn-sm btn-outline-secondary">Edit Apartment</a>                                            
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="AboutUs" asp-action="ContactUs" asp-route-id="@Model.Apartments.Id"
+                                               class="btn btn-sm btn-outline-secondary">Contact the Agent</a>
+                                            <a asp-controller="AboutUs" asp-action="ReportIncident" asp-route-id="@Model.Id"
+                                               class="btn btn-sm btn-outline-secondary">Log a call</a>
+                                        }                                        
                                     </div>
                                 </div>
                             }
