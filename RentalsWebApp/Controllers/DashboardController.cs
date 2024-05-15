@@ -57,12 +57,10 @@ namespace RentalsWebApp.Controllers
 
         public async Task<IActionResult> EditUserProfile(string id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var tenant = await _apartmentsRepository.GetUserById(id);
-            var user = await _dashboardRepository.GetUserById(currentUserId);
 
             if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
+                var tenant = await _apartmentsRepository.GetUserById(id);
                 if (tenant == null) return View("Error");
                 var ediUserVM = new EditUserProfileViewModel()
                 {
@@ -78,6 +76,8 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                var user = await _dashboardRepository.GetUserById(currentUserId);
                 if (user == null) return View("Error");
                 var ediUserVM = new EditUserProfileViewModel()
                 {

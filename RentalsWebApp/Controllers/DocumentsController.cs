@@ -22,28 +22,53 @@ namespace RentalsWebApp.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string Id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
-            if (docs != null)
+            if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
-                var documentVM = new DocumentsDisplayViewModel()
+                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                if (docs != null)
                 {
-                    UserId = currentUserId,
-                    DateUploaded = docs.DateUploaded,
-                    IdCopy = Path.GetFileName(docs.IdCard),
-                    Contract = Path.GetFileName(docs.Contract),
-                    PaySlip = Path.GetFileName(docs.PaySlip)
-                };
-                return View(documentVM);
+                    var documentVM = new DocumentsDisplayViewModel()
+                    {
+                        UserId = Id,
+                        DateUploaded = docs.DateUploaded,
+                        IdCopy = Path.GetFileName(docs.IdCard),
+                        Contract = Path.GetFileName(docs.Contract),
+                        PaySlip = Path.GetFileName(docs.PaySlip)
+                    };
+                    return View(documentVM);
 
+                }
+                else
+                {
+                    return RedirectToAction("NoDocuments");
+                }
             }
             else
             {
-                return RedirectToAction("NoDocuments");
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+                if (docs != null)
+                {
+                    var documentVM = new DocumentsDisplayViewModel()
+                    {
+                        UserId = currentUserId,
+                        DateUploaded = docs.DateUploaded,
+                        IdCopy = Path.GetFileName(docs.IdCard),
+                        Contract = Path.GetFileName(docs.Contract),
+                        PaySlip = Path.GetFileName(docs.PaySlip)
+                    };
+                    return View(documentVM);
+
+                }
+                else
+                {
+                    return RedirectToAction("NoDocuments");
+                }
             }
-            return View();
+
+
 
         }
         public IActionResult NoDocuments()

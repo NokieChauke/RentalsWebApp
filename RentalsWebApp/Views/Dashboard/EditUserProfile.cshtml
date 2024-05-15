@@ -9,7 +9,6 @@
 <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
             <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
@@ -24,7 +23,6 @@
             <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.Id" target="__self">Documents</a>
             <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.Id" target=" __self">Billing</a>
             <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.Id" target="__self">Notifications</a>
-
         }
 
     </nav>
@@ -40,8 +38,7 @@
                         <img class="img-account-profile rounded-circle mb-2" src="@Model.URL" alt="">
                         <!-- Profile picture help block-->
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                        <!-- Profile picture upload button-->
-                    
+                        <!-- Profile picture upload button-->                    
                         <label asp-for="ProfileImageUrl" class="control-label"></label>
                         <input asp-for="ProfileImageUrl" type="file" class="form-control" placeholder="Upload Profile Pic">
                         <span asp-validation-for="ProfileImageUrl" class="text-danger"></span></button>
@@ -101,8 +98,7 @@
                             <button type="submit" class="btn btn-sm btn-outline-secondary">Save and Continue</button>
                             <a asp-controller="Dashboard" asp-action="UserProfile" class="btn btn-sm btn-outline-secondary">Cancel</a>
                             
-                        }
-                        
+                        }                       
   
                     </div>
                 </div>

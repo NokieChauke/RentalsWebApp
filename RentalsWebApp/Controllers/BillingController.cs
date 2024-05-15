@@ -27,20 +27,22 @@ namespace RentalsWebApp.Controllers
             _bankAccountRepository = bankAccountRepository;
             _proofOfPaymentRepository = proofOfPaymentRepository;
         }
-        public async Task<IActionResult> Index(string userId)
+
+        [HttpGet]
+        public async Task<IActionResult> Index(string Id)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
-                var bill = await _billingRepository.GetBillByUserId(userId);
+                var bill = await _billingRepository.GetBillByUserId(Id);
 
                 if (bill != null)
                 {
                     var billMonth = bill.Month;
-                    var apartment = await _apartmentsRepository.GetByUserId(userId);
+                    var apartment = await _apartmentsRepository.GetByUserId(Id);
                     if (apartment != null)
                     {
-                        Billing billing = await _billingRepository.GetStatementByUserId(userId, billMonth);
-                        IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(userId);
+                        Billing billing = await _billingRepository.GetStatementByUserId(Id, billMonth);
+                        IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(Id);
 
                         var billingVM = new BillingViewModel()
                         {

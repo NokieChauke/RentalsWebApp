@@ -9,16 +9,27 @@
 
 <h1>Uploaded Documents</h1>
 <div class="container-xl px-4 mt-4">
+    <form>
+        <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
+    </form>
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
-        <a class="nav-link" asp-controller="Documents" asp-action="Index" target="__self">Documents</a>
-        <a class="nav-link" asp-controller="Billing" asp-action="Index" target="__self">Billing</a>
         @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
         {
+            <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+            <a class="nav-link" asp-controller="Documents" asp-action="Index" target="__self">Documents</a>
+            <a class="nav-link" asp-controller="Billing" asp-action="Index" target=" __self">Billing</a>
             <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
         }
-        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+        else
+        {
+            <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+            <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>
+            <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
+
+        }
     </nav>
     <hr class="mt-0 mb-4">
 
