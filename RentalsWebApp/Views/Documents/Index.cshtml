@@ -58,7 +58,7 @@
                             <td>@Model.IdCopy</td>
                             <td>@Model.DateUploaded</td>
                             <td>
-                                <a asp-controller="Documents" asp-action="EditId"
+                                <a asp-controller="Documents" asp-action="EditId" asp-route-itemid="@Model.UserId"
                                     class="btn btn-sm btn-outline-secondary">Edit</a>
                                 
                             </td>
@@ -71,7 +71,7 @@
                             <td>@Model.Contract</td>
                             <td>@Model.DateUploaded</td>
                             <td>
-                                <a asp-controller="Documents" asp-action="EditContract"
+                                <a asp-controller="Documents" asp-action="EditContract" asp-route-itemid="@Model.UserId"
                                    class="btn btn-sm btn-outline-secondary">Edit</a>
                                 
                             </td>
@@ -84,7 +84,7 @@
                             <td>@Model.PaySlip</td>
                             <td>@Model.DateUploaded</td>
                             <td>
-                                <a asp-controller="Documents" asp-action="EditPayslip"
+                                <a asp-controller="Documents" asp-action="EditPayslip" asp-route-itemid="@Model.UserId"
                                     class="btn btn-sm btn-outline-secondary">Edit</a>
                                
                             </td>

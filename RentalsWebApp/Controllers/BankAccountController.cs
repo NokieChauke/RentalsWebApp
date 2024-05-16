@@ -19,11 +19,22 @@ namespace RentalsWebApp.Controllers
             _dashboardRepository = dashboardRepository;
         }
         [HttpGet]
-        public async Task<IActionResult> AddBankAccount()
+        public async Task<IActionResult> AddBankAccount(string Id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var addBankAccountVM = new BankingAccountViewModel { AppUserId = currentUserId };
-            return View(addBankAccountVM);
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+            {
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+                var addBankAccountVM = new BankingAccountViewModel { AppUserId = currentUserId };
+                return View(addBankAccountVM);
+
+            }
+            else
+            {
+                var addBankAccountVM = new BankingAccountViewModel { AppUserId = Id };
+                return View(addBankAccountVM);
+
+            }
+
         }
 
         [HttpPost]
@@ -61,41 +72,6 @@ namespace RentalsWebApp.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> AddBankAccountByAdmin(string id)
-        {
-            var user = await _dashboardRepository.GetUserById(id);
-
-            var addBankAccountVM = new BankingAccountViewModel { AppUserId = user.Id };
-            return View(addBankAccountVM);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddBankAccountByAdmin(BankingAccountViewModel bankingAccountVM)
-        {
-            if (ModelState.IsValid)
-            {
-                var bankingAccount = new BankAccount()
-                {
-                    AppUserId = bankingAccountVM.AppUserId,
-                    CardDescreption = bankingAccountVM.CardDescreption,
-                    BankName = bankingAccountVM.BankName,
-                    AccountHolder = bankingAccountVM.AccountHolder,
-                    CardNumber = bankingAccountVM.CardNumber,
-                    BranchCode = bankingAccountVM.BranchCode,
-                    ExpiryDate = bankingAccountVM.ExpiryDate,
-                    CSV = bankingAccountVM.CSV
-                };
-                _bankAccountRepository.Add(bankingAccount);
-                return RedirectToAction("Index", "Billing", new { id = bankingAccount.AppUserId });
-            }
-            else
-            {
-                ModelState.AddModelError("", "Something went wrong");
-
-            }
-            return View(bankingAccountVM);
-
-        }
 
         public async Task<IActionResult> EditAccount(int id)
         {

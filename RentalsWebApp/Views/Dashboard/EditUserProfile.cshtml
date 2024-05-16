@@ -90,8 +90,8 @@
                         </div>
                         @if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
                         {
-                            <button class="btn btn-primary" type="button">Save changes</button>
-                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-outline-primary">Cancel</a>
+                            <button class="btn btn-sm btn-outline-secondary" type="submit">Save changes</button>
+                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-outline-secondary">Cancel</a>
                         }
                         else if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
                         {

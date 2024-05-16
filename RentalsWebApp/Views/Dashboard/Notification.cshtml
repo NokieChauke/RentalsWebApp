@@ -30,8 +30,6 @@
     <form method="post" asp-action="Notification" enctype="multipart/form-data">
         <input type="hidden" id="Id" name="Id" asp-for="Id" />
         <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
-    @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
-    {
         <hr class="mt-0 mb-4">
         <div class="row">
             <div class="col-lg-8">
@@ -97,35 +95,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-    }
-
-    else if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
-    {
-        <div class="col-lg-4">
-            <!-- Notifications preferences card-->
-            <div class="card">
-                <div class="card-header">Notification Preferences</div>
-                <div class="card-body">
-                   
-                        <!-- Form Group (notification preference checkboxes)-->
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" id="checkAutoGroup" type="checkbox" checked="">
-                            <label class="form-check-label" for="checkAutoGroup">Automatically subscribe to group notifications</label>
-                        </div>
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" id="checkAutoProduct" type="checkbox">
-                            <label class="form-check-label" for="checkAutoProduct">Automatically subscribe to new product notifications</label>
-                        </div>
-                                           
-                    
-                </div>
-                
-            </div>
-        </div>                   
-    }
-        
-    </form>
- 
+        </div>        
+    </form> 
 </div>

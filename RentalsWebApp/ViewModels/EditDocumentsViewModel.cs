@@ -5,7 +5,7 @@ namespace RentalsWebApp.ViewModels
     public class EditDocumentsViewModel
     {
         public int Id { get; set; }
-        public string AppUserId { get; set; }
+        public string UserId { get; set; }
 
         [Display(Name = "ID Copy")]
         public IFormFile IdCopy { get; set; }

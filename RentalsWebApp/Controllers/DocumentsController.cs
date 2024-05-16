@@ -67,68 +67,118 @@ namespace RentalsWebApp.Controllers
                     return RedirectToAction("NoDocuments");
                 }
             }
-
-
-
         }
         public IActionResult NoDocuments()
         {
             return View();
         }
 
-        public async Task<IActionResult> OpenIDCopy()
+        public async Task<IActionResult> OpenIDCopy(string Id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+            {
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
 
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            string fileName = Path.GetFileName(docs.IdCard);
-            string path = Path.Combine(webRootPath + "/documents/idcopy/" + fileName);
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string fileName = Path.GetFileName(docs.IdCard);
+                string path = Path.Combine(webRootPath + "/documents/idcopy/" + fileName);
 
-            return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
+                return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
+            }
+            else
+            {
+                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string fileName = Path.GetFileName(docs.IdCard);
+                string path = Path.Combine(webRootPath + "/documents/idcopy/" + fileName);
+
+                return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
+            }
+        }
+        public async Task<IActionResult> OpenContract(string Id)
+        {
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+            {
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string fileName = Path.GetFileName(docs.Contract);
+                string path = Path.Combine(webRootPath + "/documents/contract/" + fileName);
+
+                return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
+            }
+            else
+            {
+                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string fileName = Path.GetFileName(docs.Contract);
+                string path = Path.Combine(webRootPath + "/documents/contract/" + fileName);
+
+                return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
+            }
+
 
         }
-        public async Task<IActionResult> OpenContract()
+        public async Task<IActionResult> OpenPayslip(string Id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+            {
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
 
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            string fileName = Path.GetFileName(docs.Contract);
-            string path = Path.Combine(webRootPath + "/documents/contract/" + fileName);
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string fileName = Path.GetFileName(docs.PaySlip);
+                string path = Path.Combine(webRootPath + "/documents/payslip/" + fileName);
 
-            return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
+                return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
+            }
+            else
+            {
+                var docs = await _documentsRepository.GetUploadedDocuments(Id);
 
-        }
-        public async Task<IActionResult> OpenPayslip()
-        {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string fileName = Path.GetFileName(docs.PaySlip);
+                string path = Path.Combine(webRootPath + "/documents/payslip/" + fileName);
 
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            string fileName = Path.GetFileName(docs.PaySlip);
-            string path = Path.Combine(webRootPath + "/documents/payslip/" + fileName);
+                return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
 
-            return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
-
+            }
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditId(int id)
+        public async Task<IActionResult> EditId(int id, string UserId)
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-
-            var editDocumentsVM = new EditDocumentsViewModel
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                Id = id,
-                AppUserId = currentUserId,
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
 
-            };
-            return View(editDocumentsVM);
+                var editDocumentsVM = new EditDocumentsViewModel
+                {
+                    Id = id,
+                    UserId = currentUserId,
+
+                };
+                return View(editDocumentsVM);
+            }
+            else
+            {
+                var editDocumentsVM = new EditDocumentsViewModel
+                {
+                    Id = id,
+                    UserId = UserId,
+
+                };
+                return View(editDocumentsVM);
+            }
+
 
         }
         [HttpPost]
-        public async Task<IActionResult> EditId(int id, EditDocumentsViewModel editDocumentsVM)
+        public async Task<IActionResult> EditId(string Id, EditDocumentsViewModel editDocumentsVM)
         {
 
             string webRootPath = _webHostEnvironment.WebRootPath;
@@ -141,39 +191,69 @@ namespace RentalsWebApp.Controllers
             {
                 await editDocumentsVM.IdCopy.CopyToAsync(fileStream);
             }
-
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
-            var oldFilePath = Path.Combine(webRootPath + "/documents/idcopy/", Path.GetFileName(docs.IdCard));
-
-            if (System.IO.File.Exists(oldFilePath))
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                System.IO.File.Delete(oldFilePath);
-                ViewBag.deleteSuccess = "true";
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+                var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+                var oldFilePath = Path.Combine(webRootPath + "/documents/idcopy/", Path.GetFileName(docs.IdCard));
+
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                docs.IdCard = iPath;
+
+                _documentsRepository.Update(docs);
+                return RedirectToAction("Index");
             }
-            docs.IdCard = iPath;
+            else
+            {
+                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var oldFilePath = Path.Combine(webRootPath + "/documents/idcopy/", Path.GetFileName(docs.IdCard));
 
-            _documentsRepository.Update(docs);
-            return RedirectToAction("Index");
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                docs.IdCard = iPath;
 
-
+                _documentsRepository.Update(docs);
+                return RedirectToAction("Index");
+            }
         }
         [HttpGet]
-        public async Task<IActionResult> EditContract(int id)
+        public async Task<IActionResult> EditContract(int id, string UserId)
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-
-            var editDocumentsVM = new EditDocumentsViewModel
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                Id = id,
-                AppUserId = currentUserId,
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
 
-            };
-            return View(editDocumentsVM);
+                var editDocumentsVM = new EditDocumentsViewModel
+                {
+                    Id = id,
+                    UserId = currentUserId,
+
+                };
+                return View(editDocumentsVM);
+            }
+            else
+            {
+
+                var editDocumentsVM = new EditDocumentsViewModel
+                {
+                    Id = id,
+                    UserId = UserId,
+
+                };
+                return View(editDocumentsVM);
+            }
+
 
         }
         [HttpPost]
-        public async Task<IActionResult> EditContract(int id, EditDocumentsViewModel editDocumentsVM)
+        public async Task<IActionResult> EditContract(string Id, EditDocumentsViewModel editDocumentsVM)
         {
 
             string webRootPath = _webHostEnvironment.WebRootPath;
@@ -186,39 +266,68 @@ namespace RentalsWebApp.Controllers
             {
                 await editDocumentsVM.Contract.CopyToAsync(fileStream);
             }
-
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
-            var oldFilePath = Path.Combine(webRootPath + "/documents/contract/", Path.GetFileName(docs.Contract));
-
-            if (System.IO.File.Exists(oldFilePath))
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                System.IO.File.Delete(oldFilePath);
-                ViewBag.deleteSuccess = "true";
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+                var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+                var oldFilePath = Path.Combine(webRootPath + "/documents/contract/", Path.GetFileName(docs.Contract));
+
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                docs.Contract = path;
+
+                _documentsRepository.Update(docs);
+                return RedirectToAction("Index");
             }
-            docs.Contract = path;
+            else
+            {
+                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var oldFilePath = Path.Combine(webRootPath + "/documents/contract/", Path.GetFileName(docs.Contract));
 
-            _documentsRepository.Update(docs);
-            return RedirectToAction("Index");
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                docs.Contract = path;
 
-
+                _documentsRepository.Update(docs);
+                return RedirectToAction("Index");
+            }
         }
         [HttpGet]
-        public async Task<IActionResult> EditPayslip(int id)
+        public async Task<IActionResult> EditPayslip(int id, string UserId)
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-
-            var editDocumentsVM = new EditDocumentsViewModel
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                Id = id,
-                AppUserId = currentUserId,
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
 
-            };
-            return View(editDocumentsVM);
+                var editDocumentsVM = new EditDocumentsViewModel
+                {
+                    Id = id,
+                    UserId = currentUserId,
+
+                };
+                return View(editDocumentsVM);
+            }
+            else
+            {
+
+                var editDocumentsVM = new EditDocumentsViewModel
+                {
+                    Id = id,
+                    UserId = UserId,
+
+                };
+                return View(editDocumentsVM);
+            }
 
         }
         [HttpPost]
-        public async Task<IActionResult> EditPayslip(int id, EditDocumentsViewModel editDocumentsVM)
+        public async Task<IActionResult> EditPayslip(string Id, EditDocumentsViewModel editDocumentsVM)
         {
 
             string webRootPath = _webHostEnvironment.WebRootPath;
@@ -232,33 +341,65 @@ namespace RentalsWebApp.Controllers
                 await editDocumentsVM.PaySlip.CopyToAsync(fileStream);
             }
 
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
-            var oldFilePath = Path.Combine(webRootPath + "/documents/payslip/", Path.GetFileName(docs.PaySlip));
-
-            if (System.IO.File.Exists(oldFilePath))
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                System.IO.File.Delete(oldFilePath);
-                ViewBag.deleteSuccess = "true";
-            }
-            docs.PaySlip = iPath;
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+                var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
+                var oldFilePath = Path.Combine(webRootPath + "/documents/payslip/", Path.GetFileName(docs.PaySlip));
 
-            _documentsRepository.Update(docs);
-            return RedirectToAction("Index");
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                docs.PaySlip = iPath;
+
+                _documentsRepository.Update(docs);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var oldFilePath = Path.Combine(webRootPath + "/documents/payslip/", Path.GetFileName(docs.PaySlip));
+
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                docs.PaySlip = iPath;
+
+                _documentsRepository.Update(docs);
+                return RedirectToAction("Index");
+            }
+
 
 
         }
 
         [HttpGet]
-        public IActionResult Upload()
+        public IActionResult Upload(string Id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var documentsVM = new DocumentsViewModel
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                AppUserId = currentUserId,
-                DateUploaded = DateTime.Now.ToString("yyyy-MM-dd")
-            };
-            return View(documentsVM);
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+                var documentsVM = new DocumentsViewModel
+                {
+                    AppUserId = currentUserId,
+                    DateUploaded = DateTime.Now.ToString("yyyy-MM-dd")
+                };
+                return View(documentsVM);
+            }
+            else
+            {
+                var documentsVM = new DocumentsViewModel
+                {
+                    AppUserId = Id,
+                    DateUploaded = DateTime.Now.ToString("yyyy-MM-dd")
+                };
+                return View(documentsVM);
+            }
+
         }
         [HttpPost]
         public async Task<IActionResult> Upload(DocumentsViewModel documentsVM)
@@ -317,60 +458,69 @@ namespace RentalsWebApp.Controllers
             return View(documentsVM);
 
         }
-
-        [HttpGet]
-        public async Task<IActionResult> EditDocuments()
+        public async Task<IActionResult> DeleteDocuments(string Id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var docs = await _documentsRepository.GetUploadedDocuments(currentUserId);
-
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            string fileName = Path.GetFileName(docs.IdCard);
-            string path = Path.Combine(webRootPath + "/documents/payslip/" + fileName);
-
-            var file = File(System.IO.File.OpenRead(path), "image/jpeg", Path.GetFileName(path));
-
-            var editDocumentsVM = new EditDocumentsViewModel
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                AppUserId = currentUserId,
-                Contract = (IFormFile)file,
-                IdCopy = (IFormFile)file,
-                PaySlip = (IFormFile)file
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+                var documents = await _documentsRepository.GetUploadedDocuments(currentUserId);
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                var oldIdCopyPath = Path.Combine(webRootPath + "/documents/idcopy/", Path.GetFileName(documents.IdCard));
 
+                if (System.IO.File.Exists(oldIdCopyPath))
+                {
+                    System.IO.File.Delete(oldIdCopyPath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                var oldContractPath = Path.Combine(webRootPath + "/documents/contract/", Path.GetFileName(documents.Contract));
 
-            };
-            return View(editDocumentsVM);
-        }
-        public async Task<IActionResult> DeleteDocuments()
-        {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var documents = await _documentsRepository.GetUploadedDocuments(currentUserId);
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            var oldIdCopyPath = Path.Combine(webRootPath + "/documents/idcopy/", Path.GetFileName(documents.IdCard));
+                if (System.IO.File.Exists(oldContractPath))
+                {
+                    System.IO.File.Delete(oldContractPath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                var oldFilePath = Path.Combine(webRootPath + "/documents/payslip/", Path.GetFileName(documents.PaySlip));
 
-            if (System.IO.File.Exists(oldIdCopyPath))
-            {
-                System.IO.File.Delete(oldIdCopyPath);
-                ViewBag.deleteSuccess = "true";
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                if (documents == null) return View("Error");
+
+                _documentsRepository.Delete(documents);
+                return RedirectToAction("Index");
             }
-            var oldContractPath = Path.Combine(webRootPath + "/documents/contract/", Path.GetFileName(documents.Contract));
-
-            if (System.IO.File.Exists(oldContractPath))
+            else
             {
-                System.IO.File.Delete(oldContractPath);
-                ViewBag.deleteSuccess = "true";
-            }
-            var oldFilePath = Path.Combine(webRootPath + "/documents/payslip/", Path.GetFileName(documents.PaySlip));
+                var documents = await _documentsRepository.GetUploadedDocuments(Id);
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                var oldIdCopyPath = Path.Combine(webRootPath + "/documents/idcopy/", Path.GetFileName(documents.IdCard));
 
-            if (System.IO.File.Exists(oldFilePath))
-            {
-                System.IO.File.Delete(oldFilePath);
-                ViewBag.deleteSuccess = "true";
-            }
-            if (documents == null) return View("Error");
+                if (System.IO.File.Exists(oldIdCopyPath))
+                {
+                    System.IO.File.Delete(oldIdCopyPath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                var oldContractPath = Path.Combine(webRootPath + "/documents/contract/", Path.GetFileName(documents.Contract));
 
-            _documentsRepository.Delete(documents);
-            return RedirectToAction("Index");
+                if (System.IO.File.Exists(oldContractPath))
+                {
+                    System.IO.File.Delete(oldContractPath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                var oldFilePath = Path.Combine(webRootPath + "/documents/payslip/", Path.GetFileName(documents.PaySlip));
+
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                    ViewBag.deleteSuccess = "true";
+                }
+                if (documents == null) return View("Error");
+
+                _documentsRepository.Delete(documents);
+                return RedirectToAction("Index");
+            }
         }
     }
 

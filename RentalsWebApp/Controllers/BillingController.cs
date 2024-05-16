@@ -105,25 +105,37 @@ namespace RentalsWebApp.Controllers
             return View(billind);
 
         }
-        public async Task<IActionResult> PaymentHistory()
+        public async Task<IActionResult> PaymentHistory(string Id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var bill = await _billingRepository.GetBillByUserId(currentUserId);
-
-            //ProofOfPayment pop = await _proofOfPaymentRepository.GetPOPByBillId(currentUserId);
-            Apartments apartment = await _apartmentsRepository.GetByUserId(currentUserId);
-
-
-            IEnumerable<Billing> billings = await _billingRepository.GetAllBillingsByUserId(currentUserId);
-            var billingVM = new PaymentHistoryViewModel()
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                Billing = (List<Billing>)billings,
-                // ProofOfPaymentId = billings..Id,
-                //ProofOfPayment = pop.Proof,
-                Rent = apartment.Price,
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                Apartments apartment = await _apartmentsRepository.GetByUserId(currentUserId);
 
-            };
-            return View(billingVM);
+                IEnumerable<Billing> billings = await _billingRepository.GetAllBillingsByUserId(currentUserId);
+                var billingVM = new PaymentHistoryViewModel()
+                {
+                    Billing = (List<Billing>)billings,
+                    Rent = apartment.Price,
+
+                };
+                return View(billingVM);
+            }
+            else
+            {
+                Apartments apartment = await _apartmentsRepository.GetByUserId(Id);
+
+                IEnumerable<Billing> billings = await _billingRepository.GetAllBillingsByUserId(Id);
+                var billingVM = new PaymentHistoryViewModel()
+                {
+                    Billing = (List<Billing>)billings,
+                    Rent = apartment.Price,
+
+                };
+                return View(billingVM);
+
+            }
+
         }
 
         [HttpGet]
@@ -142,7 +154,7 @@ namespace RentalsWebApp.Controllers
             return View(uploadStatement);
         }
         [HttpPost]
-        public async Task<IActionResult> UploadStatement(string id, UploadStatementViewModel uploadStatementVM)
+        public async Task<IActionResult> UploadStatement(UploadStatementViewModel uploadStatementVM)
         {
             if (ModelState.IsValid)
             {
@@ -177,20 +189,33 @@ namespace RentalsWebApp.Controllers
             return View(uploadStatementVM);
 
         }
-        public async Task<IActionResult> DownloadStatement()
+        public async Task<IActionResult> DownloadStatement(string Id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var statement = _billingRepository.DownloadStatement(currentUserId);
-
-            string path = statement.Result.Statement;
-
-            if (System.IO.File.Exists(path))
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                var statement = _billingRepository.DownloadStatement(currentUserId);
+
+                string path = statement.Result.Statement;
+
+                if (System.IO.File.Exists(path))
+                {
+                    return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
+                }
+                return NotFound();
             }
-            return NotFound();
+            else
+            {
+                var statement = _billingRepository.DownloadStatement(Id);
 
+                string path = statement.Result.Statement;
 
+                if (System.IO.File.Exists(path))
+                {
+                    return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
+                }
+                return NotFound();
+            }
         }
         public IActionResult NoBill()
         {
