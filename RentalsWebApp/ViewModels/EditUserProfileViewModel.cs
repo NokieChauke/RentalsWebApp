@@ -4,7 +4,7 @@ namespace RentalsWebApp.ViewModels
 {
     public class EditUserProfileViewModel
     {
-        public string Id { get; set; }
+        public string UserId { get; set; }
 
         [Display(Name = "Upload Pictire")]
         [Required(ErrorMessage = "Profile Picture is required")]

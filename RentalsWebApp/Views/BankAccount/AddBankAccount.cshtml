@@ -16,7 +16,7 @@
                 <form method="post" asp-action="AddBankAccount" enctype="multipart/form-data">
    
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId" />
+                    <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
                       
                     <div class="form-group col-md-8">
                         <label asp-for="CardDescreption"></label>
@@ -58,9 +58,16 @@
                         <input asp-for="CSV" class="form-control" placeholder="1123">
                         <span asp-validation-for="CSV" class="text-danger"></span>
                     </div>  
-                    <button type="submit" class="btn btn-sm btn-outline-secondary">Save</button>
-                    <a class="btn btn-sm btn-outline-secondary"  asp-controller="Billing" asp-action="Index">Cancel</a>
-                  
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Save Account</button>
+                    @if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+                    {
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="Index">Cancel</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId">Cancel</a>
+                    }
+
                 </form>
             </div>
         </div>

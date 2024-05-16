@@ -28,7 +28,7 @@ namespace RentalsWebApp.Controllers
         }
         private void MapUserEdit(AppUser user, EditUserProfileViewModel editUserVM, ImageUploadResult photoResult)
         {
-            user.Id = editUserVM.Id;
+            user.Id = editUserVM.UserId;
             user.Name = editUserVM.Name;
             user.Surname = editUserVM.Surname;
             user.Email = editUserVM.Email;
@@ -55,16 +55,16 @@ namespace RentalsWebApp.Controllers
             return View(result);
         }
 
-        public async Task<IActionResult> EditUserProfile(string id)
+        public async Task<IActionResult> EditUserProfile(string userId)
         {
 
             if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
-                var tenant = await _apartmentsRepository.GetUserById(id);
+                var tenant = await _apartmentsRepository.GetUserById(userId);
                 if (tenant == null) return View("Error");
                 var ediUserVM = new EditUserProfileViewModel()
                 {
-                    Id = tenant.Id,
+                    UserId = tenant.Id,
                     Name = tenant.Name,
                     Surname = tenant.Surname,
                     Email = tenant.Email,
@@ -81,7 +81,7 @@ namespace RentalsWebApp.Controllers
                 if (user == null) return View("Error");
                 var ediUserVM = new EditUserProfileViewModel()
                 {
-                    Id = currentUserId,
+                    UserId = currentUserId,
                     Name = user.Name,
                     Surname = user.Surname,
                     Email = user.Email,
@@ -103,7 +103,7 @@ namespace RentalsWebApp.Controllers
                 return View("EditUserProfile", ediUserVM);
             }
 
-            var user = await _dashboardRepository.GetUserByIdNoTracking(ediUserVM.Id);
+            var user = await _dashboardRepository.GetUserByIdNoTracking(ediUserVM.UserId);
 
             if (user != null)
             {
@@ -140,17 +140,17 @@ namespace RentalsWebApp.Controllers
             }
 
         }
-        public async Task<IActionResult> UserProfile(string id)
+        public async Task<IActionResult> UserProfile(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
-                var tenantUser = await _apartmentsRepository.GetUserById(id);
+                var tenantUser = await _apartmentsRepository.GetUserById(userId);
                 var tenantApartment = await _dashboardRepository.GetApartmentByUserId(tenantUser.Id);
                 var tenent = await _dashboardRepository.GetCurrentUserById(tenantUser.Id);
                 if (tenent == null) return View("Error");
                 var tenantViewModel = new UserProfileViewModel()
                 {
-                    Id = tenent.Id,
+                    UserId = tenent.Id,
                     Name = tenent.Name,
                     Surname = tenent.Surname,
                     PhoneNumber = tenent.PhoneNumber,
@@ -168,7 +168,7 @@ namespace RentalsWebApp.Controllers
                 if (user == null) return View("Error");
                 var userViewModel = new UserProfileViewModel()
                 {
-                    Id = user.Id,
+                    UserId = user.Id,
                     Name = user.Name,
                     Surname = user.Surname,
                     PhoneNumber = user.PhoneNumber,
@@ -179,9 +179,9 @@ namespace RentalsWebApp.Controllers
                 return View(userViewModel);
             }
         }
-        public async Task<IActionResult> DeleteUser(string id)
+        public async Task<IActionResult> DeleteUser(string userId)
         {
-            var userDetails = await _dashboardRepository.GetUserById(id);
+            var userDetails = await _dashboardRepository.GetUserById(userId);
             if (userDetails == null) return View("Error");
 
             _dashboardRepository.DeleteUser(userDetails);
@@ -231,7 +231,7 @@ namespace RentalsWebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Notification(string Id)
+        public async Task<IActionResult> Notification(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -276,13 +276,13 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var notification = await _dashboardRepository.GetNotificationsByUserId(Id);
+                var notification = await _dashboardRepository.GetNotificationsByUserId(userId);
 
                 if (notification == null)
                 {
                     var notificationsVM = new NotificationsViewModel()
                     {
-                        UserId = Id,
+                        UserId = userId,
                         SMS = true,
                         Email = true,
                         AccountChanges = true,
@@ -317,7 +317,7 @@ namespace RentalsWebApp.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Notification(string Id, NotificationsViewModel notificationsVM)
+        public async Task<IActionResult> Notification(string userId, NotificationsViewModel notificationsVM)
         {
             if (ModelState == null) return View("Error");
 
@@ -365,7 +365,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var userNotification = _dashboardRepository.GetNotificationByUserIdNoTracking(Id);
+                var userNotification = _dashboardRepository.GetNotificationByUserIdNoTracking(userId);
 
 
                 if (userNotification != null)

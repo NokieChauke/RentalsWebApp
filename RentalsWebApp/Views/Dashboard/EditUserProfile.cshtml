@@ -19,10 +19,10 @@
         }
         else
         {
-            <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.Id" target="__self">Account Details</a>
-            <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.Id" target="__self">Documents</a>
-            <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.Id" target=" __self">Billing</a>
-            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.Id" target="__self">Notifications</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+            <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>
+            <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
         }
 
     </nav>
@@ -52,7 +52,7 @@
                     <div class="card-body">
                   
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" id="Id" name="Id" asp-for="Id" />
+                        <input type="hidden" id="Id" name="Id" asp-for="UserId" />
                         <div class="mb-3">
                             <label asp-for="Name" class="control-label"></label>
                             <input asp-for="Name" class="form-control" placeholder="Name">

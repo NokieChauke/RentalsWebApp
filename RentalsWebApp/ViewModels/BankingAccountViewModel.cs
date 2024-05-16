@@ -7,7 +7,7 @@ namespace RentalsWebApp.ViewModels
     public class BankingAccountViewModel
     {
 
-        public string AppUserId { get; set; }
+        public string UserId { get; set; }
 
         [Display(Name = "Card Descreption")]
         [Required(ErrorMessage = "Card Description is required")]

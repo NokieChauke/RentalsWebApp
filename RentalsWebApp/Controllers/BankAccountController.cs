@@ -19,18 +19,18 @@ namespace RentalsWebApp.Controllers
             _dashboardRepository = dashboardRepository;
         }
         [HttpGet]
-        public async Task<IActionResult> AddBankAccount(string Id)
+        public async Task<IActionResult> AddBankAccount(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
                 var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-                var addBankAccountVM = new BankingAccountViewModel { AppUserId = currentUserId };
+                var addBankAccountVM = new BankingAccountViewModel { UserId = currentUserId };
                 return View(addBankAccountVM);
 
             }
             else
             {
-                var addBankAccountVM = new BankingAccountViewModel { AppUserId = Id };
+                var addBankAccountVM = new BankingAccountViewModel { UserId = userId };
                 return View(addBankAccountVM);
 
             }
@@ -51,7 +51,7 @@ namespace RentalsWebApp.Controllers
             {
                 var bankingAccount = new BankAccount()
                 {
-                    AppUserId = bankingAccountVM.AppUserId,
+                    AppUserId = bankingAccountVM.UserId,
                     CardDescreption = bankingAccountVM.CardDescreption,
                     BankName = bankingAccountVM.BankName,
                     AccountHolder = bankingAccountVM.AccountHolder,
@@ -79,7 +79,7 @@ namespace RentalsWebApp.Controllers
             if (account == null) return View("Error");
             var editBankingAccountVM = new EditBankingAccountViewModel
             {
-                AppUserId = account.AppUserId,
+                UserId = account.AppUserId,
                 CardDescreption = account.CardDescreption,
                 BankName = account.BankName,
                 AccountHolder = account.AccountHolder,
@@ -107,7 +107,7 @@ namespace RentalsWebApp.Controllers
                 var bankAccount = new BankAccount
                 {
                     Id = id,
-                    AppUserId = editBankingAccountVM.AppUserId,
+                    AppUserId = editBankingAccountVM.UserId,
                     CardDescreption = editBankingAccountVM.CardDescreption,
                     BankName = editBankingAccountVM.BankName,
                     AccountHolder = editBankingAccountVM.AccountHolder,
@@ -119,7 +119,7 @@ namespace RentalsWebApp.Controllers
                 };
 
                 _bankAccountRepository.UpdateAccount(bankAccount);
-                return RedirectToAction("Index", "Billing", new { id = editBankingAccountVM.AppUserId });
+                return RedirectToAction("Index", "Billing", new { id = editBankingAccountVM.UserId });
             }
             else
             {

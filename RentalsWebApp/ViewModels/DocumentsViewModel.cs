@@ -4,7 +4,7 @@ namespace RentalsWebApp.ViewModels
 {
     public class DocumentsViewModel
     {
-        public string AppUserId { get; set; }
+        public string UserId { get; set; }
         public string DateUploaded { get; set; }
 
         [Display(Name = "ID Copy")]

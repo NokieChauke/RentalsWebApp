@@ -22,16 +22,16 @@ namespace RentalsWebApp.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string Id)
+        public async Task<IActionResult> Index(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
-                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var docs = await _documentsRepository.GetUploadedDocuments(userId);
                 if (docs != null)
                 {
                     var documentVM = new DocumentsDisplayViewModel()
                     {
-                        UserId = Id,
+                        UserId = userId,
                         DateUploaded = docs.DateUploaded,
                         IdCopy = Path.GetFileName(docs.IdCard),
                         Contract = Path.GetFileName(docs.Contract),
@@ -73,7 +73,7 @@ namespace RentalsWebApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> OpenIDCopy(string Id)
+        public async Task<IActionResult> OpenIDCopy(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -88,7 +88,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var docs = await _documentsRepository.GetUploadedDocuments(userId);
 
                 string webRootPath = _webHostEnvironment.WebRootPath;
                 string fileName = Path.GetFileName(docs.IdCard);
@@ -97,7 +97,7 @@ namespace RentalsWebApp.Controllers
                 return new FileStreamResult(new FileStream(path, FileMode.Open), "application/pdf");
             }
         }
-        public async Task<IActionResult> OpenContract(string Id)
+        public async Task<IActionResult> OpenContract(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -112,7 +112,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var docs = await _documentsRepository.GetUploadedDocuments(userId);
 
                 string webRootPath = _webHostEnvironment.WebRootPath;
                 string fileName = Path.GetFileName(docs.Contract);
@@ -123,7 +123,7 @@ namespace RentalsWebApp.Controllers
 
 
         }
-        public async Task<IActionResult> OpenPayslip(string Id)
+        public async Task<IActionResult> OpenPayslip(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -138,7 +138,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var docs = await _documentsRepository.GetUploadedDocuments(userId);
 
                 string webRootPath = _webHostEnvironment.WebRootPath;
                 string fileName = Path.GetFileName(docs.PaySlip);
@@ -178,7 +178,7 @@ namespace RentalsWebApp.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> EditId(string Id, EditDocumentsViewModel editDocumentsVM)
+        public async Task<IActionResult> EditId(string userId, EditDocumentsViewModel editDocumentsVM)
         {
 
             string webRootPath = _webHostEnvironment.WebRootPath;
@@ -209,7 +209,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var docs = await _documentsRepository.GetUploadedDocuments(userId);
                 var oldFilePath = Path.Combine(webRootPath + "/documents/idcopy/", Path.GetFileName(docs.IdCard));
 
                 if (System.IO.File.Exists(oldFilePath))
@@ -253,7 +253,7 @@ namespace RentalsWebApp.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> EditContract(string Id, EditDocumentsViewModel editDocumentsVM)
+        public async Task<IActionResult> EditContract(string userId, EditDocumentsViewModel editDocumentsVM)
         {
 
             string webRootPath = _webHostEnvironment.WebRootPath;
@@ -284,7 +284,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var docs = await _documentsRepository.GetUploadedDocuments(userId);
                 var oldFilePath = Path.Combine(webRootPath + "/documents/contract/", Path.GetFileName(docs.Contract));
 
                 if (System.IO.File.Exists(oldFilePath))
@@ -299,7 +299,7 @@ namespace RentalsWebApp.Controllers
             }
         }
         [HttpGet]
-        public async Task<IActionResult> EditPayslip(int id, string UserId)
+        public async Task<IActionResult> EditPayslip(int id, string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -319,7 +319,7 @@ namespace RentalsWebApp.Controllers
                 var editDocumentsVM = new EditDocumentsViewModel
                 {
                     Id = id,
-                    UserId = UserId,
+                    UserId = userId,
 
                 };
                 return View(editDocumentsVM);
@@ -327,7 +327,7 @@ namespace RentalsWebApp.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> EditPayslip(string Id, EditDocumentsViewModel editDocumentsVM)
+        public async Task<IActionResult> EditPayslip(string userId, EditDocumentsViewModel editDocumentsVM)
         {
 
             string webRootPath = _webHostEnvironment.WebRootPath;
@@ -359,7 +359,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var docs = await _documentsRepository.GetUploadedDocuments(Id);
+                var docs = await _documentsRepository.GetUploadedDocuments(userId);
                 var oldFilePath = Path.Combine(webRootPath + "/documents/payslip/", Path.GetFileName(docs.PaySlip));
 
                 if (System.IO.File.Exists(oldFilePath))
@@ -372,20 +372,17 @@ namespace RentalsWebApp.Controllers
                 _documentsRepository.Update(docs);
                 return RedirectToAction("Index");
             }
-
-
-
         }
 
         [HttpGet]
-        public IActionResult Upload(string Id)
+        public IActionResult Upload(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
                 var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
                 var documentsVM = new DocumentsViewModel
                 {
-                    AppUserId = currentUserId,
+                    UserId = currentUserId,
                     DateUploaded = DateTime.Now.ToString("yyyy-MM-dd")
                 };
                 return View(documentsVM);
@@ -394,7 +391,7 @@ namespace RentalsWebApp.Controllers
             {
                 var documentsVM = new DocumentsViewModel
                 {
-                    AppUserId = Id,
+                    UserId = userId,
                     DateUploaded = DateTime.Now.ToString("yyyy-MM-dd")
                 };
                 return View(documentsVM);
@@ -439,7 +436,7 @@ namespace RentalsWebApp.Controllers
 
                 var newDocuments = new Documents()
                 {
-                    AppUserId = documentsVM.AppUserId,
+                    AppUserId = documentsVM.UserId,
                     DateUploaded = documentsVM.DateUploaded,
                     IdCard = iPath,
                     Contract = cPath,
@@ -458,7 +455,7 @@ namespace RentalsWebApp.Controllers
             return View(documentsVM);
 
         }
-        public async Task<IActionResult> DeleteDocuments(string Id)
+        public async Task<IActionResult> DeleteDocuments(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -493,7 +490,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var documents = await _documentsRepository.GetUploadedDocuments(Id);
+                var documents = await _documentsRepository.GetUploadedDocuments(userId);
                 string webRootPath = _webHostEnvironment.WebRootPath;
                 var oldIdCopyPath = Path.Combine(webRootPath + "/documents/idcopy/", Path.GetFileName(documents.IdCard));
 

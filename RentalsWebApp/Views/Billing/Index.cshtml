@@ -43,11 +43,22 @@
                 <div class="card-body">
                     <div class="small text-muted">Water and Electricity for the month: @Model.Month</div>
                     <div class="h3">Water Bill: R@(@Model.WaterAmount)</div>
-                    <div class="h3">Electricity Bill: R@(@Model.ElectricityAmount)</div>                   
-                    <a class="text-arrow-icon small" asp-controller="Billing" asp-action="DownloadStatement" target="__self">
-                        Click to Download the statement for confirmation
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
+                    <div class="h3">Electricity Bill: R@(@Model.ElectricityAmount)</div>  
+                    @if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+                    {
+                        <a class="text-arrow-icon small" asp-controller="Billing" asp-action="DownloadStatement" target="__self">
+                            Click to Download the statement for confirmation
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="text-arrow-icon small" asp-controller="Billing" asp-action="DownloadStatement" asp-route-id="@Model.UserId" target="__self">
+                            Click to Download the statement for confirmation
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    }
+
                 </div>
             </div>
         </div>
@@ -59,10 +70,20 @@
                     <div class="h3 d-flex align-items-center">Rent: R@(@Model.Rent)</div>
                     <div class="h3 d-flex align-items-center">Water and Electricity: R@(@Convert.ToDouble(@Model.WaterAmount)+@Convert.ToDouble(@Model.ElectricityAmount))</div>
                     <div class="h3 d-flex align-items-center">Total: R@(@Convert.ToDouble(@Model.Rent) + @Convert.ToDouble(@Model.WaterAmount) + @Convert.ToDouble(@Model.ElectricityAmount)) </div>
-                    <a class="text-arrow-icon small" asp-controller="Billing" asp-action="BankingDetails" asp-route-id="@Model.UserId" target="__self">
-                        Click here to View the Banking Details
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+                    {
+                        <a class="text-arrow-icon small" asp-controller="Billing" asp-action="BankingDetails" asp-route-id="@Model.UserId" target="__self">
+                            Click here to View the Banking Details
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="text-arrow-icon small" asp-controller="Billing" asp-action="BankingDetails" asp-route-id="@Model.UserId" asp-route-id="@Model.UserId" target="__self">
+                            Click here to View the Banking Details
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    }
                 </div>
             </div>
         </div>
@@ -72,10 +93,20 @@
                 <div class="card-body">
                     <div class="small text-muted">Next payment due date</div>
                     <div class="h3">@(DateTime.Now.ToString("MMMM")) @DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)</div>
-                    <a class="text-arrow-icon small text-success" asp-controller="Billing" asp-action="PaymentHistory" target="__self">
-                        View payment history
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+                    {
+                        <a class="text-arrow-icon small text-success" asp-controller="Billing" asp-action="PaymentHistory" target="__self">
+                            View payment history
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="text-arrow-icon small text-success" asp-controller="Billing" asp-action="PaymentHistory" asp-route-id="@Model.UserId" target="__self">
+                            View payment history
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    }
                 </div>
             </div>
         </div>
@@ -84,9 +115,17 @@
     <div class="card card-header-actions mb-4">
         <div class="card-header">
             Add a Payment Account for debit order
-            <a class="btn btn-sm btn-outline-secondary" asp-controller="BankAccount" asp-action="AddBankAccount" target="__self">Add new card</a>
-            @* <a class="btn btn-sm btn-outline-primary" position="absolute" asp-controller="Billing" asp-action="ManualPayment" asp-route-id="@Model.UserId">Pay now</a> *@
-            <a class="btn btn-sm btn-outline-secondary" position="absolute" asp-controller="ProofOfPayment" asp-action="UploadProofOfPayment" asp-route-id="@Model.UserId">Upload POP</a>
+            @if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+            {
+                <a class="btn btn-sm btn-outline-secondary" asp-controller="BankAccount" asp-action="AddBankAccount" target="__self">Add new card</a>
+                <a class="btn btn-sm btn-outline-secondary" position="absolute" asp-controller="ProofOfPayment" asp-action="UploadProofOfPayment">Upload POP</a>
+            }
+            else
+            {
+                <a class="btn btn-sm btn-outline-secondary" asp-controller="BankAccount" asp-action="AddBankAccount" asp-route-id="@Model.UserId" target="__self">Add new card</a>
+                <a class="btn btn-sm btn-outline-secondary" position="absolute" asp-controller="ProofOfPayment" asp-action="UploadProofOfPayment" asp-route-id="@Model.UserId">Upload POP</a>
+            }
+            
         </div>
 
         @foreach(var account in Model.BankAccount)

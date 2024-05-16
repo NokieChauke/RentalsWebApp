@@ -18,7 +18,7 @@
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @* <input type="hidden" id="Id" name="Id" asp-for="Id" /> *@
-                    <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId" />
+                    <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
                     <div class="form-group col-md-8">
                         <label asp-for="CardDescreption"></label>
                         <select asp-for="CardDescreption" class="form-control" asp-items="@Html.GetEnumSelectList<AccountCategory>()">
@@ -60,8 +60,17 @@
                         <span asp-validation-for="CSV" class="text-danger"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
-                    <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="index" target=" __self">Cancel</a>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Update Account</button>
+
+                    @if(User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+                    {
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="index" target=" __self">Cancel</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="index" asp-route-id="@Model.UserId" target=" __self">Cancel</a>
+                    }
+
                 </form>
             </div>
         </div>

@@ -29,20 +29,20 @@ namespace RentalsWebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string Id)
+        public async Task<IActionResult> Index(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
-                var bill = await _billingRepository.GetBillByUserId(Id);
+                var bill = await _billingRepository.GetBillByUserId(userId);
 
                 if (bill != null)
                 {
                     var billMonth = bill.Month;
-                    var apartment = await _apartmentsRepository.GetByUserId(Id);
+                    var apartment = await _apartmentsRepository.GetByUserId(userId);
                     if (apartment != null)
                     {
-                        Billing billing = await _billingRepository.GetStatementByUserId(Id, billMonth);
-                        IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(Id);
+                        Billing billing = await _billingRepository.GetStatementByUserId(userId, billMonth);
+                        IEnumerable<BankAccount> accounts = await _bankAccountRepository.GetAll(userId);
 
                         var billingVM = new BillingViewModel()
                         {
@@ -98,14 +98,14 @@ namespace RentalsWebApp.Controllers
 
 
         }
-        public async Task<IActionResult> BankingDetails(string id)
+        public async Task<IActionResult> BankingDetails(string userId)
         {
-            var user = await _dashboardRepository.GetUserById(id);
+            var user = await _dashboardRepository.GetUserById(userId);
             var billind = new BillingViewModel { UserId = user.Id };
             return View(billind);
 
         }
-        public async Task<IActionResult> PaymentHistory(string Id)
+        public async Task<IActionResult> PaymentHistory(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -123,9 +123,9 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                Apartments apartment = await _apartmentsRepository.GetByUserId(Id);
+                Apartments apartment = await _apartmentsRepository.GetByUserId(userId);
 
-                IEnumerable<Billing> billings = await _billingRepository.GetAllBillingsByUserId(Id);
+                IEnumerable<Billing> billings = await _billingRepository.GetAllBillingsByUserId(userId);
                 var billingVM = new PaymentHistoryViewModel()
                 {
                     Billing = (List<Billing>)billings,
@@ -139,9 +139,9 @@ namespace RentalsWebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UploadStatement(string id)
+        public async Task<IActionResult> UploadStatement(string userId)
         {
-            var user = await _dashboardRepository.GetUserById(id);
+            var user = await _dashboardRepository.GetUserById(userId);
 
             Random generator = new Random();
             string r = generator.Next(0, 1000000).ToString("D6");
@@ -189,7 +189,7 @@ namespace RentalsWebApp.Controllers
             return View(uploadStatementVM);
 
         }
-        public async Task<IActionResult> DownloadStatement(string Id)
+        public async Task<IActionResult> DownloadStatement(string userId)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -206,7 +206,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var statement = _billingRepository.DownloadStatement(Id);
+                var statement = _billingRepository.DownloadStatement(userId);
 
                 string path = statement.Result.Statement;
 
