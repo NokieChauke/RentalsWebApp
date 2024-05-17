@@ -51,13 +51,13 @@ namespace RentalsWebApp.Repository
             return await _context.Apartments.Include(a => a.Address).Include(a => a.ApartmentPictures).FirstOrDefaultAsync(a => a.UserId == id);
         }
 
-        public async Task<Notifications> GetNotificationsByUserId(string id)
+        public async Task<Notifications> GetNotificationsByUserId(string userId)
         {
-            return await _context.Notifications.Include(a => a.AppUser).FirstOrDefaultAsync(a => a.UserId == id);
+            return await _context.Notifications.Include(a => a.AppUser).FirstOrDefaultAsync(a => a.UserId == userId);
         }
-        public async Task<Notifications> GetNotificationByUserIdNoTracking(string id)
+        public async Task<Notifications> GetNotificationByUserIdNoTracking(string userId)
         {
-            return await _context.Notifications.Include(a => a.AppUser).AsNoTracking().FirstOrDefaultAsync(a => a.UserId == id);
+            return await _context.Notifications.Include(a => a.AppUser).AsNoTracking().FirstOrDefaultAsync(a => a.UserId == userId);
         }
         public async Task<AppUser> GetUserByIdNoTracking(string id)
         {

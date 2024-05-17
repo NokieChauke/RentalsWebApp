@@ -34,15 +34,15 @@ namespace RentalsWebApp.Controllers
             return RedirectToAction("Index", "Apartments");
         }
         [HttpGet]
-        public async Task<IActionResult> ReportIncident(string id)
+        public async Task<IActionResult> ReportIncident(string UserId)
         {
-            var user = _dashboardRepository.GetUserById(id);
-            var apartment = _dashboardRepository.GetApartmentByUserId(id);
+            var user = _dashboardRepository.GetUserById(UserId);
+            var apartment = _dashboardRepository.GetApartmentByUserId(UserId);
             if (user == null) return View("Error");
 
             var reportIncidentVM = new ReportIncidentViewModel
             {
-                UserId = id,
+                UserId = UserId,
                 ApartmentId = apartment.Id,
             };
 

@@ -28,7 +28,7 @@ namespace RentalsWebApp.Controllers
         }
         private void MapUserEdit(AppUser user, EditUserProfileViewModel editUserVM, ImageUploadResult photoResult)
         {
-            user.Id = editUserVM.UserId;
+            user.Id = editUserVM.Id;
             user.Name = editUserVM.Name;
             user.Surname = editUserVM.Surname;
             user.Email = editUserVM.Email;
@@ -39,32 +39,25 @@ namespace RentalsWebApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = new AppUser();
-            var tenents = await _dashboardRepository.GetAllTenants(user);
-            List<TenantsListViewModel> result = new List<TenantsListViewModel>();
-            foreach (var tenant in tenents)
+            IEnumerable<AppUser> tenents = await _dashboardRepository.GetAllTenants(user);
+
+            var tenantsListViewModel = new TenantsListViewModel()
             {
-                var tenantsListViewModel = new TenantsListViewModel()
-                {
-                    Id = tenant.Id,
-                    PhoneNumber = tenant.PhoneNumber,
-                    Name = tenant.Name,
-                    Surname = tenant.Surname
-                };
-                result.Add(tenantsListViewModel);
-            }
-            return View(result);
+                AppUser = (List<AppUser>)tenents,
+            };
+            return View(tenantsListViewModel);
         }
 
-        public async Task<IActionResult> EditUserProfile(string userId)
+        public async Task<IActionResult> EditUserProfile(string id)
         {
 
             if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
             {
-                var tenant = await _apartmentsRepository.GetUserById(userId);
+                var tenant = await _apartmentsRepository.GetUserById(id);
                 if (tenant == null) return View("Error");
                 var ediUserVM = new EditUserProfileViewModel()
                 {
-                    UserId = tenant.Id,
+                    Id = tenant.Id,
                     Name = tenant.Name,
                     Surname = tenant.Surname,
                     Email = tenant.Email,
@@ -81,7 +74,7 @@ namespace RentalsWebApp.Controllers
                 if (user == null) return View("Error");
                 var ediUserVM = new EditUserProfileViewModel()
                 {
-                    UserId = currentUserId,
+                    Id = currentUserId,
                     Name = user.Name,
                     Surname = user.Surname,
                     Email = user.Email,
@@ -103,7 +96,7 @@ namespace RentalsWebApp.Controllers
                 return View("EditUserProfile", ediUserVM);
             }
 
-            var user = await _dashboardRepository.GetUserByIdNoTracking(ediUserVM.UserId);
+            var user = await _dashboardRepository.GetUserByIdNoTracking(ediUserVM.Id);
 
             if (user != null)
             {
@@ -231,7 +224,7 @@ namespace RentalsWebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Notification(string userId)
+        public async Task<IActionResult> Notification(string id)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -276,13 +269,13 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var notification = await _dashboardRepository.GetNotificationsByUserId(userId);
+                var notification = await _dashboardRepository.GetNotificationsByUserId(id);
 
                 if (notification == null)
                 {
                     var notificationsVM = new NotificationsViewModel()
                     {
-                        UserId = userId,
+                        UserId = id,
                         SMS = true,
                         Email = true,
                         AccountChanges = true,
@@ -317,7 +310,7 @@ namespace RentalsWebApp.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Notification(string userId, NotificationsViewModel notificationsVM)
+        public async Task<IActionResult> Notification(string id, NotificationsViewModel notificationsVM)
         {
             if (ModelState == null) return View("Error");
 
@@ -365,7 +358,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var userNotification = _dashboardRepository.GetNotificationByUserIdNoTracking(userId);
+                var userNotification = _dashboardRepository.GetNotificationByUserIdNoTracking(id);
 
 
                 if (userNotification != null)

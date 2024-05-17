@@ -61,7 +61,7 @@ namespace RentalsWebApp.Controllers
                     CSV = bankingAccountVM.CSV
                 };
                 _bankAccountRepository.Add(bankingAccount);
-                return RedirectToAction("Index", "Billing", new { id = bankingAccount.AppUserId });
+                return RedirectToAction("Index", "Billing");
             }
             else
             {
@@ -119,7 +119,7 @@ namespace RentalsWebApp.Controllers
                 };
 
                 _bankAccountRepository.UpdateAccount(bankAccount);
-                return RedirectToAction("Index", "Billing", new { id = editBankingAccountVM.UserId });
+                return RedirectToAction("Index", "Billing");
             }
             else
             {
@@ -140,14 +140,14 @@ namespace RentalsWebApp.Controllers
             var acc = await _bankAccountRepository.GetByIdAsync(id);
             acc.Active = true;
             _bankAccountRepository.UpdateAccount(acc);
-            return RedirectToAction("Index", "Billing", new { id = acc.AppUserId });
+            return RedirectToAction("Index", "Billing");
         }
         public async Task<IActionResult> DeleteAccount(int id)
         {
             var account = await _bankAccountRepository.GetByIdAsync(id);
 
             _bankAccountRepository.DeleteAccount(account);
-            return RedirectToAction("Index", "Billing", new { id = account.AppUserId });
+            return RedirectToAction("Index", "Billing");
         }
 
     }

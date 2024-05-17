@@ -10,7 +10,7 @@
 <h1>Uploaded Documents</h1>
 <div class="container-xl px-4 mt-4">
     <form>
-        <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
+        <input type="hidden" id="Id" name="Id" asp-for="Id" />
     </form>
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
@@ -24,10 +24,10 @@
         }
         else
         {
-            <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
-            <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>
-            <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
-            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.Id" target="__self">Account Details</a>
+            <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.Id" target="__self">Documents</a>
+            <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.Id" target=" __self">Billing</a>
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.Id" target="__self">Notifications</a>
 
         }
     </nav>
@@ -58,12 +58,12 @@
                             <td>@Model.IdCopy</td>
                             <td>@Model.DateUploaded</td>
                             <td>
-                                <a asp-controller="Documents" asp-action="EditId" asp-route-itemid="@Model.UserId"
+                                <a asp-controller="Documents" asp-action="EditId" asp-route-id="@Model.Id"
                                     class="btn btn-sm btn-outline-secondary">Edit</a>
                                 
                             </td>
                             <td>
-                                <a asp-controller="Documents" asp-action="OpenIdCopy" class="btn btn-sm btn-outline-secondary">View</a>
+                                <a asp-controller="Documents" asp-action="OpenIdCopy" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">View</a>
                             </td>
                         </tr>
                         <tr>
@@ -71,12 +71,12 @@
                             <td>@Model.Contract</td>
                             <td>@Model.DateUploaded</td>
                             <td>
-                                <a asp-controller="Documents" asp-action="EditContract" asp-route-itemid="@Model.UserId"
+                                <a asp-controller="Documents" asp-action="EditContract" asp-route-id="@Model.Id"
                                    class="btn btn-sm btn-outline-secondary">Edit</a>
                                 
                             </td>
                             <td>
-                                <a asp-controller="Documents" asp-action="OpenContract"  class="btn btn-sm btn-outline-secondary">View</a>
+                                <a asp-controller="Documents" asp-action="OpenContract" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">View</a>
                             </td>
                         </tr>
                         <tr>
@@ -84,12 +84,12 @@
                             <td>@Model.PaySlip</td>
                             <td>@Model.DateUploaded</td>
                             <td>
-                                <a asp-controller="Documents" asp-action="EditPayslip" asp-route-itemid="@Model.UserId"
+                                <a asp-controller="Documents" asp-action="EditPayslip" asp-route-id="@Model.Id"
                                     class="btn btn-sm btn-outline-secondary">Edit</a>
                                
                             </td>
                             <td>
-                                <a asp-controller="Documents" asp-action="OpenPayslip" class="btn btn-sm btn-outline-secondary">View</a>
+                                <a asp-controller="Documents" asp-action="OpenPayslip" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">View</a>
                             </td>
                         </tr>
                     </tbody>

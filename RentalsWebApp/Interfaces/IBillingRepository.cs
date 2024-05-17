@@ -10,10 +10,10 @@ namespace RentalsWebApp.Interfaces
         Task<Billing> GetStatementByUserId(string userId, Months month);
         Task<Billing> GetBillByUserId(string userId);
 
-        Task<IEnumerable<Billing>> GetAllBillingsByUserId(string id);
+        Task<IEnumerable<Billing>> GetAllBillingsByUserId(string userId);
 
 
-        Task<Billing> DownloadStatement(string Id);
+        Task<Billing> DownloadStatement(string userId);
         bool Update(Billing biling);
 
         bool Save();

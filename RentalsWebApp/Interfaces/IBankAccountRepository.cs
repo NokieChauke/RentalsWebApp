@@ -7,7 +7,7 @@ namespace RentalsWebApp.Interfaces
         Task<IEnumerable<BankAccount>> GetAllBankAccounts();
         Task<BankAccount> GetByIdAsync(int id);
         Task<BankAccount> GetByIdAsyncNoTracking(int id);
-        Task<IEnumerable<BankAccount>> GetAll(string id);
+        Task<IEnumerable<BankAccount>> GetAll(string userId);
         bool Add(BankAccount account);
         bool UpdateAccount(BankAccount account);
         bool DeleteAccount(BankAccount account);
