@@ -19,7 +19,7 @@ namespace RentalsWebApp.Controllers
             _dashboardRepository = dashboardRepository;
         }
         [HttpGet]
-        public async Task<IActionResult> AddBankAccount(string userId)
+        public async Task<IActionResult> AddBankAccount(string id)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -30,7 +30,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var addBankAccountVM = new BankingAccountViewModel { UserId = userId };
+                var addBankAccountVM = new BankingAccountViewModel { UserId = id };
                 return View(addBankAccountVM);
 
             }
@@ -61,7 +61,7 @@ namespace RentalsWebApp.Controllers
                     CSV = bankingAccountVM.CSV
                 };
                 _bankAccountRepository.Add(bankingAccount);
-                return RedirectToAction("Index", "Billing");
+                return RedirectToAction("Index", "Billing", new { Id = bankingAccountVM.UserId });
             }
             else
             {
@@ -119,7 +119,7 @@ namespace RentalsWebApp.Controllers
                 };
 
                 _bankAccountRepository.UpdateAccount(bankAccount);
-                return RedirectToAction("Index", "Billing");
+                return RedirectToAction("Index", "Billing", new { Id = editBankingAccountVM.UserId });
             }
             else
             {

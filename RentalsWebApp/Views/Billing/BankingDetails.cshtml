@@ -6,20 +6,34 @@
 }
 
 <nav class="nav nav-borders">
-    <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
-    <a class="nav-link" asp-controller="Documents" asp-action="Index" target="__self">Documents</a>
-    <a class="nav-link" asp-controller="Billing" asp-action="Index" target="__self">Billing</a>
+
     @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
     {
+        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Documents" asp-action="Index" target="__self">Documents</a>
+        <a class="nav-link" asp-controller="Billing" asp-action="Index" target=" __self">Billing</a>
         <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
     }
-    <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+    else
+    {
+        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>
+        <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
+
+    }
+
 </nav>
+<hr class="mt-0 mb-4">
 
 <div class="card card-header-actions mb-4">
     <div class="card-header">
         Banking Details
     </div>
+    <form>
+        <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
+    </form>
     <div class="card-body px-0">
         <!-- Payment method 1-->
         <div class="d-flex align-items-center justify-content-between px-4">
@@ -56,6 +70,14 @@
                
             </div>
         </div>
-        <a class="btn btn-sm btn-outline-secondary" position="absolute" asp-controller="Billing" asp-action="Index">Return to billing page</a>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+        {
+            <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId">Return to Biling</a>
+
+        }
+        else if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
+        {
+            <a class="btn btn-sm btn-outline-secondary" asp-controller="Billing" asp-action="Index">Return to Biling</a>
+        }
     </div>
 </div>

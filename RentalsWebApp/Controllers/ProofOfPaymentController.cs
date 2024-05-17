@@ -23,16 +23,30 @@ namespace RentalsWebApp.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpGet]
-        public async Task<IActionResult> UploadProofOfPayment()
+        public async Task<IActionResult> UploadProofOfPayment(string id)
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var user = await _dashboardRepository.GetUserById(currentUserId);
-
-            var uploadPOP = new ProofOfPaymentViewModel
+            if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
-                UserId = user.Id,
-            };
-            return View(uploadPOP);
+                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                var user = await _dashboardRepository.GetUserById(currentUserId);
+
+                var uploadPOP = new ProofOfPaymentViewModel
+                {
+                    UserId = user.Id,
+                };
+                return View(uploadPOP);
+            }
+            else
+            {
+                var user = await _dashboardRepository.GetUserById(id);
+
+                var uploadPOP = new ProofOfPaymentViewModel
+                {
+                    UserId = user.Id,
+                };
+                return View(uploadPOP);
+            }
+
         }
         [HttpPost]
         public async Task<IActionResult> UploadProofOfPayment(ProofOfPaymentViewModel proofOfPaymentVM)
@@ -49,29 +63,58 @@ namespace RentalsWebApp.Controllers
                 {
                     await proofOfPaymentVM.Proof.CopyToAsync(fileStream);
                 }
-                var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-                var bill = await _billingRepository.GetStatementByUserId(currentUserId, proofOfPaymentVM.Month);
-                if (bill != null)
+                if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
                 {
-                    var proofOfPayment = new ProofOfPayment()
+                    var currentUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+                    var bill = await _billingRepository.GetStatementByUserId(currentUserId, proofOfPaymentVM.Month);
+                    if (bill != null)
                     {
+                        var proofOfPayment = new ProofOfPayment()
+                        {
 
-                        UserId = proofOfPaymentVM.UserId,
-                        Month = proofOfPaymentVM.Month,
-                        Proof = proofUrl,
+                            UserId = proofOfPaymentVM.UserId,
+                            Month = proofOfPaymentVM.Month,
+                            Proof = proofUrl,
 
 
-                    };
+                        };
 
-                    _proofOfPaymentRepository.UploadProofOfPayment(proofOfPayment);
-                    bill.ProofOfPaymentId = proofOfPayment.Id;
-                    _billingRepository.Update(bill);
-                    return RedirectToAction("Index", "Billing", new { id = proofOfPaymentVM.UserId });
+                        _proofOfPaymentRepository.UploadProofOfPayment(proofOfPayment);
+                        bill.ProofOfPaymentId = proofOfPayment.Id;
+                        _billingRepository.Update(bill);
+                        return RedirectToAction("Index", "Billing", new { id = proofOfPaymentVM.UserId });
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "There's no bill for the selected month");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "There's no bill for the selected month");
+                    var bill = await _billingRepository.GetStatementByUserId(proofOfPaymentVM.UserId, proofOfPaymentVM.Month);
+                    if (bill != null)
+                    {
+                        var proofOfPayment = new ProofOfPayment()
+                        {
+
+                            UserId = proofOfPaymentVM.UserId,
+                            Month = proofOfPaymentVM.Month,
+                            Proof = proofUrl,
+
+
+                        };
+
+                        _proofOfPaymentRepository.UploadProofOfPayment(proofOfPayment);
+                        bill.ProofOfPaymentId = proofOfPayment.Id;
+                        _billingRepository.Update(bill);
+                        return RedirectToAction("Index", "Billing", new { id = proofOfPaymentVM.UserId });
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "There's no bill for the selected month");
+                    }
                 }
+
 
             }
             else

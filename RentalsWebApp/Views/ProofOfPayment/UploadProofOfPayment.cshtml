@@ -9,13 +9,24 @@
 <h1>Proof of Payment Upload</h1>
 <!-- Account page navigation-->
 <nav class="nav nav-borders">
-    <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
-    <a class="nav-link" asp-controller="Dashboard" asp-action="Billing" target="__self">Billing</a>
+
     @if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
     {
+        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Documents" asp-action="Index" target="__self">Documents</a>
+        <a class="nav-link" asp-controller="Billing" asp-action="Index" target=" __self">Billing</a>
         <a class="nav-link" asp-controller="Dashboard" asp-action="Security" target="__self">Security</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
     }
-    <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" target="__self">Notifications</a>
+    else
+    {
+        <a class="nav-link" asp-controller="Dashboard" asp-action="EditUserProfile" asp-route-id="@Model.UserId" target="__self">Account Details</a>
+        <a class="nav-link" asp-controller="Documents" asp-action="Index" asp-route-id="@Model.UserId" target="__self">Documents</a>
+        <a class="nav-link" asp-controller="Billing" asp-action="Index" asp-route-id="@Model.UserId" target=" __self">Billing</a>
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Notification" asp-route-id="@Model.UserId" target="__self">Notifications</a>
+
+    }
+
 </nav>
 <hr class="mt-0 mb-4">
 <div class="col-xl-8">

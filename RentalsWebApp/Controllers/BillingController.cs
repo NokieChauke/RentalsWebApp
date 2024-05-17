@@ -98,14 +98,12 @@ namespace RentalsWebApp.Controllers
 
 
         }
-        public async Task<IActionResult> BankingDetails(string userId)
+        public async Task<IActionResult> BankingDetails(string id)
         {
-            var user = await _dashboardRepository.GetUserById(userId);
-            var billind = new BillingViewModel { UserId = user.Id };
-            return View(billind);
-
+            var billingVM = new BillingViewModel() { UserId = id };
+            return View(billingVM);
         }
-        public async Task<IActionResult> PaymentHistory(string userId)
+        public async Task<IActionResult> PaymentHistory(string id)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -117,19 +115,21 @@ namespace RentalsWebApp.Controllers
                 {
                     Billing = (List<Billing>)billings,
                     Rent = apartment.Price,
+                    UserId = currentUserId,
 
                 };
                 return View(billingVM);
             }
             else
             {
-                Apartments apartment = await _apartmentsRepository.GetByUserId(userId);
+                Apartments apartment = await _apartmentsRepository.GetByUserId(id);
 
-                IEnumerable<Billing> billings = await _billingRepository.GetAllBillingsByUserId(userId);
+                IEnumerable<Billing> billings = await _billingRepository.GetAllBillingsByUserId(id);
                 var billingVM = new PaymentHistoryViewModel()
                 {
                     Billing = (List<Billing>)billings,
                     Rent = apartment.Price,
+                    UserId = id,
 
                 };
                 return View(billingVM);
@@ -189,7 +189,7 @@ namespace RentalsWebApp.Controllers
             return View(uploadStatementVM);
 
         }
-        public async Task<IActionResult> DownloadStatement(string userId)
+        public async Task<IActionResult> DownloadStatement(string id)
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("tenant"))
             {
@@ -206,7 +206,7 @@ namespace RentalsWebApp.Controllers
             }
             else
             {
-                var statement = _billingRepository.DownloadStatement(userId);
+                var statement = _billingRepository.DownloadStatement(id);
 
                 string path = statement.Result.Statement;
 
